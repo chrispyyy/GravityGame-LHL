@@ -47,24 +47,36 @@
           camera.attachControl(canvas, true);
 
           // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
-          var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 5, 0), scene);
+          var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(30, 25 , 30), scene);
           
           // Default intensity is 1. Let's dim the light a small amount
           light.intensity = 0.7;
 
-          var ground = BABYLON.Mesh.CreateGround("ground", 1000, 1000, 1, scene, false);
-          var groundMaterial = new BABYLON.StandardMaterial("ground", scene);
-          groundMaterial.specularColor = BABYLON.Color3.Blue  ();
-          ground.material = groundMaterial;
-          ground.actionManager = new BABYLON.ActionManager(scene);
+          var ground = BABYLON.Mesh.CreateGround("ground", 1000, 1000, 0, scene, false);
+
+          groundMaterial =  new BABYLON.StandardMaterial("ground", scene);
+
+          ground.material = groundMaterial
+
+          groundMaterial.alpha  = 0;
+
+          var stars = []
+          for (var i=0; i< 500; i++) {
+            stars.push(new GameObject('stars', 2 + Math.random() * 7, 30, scene, -1000 + Math.random() * 2000, -1000, -500 + Math.random() * 1000));
+          }
+
+          for (var i=0; i < stars.length; i++){
+            stars[i]
+          }
 
           var asteroids = [];
 
-          var ship = new GameObject('ship', 1, .5, scene, -20, 1, -20);
+          var ship = new GameObject('ship', 2, .5, scene, -20, 1, -20);
           var canvasObjects = [];
           for (var i=0; i<1; i++) {
             canvasObjects[i] = new GameObject('planet', 6, 30, scene, 25, 1, 25);
           }
+
 
           var isMouseDown = false;
           var eventStarted = null;
@@ -93,6 +105,17 @@
 
           scene.registerBeforeRender(function()
           {  
+
+            if (ship.canvasObject.intersectsPoint(canvasObjects[0].canvasObject.position, true)) {
+              ship.material.emissiveColor = new BABYLON.Color3(0, 1, 0);
+            }
+
+            for(var i = 1; i < canvasObjects.length; i ++){
+              if (ship.canvasObject.intersectsPoint(canvasObjects[i].canvasObject.position, true)) {
+              ship.material.emissiveColor = new BABYLON.Color3(1, 0, 0);
+              }
+            }
+
             var forces = new BABYLON.Vector3(0, 0, 0);
             canvasObjects.forEach(function(canvasObject){
               forces = forces.add(ship.calculateForce(canvasObject));
