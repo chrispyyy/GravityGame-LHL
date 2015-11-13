@@ -12,16 +12,16 @@ function GameObject (name, size, mass, scene, x, y, z){
     var distanceVector = magnetObject.position.subtract(this.position);
 
     var magnitude = distanceVector.length();
-    // if (magnitude < 40) {
-    //   alert("you lose.");
-    // } else if (magnitude > 100) {
-    //   magnitude = 100;
-    // }
-
-    if (magnitude < 1) {
-      // return alert("GAME OVER");
-      console.info("Game Over")
+    if (magnitude < 20) {
+      magnitude = 20;
+    } else if (magnitude > 100) {
+      magnitude = 100;
     }
+
+    // if (magnitude < 1) {
+    //   // return alert("GAME OVER");
+    //   console.info("Game Over")
+    // }
     var forceDirection = distanceVector.normalize();
 
     var strength = (10 * this.mass * magnetObject.mass)/(magnitude * magnitude);

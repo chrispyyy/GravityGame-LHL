@@ -60,10 +60,10 @@
 
           var asteroids = [];
 
-          var ship = new GameObject('ship', 1, .1, scene, -20, 1, -20);
+          var ship = new GameObject('ship', 1, .5, scene, -20, 1, -20);
           var canvasObjects = [];
-          for (var i=0; i<2; i++) {
-            canvasObjects[i] = new GameObject('planet', 6, 30, scene, 30- Math.random() * 60, 1,30 - Math.random()*60);
+          for (var i=0; i<1; i++) {
+            canvasObjects[i] = new GameObject('planet', 6, 30, scene, 25, 1, 25);
           }
 
           var isMouseDown = false;
@@ -77,7 +77,8 @@
             if (pickResult.hit) {
               var xCoord = pickResult.pickedPoint.x;
               var zCoord = pickResult.pickedPoint.z;
-              newBlackhole = new GameObject('canvasObject', 1, 5, scene, xCoord, 1, zCoord);
+              newBlackhole = new GameObject('canvasObject', 1, 10, scene, xCoord, 1, zCoord);
+              canvasObjects.push(newBlackhole);
               window.newBlackhole = newBlackhole;
               // canvasObjects.push(newThing);
               // console.log(canvasObjects);
@@ -87,7 +88,6 @@
           scene.onPointerUp = function(event)
           {
             isMouseDown = false;
-            canvasObjects.push(newBlackhole);
             newBlackhole = null;
           }
 
@@ -103,9 +103,8 @@
               if(newBlackhole)
               {
                 var delta = Date.now() - eventStarted;
-                console.log(delta);
-                newBlackhole.canvasObject.scaling.addInPlace(new BABYLON.Vector3(.1,.1,.1));
-                newBlackhole.mass = newBlackhole.mass + (delta/1000);
+                newBlackhole.canvasObject.scaling.addInPlace(new BABYLON.Vector3(.05,.05,.05));
+                newBlackhole.mass = newBlackhole.mass + (delta/10000);
                 console.log(newBlackhole.mass);
               }
             }
