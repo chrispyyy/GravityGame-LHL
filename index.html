@@ -51,23 +51,70 @@
             // Default intensity is 1. Let's dim the light a small amount
             light.intensity = 0.7;
 
+            var ground = BABYLON.Mesh.CreateGround("ground", 1000, 1000, 1, scene, false);
+            var groundMaterial = new BABYLON.StandardMaterial("ground", scene);
+            groundMaterial.specularColor = BABYLON.Color3.Red();
+            ground.material = groundMaterial;
+            ground.actionManager = new BABYLON.ActionManager(scene);
+
+
+
               var asteroids = [];
 
-              var ship = new GameObject('ship', 2, 50, scene, -14, 1, -14);
-              var blackHole = new GameObject('blackHole', 4, 1000, scene, -18, 1, 5);
-              var planet = new GameObject('planet', 10, 10000, scene, 14, 1, 14);
-              console.log(ship.position)
-              scene.registerBeforeRender(function()
-              {
-                // console.log(ship)
-                var forces = ship.calculateForce(planet).add(ship.calculateForce(blackHole));
-                ship.position.addInPlace(forces.scale(0.00001));
+              var ship = new GameObject('ship', 2, .1, scene, -20, 1, -20);
+              // var blackHole = new GameObject('blackHole', 4, 1000, scene, -18, 1, 5);
+              // var planet = new GameObject('planet', 10, 10000, scene, 14, 1, 14);
+              var things = [];
+              for (var i=0; i<1; i++) {
+                things[i] = new GameObject('planet', 8, 100, scene, 20, 1, 20);
+              }
+              // console.log(things);
+              // var forse;
+              // var shipgo = new BABYLON.Vector3(ship.position.x, 1, ship.position.z);
+              // things.forEach(function(thing) {
+              //   forse = shipgo.add(ship.calculateForce(thing));
+              //   shipgo = forse;
+              //   console.log(shipgo);
+              // });
+
+              // ship.calculateForce(things[0]);
+              // ship.calculateForce(things[1]);
+              // ship.calculateForce(things[2]);
+              // var forces = ship.calculateForce(things[0]).add(ship.calculateForce(things[1]));
+              // console.log(forces);
+              // forces = forces.add(ship.calculateForce(things[2]));
+              // console.log(forces);
+
+
+
+              scene.registerBeforeRender(function(){
+               // When pointer down event is raised
+                scene.onPointerDown = function (event, pickResult) {
+                  if (pickResult.hit) {
+                    var xCoord = pickResult.pickedPoint.x;
+                    var zCoord = pickResult.pickedPoint.z;
+                    var newThing = new GameObject('thing', 4, 5, scene, xCoord, 1, zCoord);
+                    things.push(newThing);
+                    console.log(things);
+                  }
+                };
+                var forces = new BABYLON.Vector3(0, 0, 0);
+                things.forEach(function(thing){
+                  forces = forces.add(ship.calculateForce(thing));
+                });
+              // var forces = ship.calculateForce(things[0]).add(ship.calculateForce(things[1])).add(ship.calculateForce(things[2]));
+                ship.position.addInPlace(forces);
+
+
+
               });
+
               return scene;
             }
 
         // call the createScene function
         var scene = createScene();
+
 
         // run the render loop
         engine.runRenderLoop(function(){
