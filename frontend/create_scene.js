@@ -5,6 +5,7 @@ var generateStars = require('./stars.js');
 var generateGround = require('./ground.js');
 var generateCamera = require('./camera.js');
 var generateLight = require('./light.js');
+var generateParticleTrail = require('./create_particle_trail.js');
 
 module.exports = function createScene(engine, canvas){
   // This creates a basic Babylon Scene object (non-mesh)
@@ -26,8 +27,9 @@ module.exports = function createScene(engine, canvas){
     canvasObjects[i] = new GameObject('planet', 6, 30, scene, 25, 1, 25);
   }
 
+  generateParticleTrail(scene, ship.canvasObject);
 
-  clickEvents(scene, ship, canvasObjects)
+  clickEvents(scene, ship, canvasObjects, camera, canvas);
 
   return scene;
 }

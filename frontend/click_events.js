@@ -1,6 +1,6 @@
 var BABYLON = require('babylonjs');
 
-module.exports = function clickEvent(scene, ship, canvasObjects){ 
+module.exports = function clickEvent(scene, ship, canvasObjects, camera, canvas){ 
 
   var isMouseDown = false;
   var eventStarted = null;
@@ -9,6 +9,7 @@ module.exports = function clickEvent(scene, ship, canvasObjects){
   scene.onPointerDown = function (event, pickResult){
     isMouseDown = true;
     eventStarted = Date.now()
+    camera.detachControl(canvas, true);
 
     if (pickResult.hit) {
       var xCoord = pickResult.pickedPoint.x;
@@ -23,6 +24,7 @@ module.exports = function clickEvent(scene, ship, canvasObjects){
   {
     isMouseDown = false;
     newBlackhole = null;
+    camera.attachControl(canvas, true);
   }
 
   scene.registerBeforeRender(function()
