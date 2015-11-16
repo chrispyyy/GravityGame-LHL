@@ -89,11 +89,9 @@
             if (pickResult.hit) {
               var xCoord = pickResult.pickedPoint.x;
               var zCoord = pickResult.pickedPoint.z;
-              newBlackhole = new GameObject('canvasObject', 1, 10, scene, xCoord, 1, zCoord);
+              newBlackhole = new GameObject('canvasObject', 1, 5, scene, xCoord, 1, zCoord);
               canvasObjects.push(newBlackhole);
               window.newBlackhole = newBlackhole;
-              // canvasObjects.push(newThing);
-              // console.log(canvasObjects);
             }
           };
 
