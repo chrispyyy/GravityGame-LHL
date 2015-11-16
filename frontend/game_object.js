@@ -34,3 +34,5 @@ function GameObject (name, size, mass, scene, x, y, z){
     return gForce;
   }
 }
+
+module.exports = GameObject
