@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
-    <title>Babylon - Getting Started</title>
+    <!-- <title>SpaceGame</title> -->
     <script src="http://cdn.babylonjs.com/2-2/babylon.max.js"></script>
     <script src="game_object.js"></script>
     <style>
@@ -38,14 +38,12 @@
           var scene = new BABYLON.Scene(engine);
 
           // This creates and positions a free camera (non-mesh)
-          var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 75, -0.0000000000000001), scene);
-
+          var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 100, -0.0000000000000001), scene);
           // This targets the camera to scene origin
           camera.setTarget(BABYLON.Vector3.Zero());
 
           // This attaches the camera to the canvas
           camera.attachControl(canvas, true);
-
           // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
           var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(30, 25 , 30), scene);
           
@@ -83,6 +81,7 @@
           var newBlackhole  = null;
           scene.onPointerDown = function (event, pickResult)
           {
+            camera.detachControl(canvas, true);
             isMouseDown = true;
             eventStarted = Date.now()
 
@@ -97,6 +96,7 @@
 
           scene.onPointerUp = function(event)
           {
+            camera.attachControl(canvas, true);
             isMouseDown = false;
             newBlackhole = null;
           }
@@ -126,7 +126,6 @@
                 var delta = Date.now() - eventStarted;
                 newBlackhole.canvasObject.scaling.addInPlace(new BABYLON.Vector3(.05,.05,.05));
                 newBlackhole.mass = newBlackhole.mass + (delta/10000);
-                console.log(newBlackhole.mass);
               }
             }
           });
