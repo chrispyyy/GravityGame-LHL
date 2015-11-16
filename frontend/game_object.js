@@ -1,4 +1,6 @@
-function GameObject (name, size, mass, scene, x, y, z){
+var BABYLON = require('babylonjs');
+
+module.exports = function GameObject (name, size, mass, scene, x, y, z){
 
   this.canvasObject = BABYLON.Mesh.CreateSphere(name, 16, size, scene);
 
@@ -34,5 +36,3 @@ function GameObject (name, size, mass, scene, x, y, z){
     return gForce;
   }
 }
-
-module.exports = GameObject

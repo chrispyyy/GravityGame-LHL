@@ -1,3 +1,5 @@
+var BABYLON = require('babylonjs');
+
 module.exports = function generateStars(scene){
 
   var stars = []

@@ -1,3 +1,5 @@
+var BABYLON = require('babylonjs');
+
 module.exports = function clickEvent(scene, ship, canvasObjects){ 
 
   var isMouseDown = false;

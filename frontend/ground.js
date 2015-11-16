@@ -1,3 +1,5 @@
+var BABYLON = require('babylonjs');
+
 module.exports = function generateGround(scene){
 
   var ground = BABYLON.Mesh.CreateGround("ground", 1000, 1000, 0, scene, false);

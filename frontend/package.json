@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/chrispyyy/GravityGame-LHL#readme",
   "dependencies": {
+    "babylonjs": "^2.2.0",
     "css-loader": "^0.23.0",
     "jsx-loader": "^0.13.2",
     "style-loader": "^0.13.0",

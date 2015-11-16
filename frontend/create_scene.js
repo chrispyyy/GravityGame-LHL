@@ -1,8 +1,10 @@
-clickEvents = require('./click_events.js');
-generateStars = require('./stars.js');
-generateGround = require('./ground.js');
-generateCamera = require('./camera.js');
-generateLight = require('./light.js');
+var BABYLON = require('babylonjs');
+GameObject = require('./game_object.js');
+var clickEvents = require('./click_events.js');
+var generateStars = require('./stars.js');
+var generateGround = require('./ground.js');
+var generateCamera = require('./camera.js');
+var generateLight = require('./light.js');
 
 module.exports = function createScene(engine, canvas){
   // This creates a basic Babylon Scene object (non-mesh)
