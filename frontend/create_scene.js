@@ -6,7 +6,7 @@ var generateGround = require('./ground.js');
 var generateCamera = require('./camera.js');
 var generateLight = require('./light.js');
 var generateParticleTrail = require('./create_particle_trail.js');
-var plutoTexture = require('./pluto_texture.js')
+var plutoTexture = require('./pluto_texture.js');
 
 module.exports = function createScene(engine, canvas){
   // This creates a basic Babylon Scene object (non-mesh)
@@ -34,6 +34,16 @@ module.exports = function createScene(engine, canvas){
   generateParticleTrail(scene, ship.canvasObject);
 
   clickEvents(scene, ship, canvasObjects, camera, canvas);
+
+    var skybox = BABYLON.Mesh.CreateBox("skyBox", 1000.0, scene);
+    var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
+    skyboxMaterial.backFaceCulling = false;
+    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("./public/images/TropicalSunnyDay", scene);
+    skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+    skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+    skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+    skyboxMaterial.disableLighting = true;
+    skybox.material = skyboxMaterial;
 
   return scene;
 }

@@ -1,4 +1,5 @@
 var BABYLON = require('babylonjs');
+var blackholeMaterial = require('./blackhole_material.js');
 
 module.exports = function clickEvent(scene, ship, canvasObjects, camera, canvas){ 
 
@@ -15,6 +16,7 @@ module.exports = function clickEvent(scene, ship, canvasObjects, camera, canvas)
       var xCoord = pickResult.pickedPoint.x;
       var zCoord = pickResult.pickedPoint.z;
       newBlackhole = new GameObject('canvasObject', 1, 5, scene, xCoord, 1, zCoord);
+      newBlackhole = blackholeMaterial(scene, newBlackhole)
       canvasObjects.push(newBlackhole);
       window.newBlackhole = newBlackhole;
     }
