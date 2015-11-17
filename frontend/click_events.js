@@ -29,7 +29,7 @@ module.exports = function clickEvent(scene, ship, canvasObjects, camera, canvas)
 
   scene.registerBeforeRender(function()
   {  
-
+    
     if (ship.canvasObject.intersectsPoint(canvasObjects[0].canvasObject.position, true)) {
       ship.material.emissiveColor = new BABYLON.Color3(0, 1, 0);
     }

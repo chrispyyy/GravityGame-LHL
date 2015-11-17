@@ -4,7 +4,7 @@ module.exports = function GameObject (name, size, mass, scene, x, y, z){
 
   this.canvasObject = BABYLON.Mesh.CreateSphere(name, 16, size, scene);
 
-  // this.material = this.canvasObject.material = new BABYLON.StandardMaterial(name, scene);
+  this.material = this.canvasObject.material = new BABYLON.StandardMaterial(name, scene);
 
   this.mass = mass; 
 

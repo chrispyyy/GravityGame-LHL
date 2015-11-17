@@ -51,7 +51,8 @@
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	console.log('sup');
+	
+	(function(){console.log('sup');
 	var BABYLON = __webpack_require__(2);
 	var createScene = __webpack_require__(3);
 
@@ -77,6 +78,7 @@
 	    engine.resize();
 	  });
 	});
+	})();
 
 /***/ },
 /* 2 */
@@ -151,15 +153,15 @@
 	  var canvasObjects = [];
 
 	  for (var i=0; i<1; i++) {
-	    canvasObjects[i] = new GameObject('planet', 6, 30, scene, 25, 1, 25);
+	    canvasObjects[i] = new GameObject('planet', 12, 30, scene, 25, 1, 25);
 	  }
 
-	  var express = require('express');
-		var app = express();
+	  var plutoMaterial = new BABYLON.StandardMaterial("pluto_texture", scene);
+	  plutoMaterial.diffuseTexture = new BABYLON.Texture(__webpack_require__(11), scene);
+	  plutoMaterial.bumpTexture = new BABYLON.Texture(__webpack_require__(12), scene);
+	  plutoMaterial.specularColor = new BABYLON.Color3(0,0,0);
 
-		app.use(express.static('./frontend/public'));
-
-		app.listen(process.env.PORT || 8080);
+	  canvasObjects[0].canvasObject.material = plutoMaterial;
 
 	  generateParticleTrail(scene, ship.canvasObject);
 
@@ -180,7 +182,7 @@
 
 	  this.canvasObject = BABYLON.Mesh.CreateSphere(name, 16, size, scene);
 
-	  this.material = this.canvasObject.material = new BABYLON.StandardMaterial(name, scene);
+	  // this.material = this.canvasObject.material = new BABYLON.StandardMaterial(name, scene);
 
 	  this.mass = mass; 
 
@@ -290,12 +292,6 @@
 	  
 	  for (var i=0; i< 3000; i++) {
 	    stars.push(new GameObject('stars', 2 + Math.random() * 4, 30, scene, -1440 + Math.random() * 2880, -1000, -1440 + Math.random() * 2880));
-	  var starParticles = new BABYLON.ParticleSystem("starParticles", 2000, scene);
-	  starParticles.particleTexture = new BABYLON.FireProceduralTexture("stars", 10, scene);
-	  starParticles.textureMask = new BABYLON.Color4(Math.random(), Math.random(), Math.random(), Math.random());
-	  starParticles.emitter = stars;
-	  starParticles.minEmitBox = new BABYLON.Vector3(-0.01, 0, 0);
-	  starParticles.maxEmitBox = new BABYLON.Vector3(-0.05, 0, 0);
 	  }
 
 
@@ -361,12 +357,12 @@
 	var BABYLON = __webpack_require__(2);
 
 	module.exports = function createParticleTrail(scene, mesh) {
-	  var particleTrail = new BABYLON.ParticleSystem("particles", 2000, scene);
+	  var particleTrail = new BABYLON.ParticleSystem("particles", 200, scene);
 	  particleTrail.emitter = mesh;
-	  particleTrail.particleTexture = new BABYLON.FireProceduralTexture("texture", 500, scene);
+	  particleTrail.particleTexture = new BABYLON.FireProceduralTexture("texture", 1024, scene);
 	  particleTrail.minEmitBox = new BABYLON.Vector3(-0.5, 0, -0.5);
 	  particleTrail.maxEmitBox = new BABYLON.Vector3(0.5, 0, 0.5);
-	  particleTrail.emitRate = 1200;
+	  particleTrail.emitRate = 500;
 	  particleTrail.minSize = 0.1;
 	  particleTrail.maxSize = 0.5;
 	  particleTrail.minLifeTime = 0.5;
@@ -381,6 +377,18 @@
 	  particleTrail.colorDead = new BABYLON.Color4(0, 0, 0.2, 0.0);
 	  particleTrail.start();
 	}
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "public/images/plutomap2k.jpg"
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "public/images/plutonormalmap.png"
 
 /***/ }
 /******/ ]);
