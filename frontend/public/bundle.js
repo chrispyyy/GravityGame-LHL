@@ -154,6 +154,13 @@
 	    canvasObjects[i] = new GameObject('planet', 6, 30, scene, 25, 1, 25);
 	  }
 
+	  var express = require('express');
+		var app = express();
+
+		app.use(express.static('./frontend/public'));
+
+		app.listen(process.env.PORT || 8080);
+
 	  generateParticleTrail(scene, ship.canvasObject);
 
 	  clickEvents(scene, ship, canvasObjects, camera, canvas);
