@@ -1,4 +1,5 @@
-console.log('sup');
+
+(function(){console.log('sup');
 var BABYLON = require('babylonjs');
 var createScene = require('../create_scene.js');
 
@@ -24,3 +25,4 @@ window.addEventListener('DOMContentLoaded', function(){
     engine.resize();
   });
 });
+})();
