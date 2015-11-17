@@ -25,8 +25,15 @@ module.exports = function createScene(engine, canvas){
   var canvasObjects = [];
 
   for (var i=0; i<1; i++) {
-    canvasObjects[i] = new GameObject('planet', 6, 30, scene, 25, 1, 25);
+    canvasObjects[i] = new GameObject('planet', 12, 30, scene, 25, 1, 25);
   }
+
+  var plutoMaterial = new BABYLON.StandardMaterial("pluto_texture", scene);
+  plutoMaterial.diffuseTexture = new BABYLON.Texture(require("./public/images/plutomap2k.jpg"), scene);
+  plutoMaterial.bumpTexture = new BABYLON.Texture(require("./public/images/plutonormalmap.png"), scene);
+  plutoMaterial.specularColor = new BABYLON.Color3(0,0,0);
+
+  canvasObjects[0].canvasObject.material = plutoMaterial;
 
   generateParticleTrail(scene, ship.canvasObject);
 

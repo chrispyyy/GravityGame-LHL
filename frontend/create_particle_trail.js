@@ -1,7 +1,7 @@
 var BABYLON = require('babylonjs');
 
 module.exports = function createParticleTrail(scene, mesh) {
-  var particleTrail = new BABYLON.ParticleSystem("particles", 2000, scene);
+  var particleTrail = new BABYLON.ParticleSystem("particles", 200, scene);
   particleTrail.emitter = mesh;
   particleTrail.particleTexture = new BABYLON.FireProceduralTexture("texture", 1024, scene);
   particleTrail.minEmitBox = new BABYLON.Vector3(-0.5, 0, -0.5);
