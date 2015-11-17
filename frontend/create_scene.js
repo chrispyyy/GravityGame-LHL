@@ -10,6 +10,7 @@ var generateParticleTrail = require('./create_particle_trail.js');
 module.exports = function createScene(engine, canvas){
   // This creates a basic Babylon Scene object (non-mesh)
   var scene = new BABYLON.Scene(engine);
+  scene.clearColor = BABYLON.Color3.Black();
   // This creates and positions a free camera (non-mesh)
   var camera = generateCamera(scene, canvas);
   // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
