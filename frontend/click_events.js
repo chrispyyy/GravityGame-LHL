@@ -29,14 +29,15 @@ module.exports = function clickEvent(scene, ship, canvasObjects, camera, canvas)
 
   scene.registerBeforeRender(function()
   {  
-    
+    ;
     if (ship.canvasObject.intersectsPoint(canvasObjects[0].canvasObject.position, true)) {
-      ship.material.emissiveColor = new BABYLON.Color3(0, 1, 0);
+      ship.material.emissiveColor = new BABYLON.Color3(0, 1, 0)
+      levelComplete = true;
     }
 
     for(var i = 1; i < canvasObjects.length; i ++){
       if (ship.canvasObject.intersectsPoint(canvasObjects[i].canvasObject.position, true)) {
-      ship.material.emissiveColor = new BABYLON.Color3(1, 0, 0);
+        
       }
     }
 
