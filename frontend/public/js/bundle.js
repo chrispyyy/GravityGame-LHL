@@ -55,7 +55,7 @@
 	(function(){console.log('sup');
 	var BABYLON = __webpack_require__(2);
 	var createScene = __webpack_require__(3);
-	var createScene2 = __webpack_require__(15);
+	var createScene2 = __webpack_require__(13);
 	var currentLevel = 0;
 	window.addEventListener('DOMContentLoaded', function(){
 	  // get the canvas DOM element
@@ -436,9 +436,9 @@
 
 	  plutoMaterial = new BABYLON.StandardMaterial("pluto_texture", scene);
 
-	  plutoMaterial.diffuseTexture = new BABYLON.Texture(__webpack_require__(13), scene);
+	  plutoMaterial.diffuseTexture = new BABYLON.Texture("./frontend/public/images/plutomap2k.jpg", scene);
 
-	  plutoMaterial.bumpTexture = new BABYLON.Texture(__webpack_require__(14), scene);
+	  plutoMaterial.bumpTexture = new BABYLON.Texture("./frontend/public/images/plutonormalmap.png", scene);
 
 	  plutoMaterial.specularColor = new BABYLON.Color3(0,0,0);
 
@@ -449,18 +449,6 @@
 
 /***/ },
 /* 13 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "public/images/plutomap2k.jpg"
-
-/***/ },
-/* 14 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "public/images/plutonormalmap.png"
-
-/***/ },
-/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var BABYLON = __webpack_require__(2);
