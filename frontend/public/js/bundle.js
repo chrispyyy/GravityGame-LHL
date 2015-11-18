@@ -55,7 +55,8 @@
 	(function(){console.log('sup');
 	var BABYLON = __webpack_require__(2);
 	var createScene = __webpack_require__(3);
-
+	var createScene2 = __webpack_require__(15);
+	var currentLevel = 0;
 	window.addEventListener('DOMContentLoaded', function(){
 	  // get the canvas DOM element
 	  var canvas = document.getElementById('renderCanvas');
@@ -66,7 +67,21 @@
 	  // createScene function that creates and return the scene
 
 	  // call the createScene function
-	  var scene = createScene(engine, canvas);
+	  function callScene(){
+	    if (currentLevel == 0) {
+	      return scene = createScene(engine, canvas);
+	    } else {
+	      return scene = createScene2(engine, canvas);
+	    }
+	  }
+
+	  callScene();
+	  setTimeout(function(){
+	    currentLevel++;
+	    callScene();
+	  }, 4000);
+
+	// var scene = createScene2(engine, canvas);
 
 	  // run the render loop
 	  engine.runRenderLoop(function(){
@@ -129,11 +144,12 @@
 	var BABYLON = __webpack_require__(2);
 	GameObject = __webpack_require__(4);
 	var clickEvents = __webpack_require__(5);
-	var generateStars = __webpack_require__(6);
-	var generateGround = __webpack_require__(7);
-	var generateCamera = __webpack_require__(8);
-	var generateLight = __webpack_require__(9);
-	var generateParticleTrail = __webpack_require__(10);
+	var generateStars = __webpack_require__(7);
+	var generateGround = __webpack_require__(8);
+	var generateCamera = __webpack_require__(9);
+	var generateLight = __webpack_require__(10);
+	var generateParticleTrail = __webpack_require__(11);
+	var plutoTexture = __webpack_require__(12);
 
 	module.exports = function createScene(engine, canvas){
 	  // This creates a basic Babylon Scene object (non-mesh)
@@ -144,7 +160,7 @@
 	  // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
 	  var light = generateLight(scene);
 
-	  var stars = generateStars(scene);
+	  // var stars = generateStars(scene);
 
 	  var ground = generateGround(scene);
 
@@ -156,16 +172,21 @@
 	    canvasObjects[i] = new GameObject('planet', 12, 30, scene, 25, 1, 25);
 	  }
 
-	  var plutoMaterial = new BABYLON.StandardMaterial("pluto_texture", scene);
-	  plutoMaterial.diffuseTexture = new BABYLON.Texture(__webpack_require__(11), scene);
-	  plutoMaterial.bumpTexture = new BABYLON.Texture(__webpack_require__(12), scene);
-	  plutoMaterial.specularColor = new BABYLON.Color3(0,0,0);
-
-	  canvasObjects[0].canvasObject.material = plutoMaterial;
+	  canvasObjects[0] = plutoTexture(scene, canvasObjects[0])
 
 	  generateParticleTrail(scene, ship.canvasObject);
 
 	  clickEvents(scene, ship, canvasObjects, camera, canvas);
+
+	    var skybox = BABYLON.Mesh.CreateBox("skyBox", 300, scene);
+	    var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
+	    skyboxMaterial.backFaceCulling = false;
+	    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("./frontend/public/images/TropicalSunnyDay", scene);
+	    skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+	    skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+	    skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+	    skyboxMaterial.disableLighting = true;
+	    skybox.material = skyboxMaterial;
 
 	  return scene;
 	}
@@ -182,7 +203,7 @@
 
 	  this.canvasObject = BABYLON.Mesh.CreateSphere(name, 16, size, scene);
 
-	  // this.material = this.canvasObject.material = new BABYLON.StandardMaterial(name, scene);
+	  this.material = this.canvasObject.material = new BABYLON.StandardMaterial(name, scene);
 
 	  this.mass = mass; 
 
@@ -221,6 +242,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var BABYLON = __webpack_require__(2);
+	var blackholeMaterial = __webpack_require__(6);
 
 	module.exports = function clickEvent(scene, ship, canvasObjects, camera, canvas){ 
 
@@ -237,6 +259,7 @@
 	      var xCoord = pickResult.pickedPoint.x;
 	      var zCoord = pickResult.pickedPoint.z;
 	      newBlackhole = new GameObject('canvasObject', 1, 5, scene, xCoord, 1, zCoord);
+	      newBlackhole = blackholeMaterial(scene, newBlackhole)
 	      canvasObjects.push(newBlackhole);
 	      window.newBlackhole = newBlackhole;
 	    }
@@ -251,7 +274,7 @@
 
 	  scene.registerBeforeRender(function()
 	  {  
-
+	    
 	    if (ship.canvasObject.intersectsPoint(canvasObjects[0].canvasObject.position, true)) {
 	      ship.material.emissiveColor = new BABYLON.Color3(0, 1, 0);
 	    }
@@ -286,6 +309,31 @@
 
 	var BABYLON = __webpack_require__(2);
 
+	module.exports = function(scene, blackHole){
+	    
+	    material = new BABYLON.StandardMaterial("black", scene);
+	    material.diffuseColor = new BABYLON.Color3(0, 0, 0);
+	    material.reflectionTexture = new BABYLON.CubeTexture("./frontend/public/images/TropicalSunnyDay", scene);
+	    material.reflectionTexture.level = 0.5;
+	    material.specularPower = 64;
+	    material.emissiveColor = new BABYLON.Color3(0.2, 0.2, 0.2);
+	    
+	    material.emissiveFresnelParameters = new BABYLON.FresnelParameters();
+	    material.emissiveFresnelParameters.bias = 0.4;
+	    material.emissiveFresnelParameters.power = 2;
+	    material.emissiveFresnelParameters.leftColor = BABYLON.Color3.Black();
+	    material.emissiveFresnelParameters.rightColor = BABYLON.Color3.White();
+
+	    blackHole.canvasObject.material = material
+	    return blackHole
+	}
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var BABYLON = __webpack_require__(2);
+
 	module.exports = function generateStars(scene){
 
 	  var stars = []
@@ -299,7 +347,7 @@
 	}
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var BABYLON = __webpack_require__(2);
@@ -318,7 +366,7 @@
 	}
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var BABYLON = __webpack_require__(2);
@@ -336,7 +384,7 @@
 
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var BABYLON = __webpack_require__(2);
@@ -351,7 +399,7 @@
 	}
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var BABYLON = __webpack_require__(2);
@@ -379,16 +427,94 @@
 	}
 
 /***/ },
-/* 11 */
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var BABYLON = __webpack_require__(2);
+
+	module.exports = function(scene, planet){
+
+	  plutoMaterial = new BABYLON.StandardMaterial("pluto_texture", scene);
+
+	  plutoMaterial.diffuseTexture = new BABYLON.Texture(__webpack_require__(13), scene);
+
+	  plutoMaterial.bumpTexture = new BABYLON.Texture(__webpack_require__(14), scene);
+
+	  plutoMaterial.specularColor = new BABYLON.Color3(0,0,0);
+
+	  planet.canvasObject.material = plutoMaterial;
+
+	  return planet
+	}
+
+/***/ },
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "public/images/plutomap2k.jpg"
 
 /***/ },
-/* 12 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "public/images/plutonormalmap.png"
+
+/***/ },
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var BABYLON = __webpack_require__(2);
+	GameObject = __webpack_require__(4);
+	var clickEvents = __webpack_require__(5);
+	var generateStars = __webpack_require__(7);
+	var generateGround = __webpack_require__(8);
+	var generateCamera = __webpack_require__(9);
+	var generateLight = __webpack_require__(10);
+	var generateParticleTrail = __webpack_require__(11);
+	var plutoTexture = __webpack_require__(12);
+
+	module.exports = function createScene(engine, canvas){
+	  // This creates a basic Babylon Scene object (non-mesh)
+	  var scene = new BABYLON.Scene(engine);
+	  scene.clearColor = BABYLON.Color3.Black();
+	  // This creates and positions a free camera (non-mesh)
+	  var camera = generateCamera(scene, canvas);
+	  // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
+	  var light = generateLight(scene);
+
+	  // var stars = generateStars(scene);
+
+	  var ground = generateGround(scene);
+
+	  var ship = new GameObject('ship', 2, .5, scene, -20, 1, -20);
+
+	  var canvasObjects = [];
+
+	  for (var i=0; i<1; i++) {
+	    canvasObjects[i] = new GameObject('planet', 12, 30, scene, 25, 1, 25);
+	  }
+	  for (var i=0; i<1; i++) {
+	    canvasObjects[i] = new GameObject('planet', 12, 30, scene, 10, 1, 10);
+	  }
+
+	  canvasObjects[0] = plutoTexture(scene, canvasObjects[0])
+
+	  generateParticleTrail(scene, ship.canvasObject);
+
+	  clickEvents(scene, ship, canvasObjects, camera, canvas);
+
+	    var skybox = BABYLON.Mesh.CreateBox("skyBox", 300, scene);
+	    var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
+	    skyboxMaterial.backFaceCulling = false;
+	    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("./frontend/public/images/TropicalSunnyDay", scene);
+	    skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+	    skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+	    skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+	    skyboxMaterial.disableLighting = true;
+	    skybox.material = skyboxMaterial;
+
+	  return scene;
+	}
 
 /***/ }
 /******/ ]);
