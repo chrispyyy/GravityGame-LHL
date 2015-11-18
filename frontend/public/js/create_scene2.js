@@ -28,7 +28,7 @@ module.exports = function createScene(engine, canvas){
   for (var i=0; i<1; i++) {
     canvasObjects[i] = new GameObject('planet', 12, 30, scene, 25, 1, 25);
   }
-  for (var i=0; i<1; i++) {
+  for (var i=1; i<2; i++) {
     canvasObjects[i] = new GameObject('planet', 12, 30, scene, 10, 1, 10);
   }
 

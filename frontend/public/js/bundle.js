@@ -244,7 +244,6 @@
 
 	var BABYLON = __webpack_require__(2);
 	var blackholeMaterial = __webpack_require__(6);
-
 	module.exports = function clickEvent(scene, ship, canvasObjects, camera, canvas){ 
 
 	  var isMouseDown = false;

@@ -9,7 +9,6 @@ module.exports = function clickEvent(scene, ship, canvasObjects, camera, canvas)
   scene.onPointerDown = function (event, pickResult){
     isMouseDown = true;
     eventStarted = Date.now()
-    camera.detachControl(canvas, true);
 
     if (pickResult.hit) {
       var xCoord = pickResult.pickedPoint.x;
@@ -25,7 +24,6 @@ module.exports = function clickEvent(scene, ship, canvasObjects, camera, canvas)
   {
     isMouseDown = false;
     newBlackhole = null;
-    camera.attachControl(canvas, true);
   }
 
   scene.registerBeforeRender(function()
@@ -33,13 +31,11 @@ module.exports = function clickEvent(scene, ship, canvasObjects, camera, canvas)
     
     if (ship.canvasObject.intersectsPoint(canvasObjects[0].canvasObject.position, true)) {
       ship.material.emissiveColor = new BABYLON.Color3(0, 1, 0);
-      console.log('yay')
     }
 
     for(var i = 1; i < canvasObjects.length; i ++){
       if (ship.canvasObject.intersectsPoint(canvasObjects[i].canvasObject.position, true)) {
       ship.material.emissiveColor = new BABYLON.Color3(1, 0, 0);
-      console.log('sheet')
       }
     }
 
@@ -55,7 +51,6 @@ module.exports = function clickEvent(scene, ship, canvasObjects, camera, canvas)
         var delta = Date.now() - eventStarted;
         newBlackhole.canvasObject.scaling.addInPlace(new BABYLON.Vector3(.05,.05,.05));
         newBlackhole.mass = newBlackhole.mass + (delta/10000);
-        console.log(newBlackhole.mass);
       }
     }
   });

@@ -24,10 +24,10 @@ window.addEventListener('DOMContentLoaded', function(){
   }
 
   callScene();
-  setTimeout(function(){
-    currentLevel++;
-    callScene();
-  }, 4000);
+  // setTimeout(function(){
+  //   currentLevel++;
+  //   callScene();
+  // }, 4000);
 
 
 
