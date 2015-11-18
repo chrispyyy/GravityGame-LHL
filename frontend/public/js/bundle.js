@@ -57,6 +57,7 @@
 	var createScene = __webpack_require__(3);
 	var createScene2 = __webpack_require__(13);
 	var currentLevel = 0;
+
 	window.addEventListener('DOMContentLoaded', function(){
 	  // get the canvas DOM element
 	  var canvas = document.getElementById('renderCanvas');
@@ -81,14 +82,14 @@
 	    callScene();
 	  }, 4000);
 
-	// var scene = createScene2(engine, canvas);
+
 
 	  // run the render loop
 	  engine.runRenderLoop(function(){
 	    scene.render();
 	  });
 
-	// the canvas/window resize event handler
+	  // the canvas/window resize event handler
 	  window.addEventListener('resize', function(){
 	    engine.resize();
 	  });
@@ -181,7 +182,7 @@
 	    var skybox = BABYLON.Mesh.CreateBox("skyBox", 300, scene);
 	    var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
 	    skyboxMaterial.backFaceCulling = false;
-	    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("./frontend/public/images/TropicalSunnyDay", scene);
+	    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("./public/images/TropicalSunnyDay", scene);
 	    skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
 	    skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
 	    skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
@@ -277,11 +278,13 @@
 	    
 	    if (ship.canvasObject.intersectsPoint(canvasObjects[0].canvasObject.position, true)) {
 	      ship.material.emissiveColor = new BABYLON.Color3(0, 1, 0);
+	      console.log('yay')
 	    }
 
 	    for(var i = 1; i < canvasObjects.length; i ++){
 	      if (ship.canvasObject.intersectsPoint(canvasObjects[i].canvasObject.position, true)) {
 	      ship.material.emissiveColor = new BABYLON.Color3(1, 0, 0);
+	      console.log('sheet')
 	      }
 	    }
 
@@ -313,7 +316,7 @@
 	    
 	    material = new BABYLON.StandardMaterial("black", scene);
 	    material.diffuseColor = new BABYLON.Color3(0, 0, 0);
-	    material.reflectionTexture = new BABYLON.CubeTexture("./frontend/public/images/TropicalSunnyDay", scene);
+	    material.reflectionTexture = new BABYLON.CubeTexture("./public/images/TropicalSunnyDay", scene);
 	    material.reflectionTexture.level = 0.5;
 	    material.specularPower = 64;
 	    material.emissiveColor = new BABYLON.Color3(0.2, 0.2, 0.2);
@@ -436,9 +439,9 @@
 
 	  plutoMaterial = new BABYLON.StandardMaterial("pluto_texture", scene);
 
-	  plutoMaterial.diffuseTexture = new BABYLON.Texture("./frontend/public/images/plutomap2k.jpg", scene);
+	  plutoMaterial.diffuseTexture = new BABYLON.Texture("./public/images/plutomap2k.jpg", scene);
 
-	  plutoMaterial.bumpTexture = new BABYLON.Texture("./frontend/public/images/plutonormalmap.png", scene);
+	  plutoMaterial.bumpTexture = new BABYLON.Texture("./public/images/plutonormalmap.png", scene);
 
 	  plutoMaterial.specularColor = new BABYLON.Color3(0,0,0);
 
@@ -494,7 +497,7 @@
 	    var skybox = BABYLON.Mesh.CreateBox("skyBox", 300, scene);
 	    var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
 	    skyboxMaterial.backFaceCulling = false;
-	    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("./frontend/public/images/TropicalSunnyDay", scene);
+	    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("./public/images/TropicalSunnyDay", scene);
 	    skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
 	    skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
 	    skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
