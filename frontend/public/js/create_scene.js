@@ -18,12 +18,39 @@ module.exports = function createScene(engine, canvas){
   var light = generateLight(scene);
 
   // var stars = generateStars(scene);
+    // BABYLON.SceneLoader.ImportMesh("", "./public/scenes/", "star-wars-x-wing.babylon", scene, function (newMeshes) {
+    //     // Set the target of the camera to the first imported mesh
+    //     var m = newMeshes[0];
+    //     camera.target = m;
+    // });
+
 
   var ground = generateGround(scene);
 
-  var ship = new GameObject('ship', 2, .5, scene, -20, 1, -20);
 
+  // console.log(ship);
+
+  var ship = new GameObject('ship', 6, .5, scene, -20, 1, -20);
+  var shipMaterial = new BABYLON.StandardMaterial("pokeball", scene);
+  shipMaterial.emissiveTexture = new BABYLON.Texture("./public/images/pokeball.png", scene);
+  shipMaterial.diffuseTexture = new BABYLON.Texture("./public/images/pokeball.png", scene);
+  ship.canvasObject.material = shipMaterial;
+  var animateShip = new BABYLON.Animation("animateShip", "rotation.z", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE);
+  var keys = [];
+  keys.push({
+    frame:0,
+    value:0
+  });
+  keys.push({
+    frame:120,
+    value:4
+  });
+  animateShip.setKeys(keys);
+  ship.canvasObject.animations.push(animateShip);
+  scene.beginAnimation(ship.canvasObject, 0, 120, true);
   var canvasObjects = [];
+
+  camera.target = ship.position;
 
   for (var i=0; i<1; i++) {
     canvasObjects[i] = new GameObject('planet', 12, 30, scene, 25, 1, 25);
