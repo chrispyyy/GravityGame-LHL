@@ -3,7 +3,9 @@
 var BABYLON = require('babylonjs');
 var createScene = require('./create_scene.js');
 var createScene2 = require('./create_scene2.js');
-var currentLevel = 0;
+var checkLevel = require('./click_events.js');
+
+window.checkLevel =  checkLevel
 
 window.addEventListener('DOMContentLoaded', function(){
   // get the canvas DOM element
@@ -16,19 +18,16 @@ window.addEventListener('DOMContentLoaded', function(){
 
   // call the createScene function
   function callScene(){
-    if (currentLevel == 0) {
+    if (checkLevel.levelComplete) {
+      checkLevel.levelComplete = false
       return scene = createScene(engine, canvas);
     } else {
       return scene = createScene2(engine, canvas);
     }
   }
-
+  
   callScene();
-  setTimeout(function(){
-    currentLevel++;
-    callScene();
-  }, 4000);
-
+  checkLevel.onLevelComplete = callScene
 
 
   // run the render loop

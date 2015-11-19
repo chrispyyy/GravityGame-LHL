@@ -1,11 +1,14 @@
 var BABYLON = require('babylonjs');
 var blackholeMaterial = require('./blackhole_material.js');
-module.exports = function clickEvent(scene, ship, canvasObjects, camera, canvas){ 
+
+module.exports.levelComplete = false
+module.exports.onLevelComplete = null 
+module.exports.clickEvent = function(scene, ship, canvasObjects, camera, canvas){ 
 
   var isMouseDown = false;
   var eventStarted = null;
   var newBlackhole  = null;
-  
+
   scene.onPointerDown = function (event, pickResult){
     isMouseDown = true;
     eventStarted = Date.now()
@@ -30,16 +33,19 @@ module.exports = function clickEvent(scene, ship, canvasObjects, camera, canvas)
 
   scene.registerBeforeRender(function()
   {  
-    
+    if (module.exports.levelComplete && typeof module.exports.onLevelComplete === 'function'){
+      module.exports.onLevelComplete()
+    }
+
     if (ship.canvasObject.intersectsPoint(canvasObjects[0].canvasObject.position, true)) {
       ship.material.emissiveColor = new BABYLON.Color3(0, 1, 0);
-      console.log('yay')
+      module.exports.levelComplete = true;
     }
 
     for(var i = 1; i < canvasObjects.length; i ++){
       if (ship.canvasObject.intersectsPoint(canvasObjects[i].canvasObject.position, true)) {
-      ship.material.emissiveColor = new BABYLON.Color3(1, 0, 0);
-      console.log('sheet')
+        ship.material.emissiveColor = new BABYLON.Color3(1, 0, 0);
+        module.exports.levelComplete = false;
       }
     }
 

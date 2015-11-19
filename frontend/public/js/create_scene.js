@@ -33,7 +33,7 @@ module.exports = function createScene(engine, canvas){
 
   generateParticleTrail(scene, ship.canvasObject);
 
-  clickEvents(scene, ship, canvasObjects, camera, canvas);
+  clickEvents.clickEvent(scene, ship, canvasObjects, camera, canvas);
 
     var skybox = BABYLON.Mesh.CreateBox("skyBox", 300, scene);
     var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);

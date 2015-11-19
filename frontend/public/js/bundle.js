@@ -56,7 +56,9 @@
 	var BABYLON = __webpack_require__(2);
 	var createScene = __webpack_require__(3);
 	var createScene2 = __webpack_require__(13);
-	var currentLevel = 0;
+	var checkLevel = __webpack_require__(5);
+
+	window.checkLevel =  checkLevel
 
 	window.addEventListener('DOMContentLoaded', function(){
 	  // get the canvas DOM element
@@ -69,18 +71,20 @@
 
 	  // call the createScene function
 	  function callScene(){
-	    if (currentLevel == 0) {
+	    if (checkLevel.levelComplete) {
 	      return scene = createScene(engine, canvas);
 	    } else {
 	      return scene = createScene2(engine, canvas);
 	    }
 	  }
-
+	  
 	  callScene();
-	  setTimeout(function(){
-	    currentLevel++;
-	    callScene();
-	  }, 4000);
+	  checkLevel.onLevelComplete = callScene
+	  // callScene();
+	  // setTimeout(function(){
+	  //   currentLevel++;
+	  //   callScene();
+	  // }, 4000);
 
 
 
@@ -177,7 +181,7 @@
 
 	  generateParticleTrail(scene, ship.canvasObject);
 
-	  clickEvents(scene, ship, canvasObjects, camera, canvas);
+	  clickEvents.clickEvent(scene, ship, canvasObjects, camera, canvas);
 
 	    var skybox = BABYLON.Mesh.CreateBox("skyBox", 300, scene);
 	    var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
@@ -245,12 +249,14 @@
 	var BABYLON = __webpack_require__(2);
 	var blackholeMaterial = __webpack_require__(6);
 
-	module.exports = function clickEvent(scene, ship, canvasObjects, camera, canvas){ 
+	module.exports.levelComplete = false
+	module.exports.onLevelComplete = null
+	module.exports.clickEvent = function(scene, ship, canvasObjects, camera, canvas){ 
 
 	  var isMouseDown = false;
 	  var eventStarted = null;
 	  var newBlackhole  = null;
-	  
+
 	  scene.onPointerDown = function (event, pickResult){
 	    isMouseDown = true;
 	    eventStarted = Date.now()
@@ -275,16 +281,19 @@
 
 	  scene.registerBeforeRender(function()
 	  {  
-	    
+	    if (module.exports.levelComplete && typeof module.exports.onLevelComplete === 'function'){
+	      module.exports.onLevelComplete()
+	    }
+
 	    if (ship.canvasObject.intersectsPoint(canvasObjects[0].canvasObject.position, true)) {
 	      ship.material.emissiveColor = new BABYLON.Color3(0, 1, 0);
-	      console.log('yay')
+	      module.exports.levelComplete = true;
 	    }
 
 	    for(var i = 1; i < canvasObjects.length; i ++){
 	      if (ship.canvasObject.intersectsPoint(canvasObjects[i].canvasObject.position, true)) {
-	      ship.material.emissiveColor = new BABYLON.Color3(1, 0, 0);
-	      console.log('sheet')
+	        ship.material.emissiveColor = new BABYLON.Color3(1, 0, 0);
+	        module.exports.levelComplete = false;
 	      }
 	    }
 
@@ -492,7 +501,7 @@
 
 	  generateParticleTrail(scene, ship.canvasObject);
 
-	  clickEvents(scene, ship, canvasObjects, camera, canvas);
+	  clickEvents.clickEvent(scene, ship, canvasObjects, camera, canvas);
 
 	    var skybox = BABYLON.Mesh.CreateBox("skyBox", 300, scene);
 	    var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
