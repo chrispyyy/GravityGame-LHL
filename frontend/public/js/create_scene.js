@@ -26,7 +26,7 @@ module.exports = function createScene(engine, canvas){
   var canvasObjects = [];
 
   canvasObjects[0] = new GameObject('planet', 12, 30, scene, 25, 1, 25);
-  
+
   canvasObjects[0] = plutoTexture(scene, canvasObjects[0])
 
   generateParticleTrail(scene, ship.canvasObject);
