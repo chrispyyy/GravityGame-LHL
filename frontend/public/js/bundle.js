@@ -56,6 +56,7 @@
 	var BABYLON = __webpack_require__(2);
 	var createScene = __webpack_require__(3);
 	var createScene2 = __webpack_require__(14);
+	var createScene3 = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./create_scene3.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	var checkLevel = __webpack_require__(5);
 	var PubSub = __webpack_require__(7)
 
@@ -66,7 +67,7 @@
 	  // load the 3D engine
 	  var engine = new BABYLON.Engine(canvas, true);
 
-	  var scenes = [createScene, createScene2]
+	  var scenes = [createScene, createScene2, createScene3]
 
 	  currentLevel = 0;
 	  var scene = scenes[currentLevel](engine, canvas);
@@ -77,12 +78,19 @@
 	      return scene = scenes[currentLevel](engine, canvas);
 	    } 
 	    if (data == 'collided with other stuffs') {
+	      setTimeout(function(){
+	        var div = document.createElement("div");
+	        div.setAttribute("id", "game_over");
+	        var img = document.createElement("img");
+	        img.setAttribute("src", "public/images/game_over.png");
+	        document.getElementById("placehere").appendChild(img);
+	      }, 5000)
 	      return scene = scenes[currentLevel](engine, canvas)
 	    }
 	  }
 
 	  var token = PubSub.subscribe( 'COLLISION EVENT', collisionSubscriber );
-
+	  
 	  collisionSubscriber
 
 	  engine.runRenderLoop(function(){
@@ -169,10 +177,8 @@
 
 	  var canvasObjects = [];
 
-	  for (var i=0; i<1; i++) {
-	    canvasObjects[i] = new GameObject('planet', 12, 30, scene, 25, 1, 25);
-	  }
-
+	  canvasObjects[0] = new GameObject('planet', 12, 30, scene, 25, 1, 25);
+	  
 	  canvasObjects[0] = plutoTexture(scene, canvasObjects[0])
 
 	  generateParticleTrail(scene, ship.canvasObject);
@@ -257,6 +263,7 @@
 	      var zCoord = pickResult.pickedPoint.z;
 	      newBlackhole = new GameObject('canvasObject', 1, 5, scene, xCoord, 1, zCoord);
 	      newBlackhole = blackholeMaterial(scene, newBlackhole)
+	      console.log(newBlackhole.position)
 	      canvasObjects.push(newBlackhole);
 	      window.newBlackhole = newBlackhole;
 	    }
@@ -293,8 +300,9 @@
 	      if(newBlackhole)
 	      {
 	        var delta = Date.now() - eventStarted;
-	        newBlackhole.canvasObject.scaling.addInPlace(new BABYLON.Vector3(.05,.05,.05));
-	        newBlackhole.mass = newBlackhole.mass + (delta/10000);
+	        newBlackhole.canvasObject.scaling.addInPlace(new BABYLON.Vector3(.06,.06,.06));
+	        newBlackhole.mass = newBlackhole.mass + (delta/8000);
+	        console.log(newBlackhole.mass)
 	      }
 	    }
 	  });
@@ -748,7 +756,7 @@
 
 	  canvasObjects[0] = new GameObject('planet', 12, 30, scene, 25, 1, 25);
 
-	  canvasObjects[1] = new GameObject('obstacle', 12, 30, scene, 10, 1, 10);
+	  canvasObjects[1] = new GameObject('obstacle', 4, 8, scene, 10, 1, 10);
 
 	  canvasObjects[0] = plutoTexture(scene, canvasObjects[0])
 

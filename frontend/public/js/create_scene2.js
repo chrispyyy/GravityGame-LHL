@@ -27,7 +27,7 @@ module.exports = function createScene(engine, canvas){
 
   canvasObjects[0] = new GameObject('planet', 12, 30, scene, 25, 1, 25);
 
-  canvasObjects[1] = new GameObject('obstacle', 12, 30, scene, 10, 1, 10);
+  canvasObjects[1] = new GameObject('obstacle', 4, 8, scene, 10, 1, 10);
 
   canvasObjects[0] = plutoTexture(scene, canvasObjects[0])
 
