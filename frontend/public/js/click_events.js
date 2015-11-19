@@ -1,8 +1,8 @@
 var BABYLON = require('babylonjs');
 var blackholeMaterial = require('./blackhole_material.js');
-
-module.exports.levelComplete = false
-module.exports.onLevelComplete = null 
+var PubSub = require('pubsub-js');
+// module.exports.levelComplete = false
+// module.exports.onLevelComplete = null 
 module.exports.clickEvent = function(scene, ship, canvasObjects, camera, canvas){ 
 
   var isMouseDown = false;
@@ -33,19 +33,21 @@ module.exports.clickEvent = function(scene, ship, canvasObjects, camera, canvas)
 
   scene.registerBeforeRender(function()
   {  
-    if (module.exports.levelComplete && typeof module.exports.onLevelComplete === 'function'){
-      module.exports.onLevelComplete()
-    }
+    // if (module.exports.levelComplete && typeof module.exports.onLevelComplete === 'function'){
+    //   module.exports.onLevelComplete()
+    // }
 
     if (ship.canvasObject.intersectsPoint(canvasObjects[0].canvasObject.position, true)) {
       ship.material.emissiveColor = new BABYLON.Color3(0, 1, 0);
-      module.exports.levelComplete = true;
+      // module.exports.levelComplete = true;
+      PubSub.publish('COLLISION EVENT', 'collided')
     }
 
     for(var i = 1; i < canvasObjects.length; i ++){
       if (ship.canvasObject.intersectsPoint(canvasObjects[i].canvasObject.position, true)) {
         ship.material.emissiveColor = new BABYLON.Color3(1, 0, 0);
-        module.exports.levelComplete = false;
+        // module.exports.levelComplete = false;
+        PubSub.publish('COLLISION EVENT', 'collided with other stuffs')
       }
     }
 

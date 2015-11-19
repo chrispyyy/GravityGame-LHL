@@ -4,8 +4,7 @@ var BABYLON = require('babylonjs');
 var createScene = require('./create_scene.js');
 var createScene2 = require('./create_scene2.js');
 var checkLevel = require('./click_events.js');
-
-window.checkLevel =  checkLevel
+var PubSub = require('pubsub-js')
 
 window.addEventListener('DOMContentLoaded', function(){
   // get the canvas DOM element
@@ -14,23 +13,27 @@ window.addEventListener('DOMContentLoaded', function(){
   // load the 3D engine
   var engine = new BABYLON.Engine(canvas, true);
 
-  // createScene function that creates and return the scene
+  var scenes = [createScene, createScene2]
 
-  // call the createScene function
-  function callScene(){
-    if (checkLevel.levelComplete) {
-      checkLevel.levelComplete = false
-      return scene = createScene(engine, canvas);
-    } else {
-      return scene = createScene2(engine, canvas);
+  currentLevel = 0;
+  var scene = scenes[currentLevel](engine, canvas);
+
+  var collisionSubscriber = function(msg, data){
+    if (data == 'collided') {
+      currentLevel++;
+      return scene = scenes[currentLevel](engine, canvas);
+    } 
+    if (data == 'collided with other stuffs') {
+      return scene = scenes[currentLevel](engine, canvas)
     }
   }
-  
-  callScene();
-  checkLevel.onLevelComplete = callScene
 
 
-  // run the render loop
+
+  var token = PubSub.subscribe( 'COLLISION EVENT', collisionSubscriber );
+
+  collisionSubscriber
+
   engine.runRenderLoop(function(){
     scene.render();
   });
