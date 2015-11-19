@@ -23,10 +23,6 @@ module.exports = function GameObject (name, size, mass, scene, x, y, z){
       magnitude = 100;
     }
 
-    // if (magnitude < 1) {
-    //   // return alert("GAME OVER");
-    //   console.info("Game Over")
-    // }
     var forceDirection = distanceVector.normalize();
 
     var strength = (10 * this.mass * magnetObject.mass)/(magnitude * magnitude);
