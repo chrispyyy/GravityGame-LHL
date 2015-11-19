@@ -28,8 +28,6 @@ window.addEventListener('DOMContentLoaded', function(){
     }
   }
 
-
-
   var token = PubSub.subscribe( 'COLLISION EVENT', collisionSubscriber );
 
   collisionSubscriber

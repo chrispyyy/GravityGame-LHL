@@ -66,25 +66,25 @@
 	  // load the 3D engine
 	  var engine = new BABYLON.Engine(canvas, true);
 
-	  // createScene function that creates and return the scene
+	  var scenes = [createScene, createScene2]
 
-	  // call the createScene function
-	  // function callScene(){
-	  //   if (checkLevel.levelComplete) {
-	  //     // checkLevel.levelComplete = false
-	  //     return scene = createScene(engine, canvas);
-	  //   } else {
-	  //     return scene = createScene2(engine, canvas);
-	  //   }
-	  // }
-	  scene = createScene(engine, canvas);
-	  // callScene();
-	  // checkLevel.onLevelComplete = callScene
+	  currentLevel = 0;
+	  var scene = scenes[currentLevel](engine, canvas);
+
 	  var collisionSubscriber = function(msg, data){
-	    console.log(msg, data)
+	    if (data == 'collided') {
+	      currentLevel++;
+	      return scene = scenes[currentLevel](engine, canvas);
+	    } 
+	    if (data == 'collided with other stuffs') {
+	      return scene = scenes[currentLevel](engine, canvas)
+	    }
 	  }
 
-	  // run the render loop
+	  var token = PubSub.subscribe( 'COLLISION EVENT', collisionSubscriber );
+
+	  collisionSubscriber
+
 	  engine.runRenderLoop(function(){
 	    scene.render();
 	  });
@@ -284,13 +284,14 @@
 	    if (ship.canvasObject.intersectsPoint(canvasObjects[0].canvasObject.position, true)) {
 	      ship.material.emissiveColor = new BABYLON.Color3(0, 1, 0);
 	      // module.exports.levelComplete = true;
-	      PubSub.publish('COLLISION EVENT', 'shit collided')
+	      PubSub.publish('COLLISION EVENT', 'collided')
 	    }
 
 	    for(var i = 1; i < canvasObjects.length; i ++){
 	      if (ship.canvasObject.intersectsPoint(canvasObjects[i].canvasObject.position, true)) {
 	        ship.material.emissiveColor = new BABYLON.Color3(1, 0, 0);
 	        // module.exports.levelComplete = false;
+	        PubSub.publish('COLLISION EVENT', 'collided with other stuffs')
 	      }
 	    }
 
@@ -738,12 +739,10 @@
 
 	  var canvasObjects = [];
 
-	  for (var i=0; i<1; i++) {
-	    canvasObjects[i] = new GameObject('planet', 12, 30, scene, 25, 1, 25);
-	  }
-	  for (var i=0; i<1; i++) {
-	    canvasObjects[i] = new GameObject('planet', 12, 30, scene, 10, 1, 10);
-	  }
+	    canvasObjects[0] = new GameObject('planet', 12, 30, scene, 25, 1, 25);
+
+
+	    canvasObjects[1] = new GameObject('obstacle', 12, 30, scene, 10, 1, 10);
 
 	  canvasObjects[0] = plutoTexture(scene, canvasObjects[0])
 
