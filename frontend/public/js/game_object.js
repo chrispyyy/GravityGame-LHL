@@ -2,7 +2,7 @@ var BABYLON = require('babylonjs');
 
 module.exports = function GameObject (name, size, mass, scene, x, y, z){
 
-  this.canvasObject = BABYLON.Mesh.CreateSphere(name, 16, size, scene);
+  this.canvasObject = BABYLON.Mesh.CreateSphere(name, 24, size, scene);
 
   this.material = this.canvasObject.material = new BABYLON.StandardMaterial(name, scene);
 

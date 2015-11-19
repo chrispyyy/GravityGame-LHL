@@ -71,19 +71,19 @@
 	  currentLevel = 0;
 	  var scene = scenes[currentLevel](engine, canvas);
 
-	  var collisionSubscriber = function(msg, data){
-	    if (data == 'collided') {
-	      currentLevel++;
-	      return scene = scenes[currentLevel](engine, canvas);
-	    } 
-	    if (data == 'collided with other stuffs') {
-	      return scene = scenes[currentLevel](engine, canvas)
-	    }
-	  }
+	  // var collisionSubscriber = function(msg, data){
+	  //   if (data == 'collided') {
+	  //     currentLevel++;
+	  //     return scene = scenes[currentLevel](engine, canvas);
+	  //   } 
+	  //   if (data == 'collided with other stuffs') {
+	  //     return scene = scenes[currentLevel](engine, canvas)
+	  //   }
+	  // }
 
-	  var token = PubSub.subscribe( 'COLLISION EVENT', collisionSubscriber );
+	  // var token = PubSub.subscribe( 'COLLISION EVENT', collisionSubscriber );
 
-	  collisionSubscriber
+	  // collisionSubscriber
 
 	  engine.runRenderLoop(function(){
 	    scene.render();
@@ -182,7 +182,7 @@
 	    var skybox = BABYLON.Mesh.CreateBox("skyBox", 300, scene);
 	    var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
 	    skyboxMaterial.backFaceCulling = false;
-	    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("./public/images/TropicalSunnyDay", scene);
+	    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("./public/images/spacelvl0", scene);
 	    skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
 	    skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
 	    skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
@@ -202,7 +202,7 @@
 
 	module.exports = function GameObject (name, size, mass, scene, x, y, z){
 
-	  this.canvasObject = BABYLON.Mesh.CreateSphere(name, 16, size, scene);
+	  this.canvasObject = BABYLON.Mesh.CreateSphere(name, 24, size, scene);
 
 	  this.material = this.canvasObject.material = new BABYLON.StandardMaterial(name, scene);
 
@@ -251,6 +251,7 @@
 	  scene.onPointerDown = function (event, pickResult){
 	    isMouseDown = true;
 	    eventStarted = Date.now()
+	    camera.detachControl(canvas, true);
 
 	    if (pickResult.hit) {
 	      var xCoord = pickResult.pickedPoint.x;
@@ -266,14 +267,16 @@
 	  {
 	    isMouseDown = false;
 	    newBlackhole = null;
+	    camera.attachControl(canvas, true);
 	  }
 
 	  scene.registerBeforeRender(function()
 	  {  
-
 	    if (ship.canvasObject.intersectsPoint(canvasObjects[0].canvasObject.position, true)) {
 	      ship.material.emissiveColor = new BABYLON.Color3(0, 1, 0);
 	      PubSub.publish('COLLISION EVENT', 'collided')
+	      console.log('won');
+	      
 	    }
 
 	    for(var i = 1; i < canvasObjects.length; i ++){
@@ -709,8 +712,6 @@
 	  animatePlanet.setKeys(keys);
 	  planet.canvasObject.animations.push(animatePlanet);
 	  scene.beginAnimation(planet.canvasObject, 0, 120, true);
-
-
 
 	  return planet
 	}

@@ -11,6 +11,7 @@ module.exports.clickEvent = function(scene, ship, canvasObjects, camera, canvas)
   scene.onPointerDown = function (event, pickResult){
     isMouseDown = true;
     eventStarted = Date.now()
+    camera.detachControl(canvas, true);
 
     if (pickResult.hit) {
       var xCoord = pickResult.pickedPoint.x;
@@ -26,6 +27,7 @@ module.exports.clickEvent = function(scene, ship, canvasObjects, camera, canvas)
   {
     isMouseDown = false;
     newBlackhole = null;
+    camera.attachControl(canvas, true);
   }
 
   scene.registerBeforeRender(function()
@@ -34,6 +36,8 @@ module.exports.clickEvent = function(scene, ship, canvasObjects, camera, canvas)
     if (ship.canvasObject.intersectsPoint(canvasObjects[0].canvasObject.position, true)) {
       ship.material.emissiveColor = new BABYLON.Color3(0, 1, 0);
       PubSub.publish('COLLISION EVENT', 'collided')
+      console.log('won');
+      
     }
 
     for(var i = 1; i < canvasObjects.length; i ++){

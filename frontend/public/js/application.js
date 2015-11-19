@@ -18,19 +18,19 @@ window.addEventListener('DOMContentLoaded', function(){
   currentLevel = 0;
   var scene = scenes[currentLevel](engine, canvas);
 
-  // var collisionSubscriber = function(msg, data){
-  //   if (data == 'collided') {
-  //     currentLevel++;
-  //     return scene = scenes[currentLevel](engine, canvas);
-  //   } 
-  //   if (data == 'collided with other stuffs') {
-  //     return scene = scenes[currentLevel](engine, canvas)
-  //   }
-  // }
+  var collisionSubscriber = function(msg, data){
+    if (data == 'collided') {
+      currentLevel++;
+      return scene = scenes[currentLevel](engine, canvas);
+    } 
+    if (data == 'collided with other stuffs') {
+      return scene = scenes[currentLevel](engine, canvas)
+    }
+  }
 
-  // var token = PubSub.subscribe( 'COLLISION EVENT', collisionSubscriber );
+  var token = PubSub.subscribe( 'COLLISION EVENT', collisionSubscriber );
 
-  // collisionSubscriber
+  collisionSubscriber
 
   engine.runRenderLoop(function(){
     scene.render();
