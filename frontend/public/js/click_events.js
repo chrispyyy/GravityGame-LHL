@@ -2,7 +2,7 @@ var BABYLON = require('babylonjs');
 var blackholeMaterial = require('./blackhole_material.js');
 var PubSub = require('pubsub-js');
 
-module.exports.clickEvent = function(scene, ship, canvasObjects, camera, canvas){ 
+module.exports.clickEvent = function(scene, ship, canvasObjects, camera, canvas, engine){ 
 
   var isMouseDown = false;
   var eventStarted = null;
@@ -34,14 +34,15 @@ module.exports.clickEvent = function(scene, ship, canvasObjects, camera, canvas)
   {  
 
     if (ship.canvasObject.intersectsPoint(canvasObjects[0].canvasObject.position, true)) {
+      engine.stopRenderLoop();
       ship.material.emissiveColor = new BABYLON.Color3(0, 1, 0);
       PubSub.publish('COLLISION EVENT', 'collided')
-      console.log('won');
-      
+      console.log('won'); 
     }
 
     for(var i = 1; i < canvasObjects.length; i ++){
       if (ship.canvasObject.intersectsPoint(canvasObjects[i].canvasObject.position, true)) {
+        engine.stopRenderLoop();
         ship.material.emissiveColor = new BABYLON.Color3(1, 0, 0);
         PubSub.publish('COLLISION EVENT', 'collided with other stuffs')
       }

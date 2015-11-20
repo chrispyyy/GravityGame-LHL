@@ -2,10 +2,11 @@
 (function(){console.log('sup');
 var BABYLON = require('babylonjs');
 var createScene = require('./create_scene.js');
-var createScene2 = require('./create_scene2.js');
-var createScene3 = require('./create_scene3.js');
-var checkLevel = require('./click_events.js');
-var PubSub = require('pubsub-js')
+var level1 = require('./level_1.js')
+var level2 = require('./level_2.js')
+var level3 = require('./level_3.js')
+var PubSub = require('pubsub-js');
+var $ = require("jquery");
 
 window.addEventListener('DOMContentLoaded', function(){
   // get the canvas DOM element
@@ -14,28 +15,54 @@ window.addEventListener('DOMContentLoaded', function(){
   // load the 3D engine
   var engine = new BABYLON.Engine(canvas, true);
 
-  var scenes = [createScene, createScene2, createScene3]
+  var scenes = [
+    {scene: level1, image: level1.image}, 
+    {scene: level2, image: level2.image},
+    {scene: level3, image: level3.image},
+    ];
 
-  currentLevel = 0;
-  var scene = scenes[currentLevel](engine, canvas);
+  var currentLevel = 0;
+
+  $('<button>Start Game</button>').appendTo('#next-level')
+  $('#next-level img').attr('src', scenes[currentLevel].image)
+
+  $('#next-level').on('click', 'button', function(){
+    var scene = createScene(engine, canvas, scenes[currentLevel].scene);
+    $('#next-level').fadeOut();
+    engine.runRenderLoop(function(){
+      scene.render();
+    });
+  });
 
   var collisionSubscriber = function(msg, data){
     if (data == 'collided') {
       currentLevel++;
-      return scene = scenes[currentLevel](engine, canvas);
-    } 
+      $('#next-level button').text('Level ' + (currentLevel + 1));
+      $('#next-level img').attr('src', scenes[currentLevel].image)
+      $('#next-level').fadeIn('slow');
+      $('#next-level').on('click', 'button', function(){
+        var scene = createScene(engine, canvas, scenes[currentLevel].scene);
+        $('#next-level').fadeOut('slow');
+        engine.runRenderLoop(function(){
+          scene.render();
+        });
+      });
+    }
     if (data == 'collided with other stuffs') {
-      return scene = scenes[currentLevel](engine, canvas)
+      $('#game-over').slideDown(1500).delay(1000);
+      $('#game-over').fadeOut('slow');
+      setTimeout(function(){
+        var scene = createScene(engine, canvas, scenes[currentLevel].scene);
+        engine.runRenderLoop(function(){
+          scene.render();
+        });
+      }, 2500);
     }
   }
 
   var token = PubSub.subscribe( 'COLLISION EVENT', collisionSubscriber );
   
   collisionSubscriber
-
-  engine.runRenderLoop(function(){
-    scene.render();
-  });
 
   // the canvas/window resize event handler
   window.addEventListener('resize', function(){

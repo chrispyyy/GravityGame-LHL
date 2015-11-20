@@ -6,9 +6,8 @@ var generateGround = require('./ground.js');
 var generateCamera = require('./camera.js');
 var generateLight = require('./light.js');
 var generateParticleTrail = require('./create_particle_trail.js');
-var plutoTexture = require('./pluto_texture.js');
 
-module.exports = function createScene(engine, canvas){
+module.exports = function createScene(engine, canvas, levelObject){
   // This creates a basic Babylon Scene object (non-mesh)
   var scene = new BABYLON.Scene(engine);
   scene.clearColor = BABYLON.Color3.Black();
@@ -17,21 +16,15 @@ module.exports = function createScene(engine, canvas){
   // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
   var light = generateLight(scene);
 
-  // var stars = generateStars(scene);
-
   var ground = generateGround(scene);
 
-  var ship = new GameObject('ship', 2, .5, scene, -20, 1, -20);
+  var ship = levelObject.ship(scene);
 
-  var canvasObjects = [];
-
-  canvasObjects[0] = new GameObject('planet', 12, 30, scene, 25, 1, 25);
-
-  canvasObjects[0] = plutoTexture(scene, canvasObjects[0])
+  var canvasObjects = levelObject.canvasObjects(scene);
 
   generateParticleTrail(scene, ship.canvasObject);
 
-  clickEvents.clickEvent(scene, ship, canvasObjects, camera, canvas);
+  clickEvents.clickEvent(scene, ship, canvasObjects, camera, canvas, engine);
 
     var skybox = BABYLON.Mesh.CreateBox("skyBox", 300, scene);
     var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
