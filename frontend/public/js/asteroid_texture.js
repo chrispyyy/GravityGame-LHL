@@ -3,26 +3,23 @@ var BABYLON = require('babylonjs');
 module.exports = function(scene, asteroid){
 
   asteroidMaterial = new BABYLON.StandardMaterial("asteroid_texture", scene);
-
-  // asteroidMaterial.diffuseTexture = new BABYLON.Texture("./public/images/plutomap2k.jpg", scene);
-
-  // asteroidMaterial.bumpTexture = new BABYLON.Texture("./public/images/plutonormalmap.png", scene);
-
+ 
   asteroidMaterial.specularColor = new BABYLON.Color3(0,0,0);
   
 // ==================
 
 // The size of the asteroid
-var sizeBranch = 15;
+var sizeBranch = 5;
 
     // The color of the asteroid using the randomColor library
-var branchColor = randomColor({hue: 'orange', luminosity: 'darl', format: 'rgbArray'});
+var branchColor = randomColor({hue: 'yellow', luminosity: 'light', format: 'rgbArray'});
 asteroidMaterial = new BABYLON.StandardMaterial("mat", scene);
 asteroidMaterial.diffuseColor = BABYLON.Color3.FromInts(branchColor[0],branchColor[1],branchColor[2]);
-asteroidMaterial.specularColor = BABYLON.Color3.Black();
+asteroidMaterial.diffuseTexture = new BABYLON.Texture("./public/images/asteroidbump.jpg", scene);
+asteroidMaterial.specularColor = new BABYLON.Color3(0,0,0);
 
 // Sphere shape creation
-var vertexData = BABYLON.VertexData.CreateSphere(2,sizeBranch);
+var vertexData = BABYLON.VertexData.CreateSphere(1,sizeBranch);
 // Apply the shape to our asteroid
 vertexData.applyToMesh(asteroid.canvasObject, false);
 
@@ -53,14 +50,14 @@ for (var i=0; i<numberOfPoints; i++) {
 // For each vertex at a given position, move it with a random value
 map.forEach(function(array) {
 
-    var index, min = -1.5, max = 1.5;
+    var index, min = -1.5, max = 2;
       var randomNumber = function (min, max) {
-    if (min == max) {
-        return (min);
-    }
-    var random = Math.random();
-    return ((random * (max - min)) + min);
-};
+        if (min == max) {
+            return (min);
+        }
+        var random = Math.random();
+        return ((random * (max - min)) + min);
+      };
     var rx = randomNumber(min,max);
     var ry = randomNumber(min,max);
     var rz = randomNumber(min,max);
@@ -72,10 +69,10 @@ map.forEach(function(array) {
         positions[i+2] += rz;
     }
 });
-
+ //asteroid.canvasObject.convertToFlatShadedMesh();
 
 //===========
-
+  
   asteroid.canvasObject.material = asteroidMaterial;
   asteroid.canvasObject.rotation = new BABYLON.Vector3(2,2,0);
   var animateAsteroid = new BABYLON.Animation("animateAsteroid", "rotation.z", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE);
@@ -88,8 +85,8 @@ map.forEach(function(array) {
   });  
 
   keys.push({
-    frame: 120,
-    value: 4
+    frame: 100,
+    value: 2
   });
 
   animateAsteroid.setKeys(keys);

@@ -28,7 +28,7 @@ module.exports = function createScene(engine, canvas){
 
   canvasObjects[0] = new GameObject('planet', 12, 30, scene, 25, 1, 25);
 
-  canvasObjects[1] = new GameObject('asteroid', 4, 8, scene, 10, 1, 10);
+  canvasObjects[1] = new GameObject('asteroid', 2, 4, scene, 10, 1, 10);
 
   canvasObjects[1] = asteroidTexture(scene, canvasObjects[1]);
 
