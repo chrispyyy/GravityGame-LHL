@@ -1,5 +1,6 @@
 var BABYLON = require('babylonjs');
 GameObject = require('./game_object.js');
+newShip = require('./create_ship.js');
 var clickEvents = require('./click_events.js');
 var generateStars = require('./stars.js');
 var generateGround = require('./ground.js');
@@ -17,18 +18,15 @@ module.exports = function createScene(engine, canvas){
   // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
   var light = generateLight(scene);
 
-  // var stars = generateStars(scene);
-
   var ground = generateGround(scene);
 
-  var ship = new GameObject('ship', 2, .5, scene, -20, 1, -20);
+  var ship = new newShip("ship", 1, 0.5, scene, -20, 1, -20);
 
   var canvasObjects = [];
 
   canvasObjects[0] = new GameObject('planet', 12, 30, scene, 25, 1, 25);
 
   canvasObjects[0] = plutoTexture(scene, canvasObjects[0])
-
   generateParticleTrail(scene, ship.canvasObject);
 
   clickEvents.clickEvent(scene, ship, canvasObjects, camera, canvas);

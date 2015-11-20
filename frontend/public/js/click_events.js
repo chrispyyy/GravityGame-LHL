@@ -8,6 +8,79 @@ module.exports.clickEvent = function(scene, ship, canvasObjects, camera, canvas)
   var eventStarted = null;
   var newBlackhole  = null;
 
+
+  function myShip (name, size, mass, scene, x, y, z) {
+    var bodyMaterial = new BABYLON.StandardMaterial("normal", scene);
+    var wingMaterial = new BABYLON.StandardMaterial("normal", scene);
+    wingMaterial.diffuseColor = new BABYLON.Color3(Math.random(), Math.random(), Math.random());
+    bodyMaterial.diffuseColor = new BABYLON.Color3(Math.random(), Math.random(), Math.random());
+    var leftWing = BABYLON.Mesh.CreateCylinder("leftWing", 7, 0.1, 1, 12, false, scene);
+    leftWing.position = new BABYLON.Vector3(x - 6, y, z- 3);
+    leftWing.material = wingMaterial;
+    var leftWing2 = BABYLON.Mesh.CreateCylinder("leftWing2", 7, 0.1, 1, 12, false, scene);
+    leftWing2.position = new BABYLON.Vector3(x - 6, y, z +3);
+    leftWing2.material = wingMaterial;
+    var rightWing = BABYLON.Mesh.CreateCylinder("rightWing", 7, 0.1, 1, 12, false, scene);
+    rightWing.position = new BABYLON.Vector3(x + 6, y, z - 3);
+    rightWing.material = wingMaterial;
+    var rightWing2 = BABYLON.Mesh.CreateCylinder("rightWing2", 7, 0.1, 1, 12, false, scene);
+    rightWing2.position = new BABYLON.Vector3(x + 6, y, z+3);
+    rightWing2.material = wingMaterial;
+    var wing1 = BABYLON.Mesh.CreateLines("lines", [
+      new BABYLON.Vector3(x + 6, y - 2, z - 3),
+      new BABYLON.Vector3(x - 6, y - 2, z + 3),
+      new BABYLON.Vector3(x - 6, y - 1.5, z + 3),
+      new BABYLON.Vector3(x + 6, y - 1.5, z - 3),
+      new BABYLON.Vector3(x + 6, y - 1, z - 3),
+      new BABYLON.Vector3(x - 6, y - 1, z + 3),
+      new BABYLON.Vector3(x - 6, y - 0.5, z + 3),
+      new BABYLON.Vector3(x + 6, y - 0.5, z - 3),
+      new BABYLON.Vector3(x + 6, y, z - 3),
+      new BABYLON.Vector3(x - 6, y, z + 3),
+      new BABYLON.Vector3(x - 6, y + 0.5, z + 3),
+      new BABYLON.Vector3(x + 6, y + 0.5, z - 3),
+      new BABYLON.Vector3(x + 6, y +1, z - 3),
+      new BABYLON.Vector3(x - 6, y+1, z + 3),
+      new BABYLON.Vector3(x - 6, y+1.5, z + 3),
+      new BABYLON.Vector3(x + 6, y+1.5, z - 3),
+      new BABYLON.Vector3(x + 6, y+2, z - 3),
+      new BABYLON.Vector3(x - 6, y + 2, z + 3)
+    ], scene);
+    wing1.color = new BABYLON.Color3(Math.random(), Math.random(), Math.random());
+    var wing2 = BABYLON.Mesh.CreateLines("lines2", [
+      new BABYLON.Vector3(x - 6, y -2, z - 3),
+      new BABYLON.Vector3(x + 6, y-2, z + 3),
+      new BABYLON.Vector3(x + 6, y-1.5, z + 3),
+      new BABYLON.Vector3(x - 6, y-1.5, z - 3),
+      new BABYLON.Vector3(x - 6, y-1, z - 3),
+      new BABYLON.Vector3(x + 6, y-1, z + 3),
+      new BABYLON.Vector3(x + 6, y-0.5, z + 3),
+      new BABYLON.Vector3(x - 6, y-0.5, z - 3),
+      new BABYLON.Vector3(x - 6, y, z - 3),
+      new BABYLON.Vector3(x + 6, y, z + 3),
+      new BABYLON.Vector3(x + 6, y+0.5, z + 3),
+      new BABYLON.Vector3(x - 6, y+0.5, z - 3),
+      new BABYLON.Vector3(x - 6, y+1, z - 3),
+      new BABYLON.Vector3(x + 6, y+1, z + 3),
+      new BABYLON.Vector3(x + 6, y+1.5, z + 3),
+      new BABYLON.Vector3(x - 6, y+1.5, z - 3),
+      new BABYLON.Vector3(x - 6, y+2, z - 3),
+      new BABYLON.Vector3(x + 6, y+2, z + 3)
+    ], scene);
+    wing2.color = new BABYLON.Color3(Math.random(), Math.random(), Math.random());;
+    var shipBody = new BABYLON.Mesh.CreateCylinder("body", 12, 0.1, 3, 6, true, scene);
+    shipBody.position = new BABYLON.Vector3(x, y + 3, z);
+    shipBody.material = bodyMaterial;
+  }
+
+  myShip("ship", 4, 0, scene, ship.canvasObject.position.x, ship.canvasObject.position.y, ship.canvasObject.position.z);
+
+    // BABYLON.SceneLoader.ImportMesh("", '../public/images/spaceship/', 'spaceship.babylon', scene, function(newMeshes) {
+    //   var m = newMeshes[1];
+    //   m.scaling = new BABYLON.Vector3(0.005, 0.005, 0.005);
+    //   m.position = ship.canvasObject.position;
+    // });
+
   scene.onPointerDown = function (event, pickResult){
     isMouseDown = true;
     eventStarted = Date.now()
@@ -30,13 +103,13 @@ module.exports.clickEvent = function(scene, ship, canvasObjects, camera, canvas)
     camera.attachControl(canvas, true);
   }
 
+
+
   scene.registerBeforeRender(function()
   {  
-
     if (ship.canvasObject.intersectsPoint(canvasObjects[0].canvasObject.position, true)) {
       ship.material.emissiveColor = new BABYLON.Color3(0, 1, 0);
       PubSub.publish('COLLISION EVENT', 'collided')
-      console.log('won');
       
     }
 
