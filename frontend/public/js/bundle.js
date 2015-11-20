@@ -56,7 +56,7 @@
 	var BABYLON = __webpack_require__(2);
 	var createScene = __webpack_require__(3);
 	var createScene2 = __webpack_require__(14);
-	var createScene3 = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./create_scene3.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var createScene3 = __webpack_require__(15);
 	var checkLevel = __webpack_require__(5);
 	var PubSub = __webpack_require__(7)
 
@@ -78,13 +78,6 @@
 	      return scene = scenes[currentLevel](engine, canvas);
 	    } 
 	    if (data == 'collided with other stuffs') {
-	      setTimeout(function(){
-	        var div = document.createElement("div");
-	        div.setAttribute("id", "game_over");
-	        var img = document.createElement("img");
-	        img.setAttribute("src", "public/images/game_over.png");
-	        document.getElementById("placehere").appendChild(img);
-	      }, 5000)
 	      return scene = scenes[currentLevel](engine, canvas)
 	    }
 	  }
@@ -178,7 +171,7 @@
 	  var canvasObjects = [];
 
 	  canvasObjects[0] = new GameObject('planet', 12, 30, scene, 25, 1, 25);
-	  
+
 	  canvasObjects[0] = plutoTexture(scene, canvasObjects[0])
 
 	  generateParticleTrail(scene, ship.canvasObject);
@@ -264,7 +257,6 @@
 	      var zCoord = pickResult.pickedPoint.z;
 	      newBlackhole = new GameObject('canvasObject', 1, 5, scene, xCoord, 1, zCoord);
 	      newBlackhole = blackholeMaterial(scene, newBlackhole)
-	      console.log(newBlackhole.position)
 	      canvasObjects.push(newBlackhole);
 	      window.newBlackhole = newBlackhole;
 	    }
@@ -279,6 +271,7 @@
 
 	  scene.registerBeforeRender(function()
 	  {  
+
 	    if (ship.canvasObject.intersectsPoint(canvasObjects[0].canvasObject.position, true)) {
 	      ship.material.emissiveColor = new BABYLON.Color3(0, 1, 0);
 	      PubSub.publish('COLLISION EVENT', 'collided')
@@ -303,9 +296,8 @@
 	      if(newBlackhole)
 	      {
 	        var delta = Date.now() - eventStarted;
-	        newBlackhole.canvasObject.scaling.addInPlace(new BABYLON.Vector3(.06,.06,.06));
-	        newBlackhole.mass = newBlackhole.mass + (delta/8000);
-	        console.log(newBlackhole.mass)
+	        newBlackhole.canvasObject.scaling.addInPlace(new BABYLON.Vector3(.05,.05,.05));
+	        newBlackhole.mass = newBlackhole.mass + (delta/10000);
 	      }
 	    }
 	  });
@@ -737,6 +729,7 @@
 	var generateLight = __webpack_require__(11);
 	var generateParticleTrail = __webpack_require__(12);
 	var plutoTexture = __webpack_require__(13);
+	var asteroidTexture = __webpack_require__(14);
 
 	module.exports = function createScene(engine, canvas){
 	  // This creates a basic Babylon Scene object (non-mesh)
@@ -759,7 +752,9 @@
 
 	  canvasObjects[1] = new GameObject('obstacle', 4, 8, scene, 10, 1, 10);
 
-	  canvasObjects[0] = plutoTexture(scene, canvasObjects[0])
+	  canvasObjects[0] = plutoTexture(scene, canvasObjects[0]);
+
+	  canvasObjects[1] = asteroidTexture(scene, canvasObjects[1]);
 
 	  generateParticleTrail(scene, ship.canvasObject);
 
@@ -768,7 +763,64 @@
 	    var skybox = BABYLON.Mesh.CreateBox("skyBox", 300, scene);
 	    var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
 	    skyboxMaterial.backFaceCulling = false;
-	    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("./public/images/TropicalSunnyDay", scene);
+	    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("./public/images/spacelvl0", scene);
+	    skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+	    skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+	    skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+	    skyboxMaterial.disableLighting = true;
+	    skybox.material = skyboxMaterial;
+
+	  return scene;
+	}
+
+/***/ },
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var BABYLON = __webpack_require__(2);
+	GameObject = __webpack_require__(4);
+	var clickEvents = __webpack_require__(5);
+	var generateStars = __webpack_require__(8);
+	var generateGround = __webpack_require__(9);
+	var generateCamera = __webpack_require__(10);
+	var generateLight = __webpack_require__(11);
+	var generateParticleTrail = __webpack_require__(12);
+	var plutoTexture = __webpack_require__(13);
+
+	module.exports = function createScene(engine, canvas){
+	  
+	  var scene = new BABYLON.Scene(engine);
+	  scene.clearColor = BABYLON.Color3.Black();
+	  // This creates and positions a free camera (non-mesh)
+	  var camera = generateCamera(scene, canvas);
+	  // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
+	  var light = generateLight(scene);
+
+	  // var stars = generateStars(scene);
+
+	  var ground = generateGround(scene);
+
+	  var ship = new GameObject('ship', 2, .5, scene, -20, 1, -20);
+
+	  var canvasObjects = [];
+
+	    canvasObjects[0] = new GameObject('planet', 12, 30, scene, 25, 1, 25);
+	  
+
+	  canvasObjects[0] = plutoTexture(scene, canvasObjects[0])
+
+	  canvasObjects[1] = new GameObject('obstacle', 4, 5, scene, 10, 1, -6);
+	  canvasObjects[2] = new GameObject('obstacle', 4, 5, scene, 2, 1, 2);
+	  canvasObjects[3] = new GameObject('obstacle', 4, 5, scene, -6, 1, 10);
+
+	  generateParticleTrail(scene, ship.canvasObject);
+
+	  clickEvents.clickEvent(scene, ship, canvasObjects, camera, canvas);
+
+	    var skybox = BABYLON.Mesh.CreateBox("skyBox", 300, scene);
+	    var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
+	    skyboxMaterial.backFaceCulling = false;
+	    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("./public/images/spacelvl0", scene);
 	    skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
 	    skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
 	    skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);

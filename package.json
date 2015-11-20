@@ -1,0 +1,22 @@
+{
+  "name": "gravitygame-lhl",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "cd frontend && npm install",
+    "preinstall": "cd backend && npm install",
+    "start": "node backend/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chrispyyy/GravityGame-LHL.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chrispyyy/GravityGame-LHL/issues"
+  },
+  "homepage": "https://github.com/chrispyyy/GravityGame-LHL#readme"
+}
