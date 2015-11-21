@@ -5,11 +5,8 @@ module.exports = function(scene, blackHole) {
   material = new BABYLON.StandardMaterial("black", scene);
   material.diffuseColor = new BABYLON.Color3(0, 0, 0);
   material.reflectionTexture = new BABYLON.CubeTexture("./public/images/spacelvl0", scene);
+  material.bumpTexture = new BABYLON.Texture("./public/images/blackhole_bump.jpg", scene);
   material.reflectionTexture.level = 1;
-
-  // material.reflectionTexture = new BABYLON.MirrorTexture("mirror", 512, scene, true);
-  // material.reflectionTexture.mirrorPlane = new BABYLON.Plane(0, -1.0, 0, -10.0);
-  // material.reflectionTexture.renderList = canvasObjects;
 
   material.specularPower = 600;
   material.emissiveColor = new BABYLON.Color3(0.05, 0.05, 0.05);
