@@ -74,7 +74,7 @@ map.forEach(function(array) {
 //===========
   
   asteroid.canvasObject.material = asteroidMaterial;
-  asteroid.canvasObject.rotation = new BABYLON.Vector3(2,2,0);
+  asteroid.canvasObject.rotation = new BABYLON.Vector3(Math.random() * 10,Math.random() * 10,Math.random() * 10);
   var animateAsteroid = new BABYLON.Animation("animateAsteroid", "rotation.z", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE);
 
   var keys = []
@@ -85,7 +85,7 @@ map.forEach(function(array) {
   });  
 
   keys.push({
-    frame: 100,
+    frame: (50 + Math.random() * 100) - 50,
     value: 2
   });
 

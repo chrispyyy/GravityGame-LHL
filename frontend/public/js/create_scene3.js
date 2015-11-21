@@ -7,6 +7,8 @@ var generateCamera = require('./camera.js');
 var generateLight = require('./light.js');
 var generateParticleTrail = require('./create_particle_trail.js');
 var plutoTexture = require('./pluto_texture.js');
+var iceworldTexture = require('./iceworld_texture.js');
+var asteroidTexture = require('./asteroid_texture.js');
 
 module.exports = function createScene(engine, canvas){
   
@@ -28,11 +30,14 @@ module.exports = function createScene(engine, canvas){
     canvasObjects[0] = new GameObject('planet', 12, 30, scene, 25, 1, 25);
   
 
-  canvasObjects[0] = plutoTexture(scene, canvasObjects[0])
+  canvasObjects[0] = iceworldTexture(scene, canvasObjects[0])
 
-  canvasObjects[1] = new GameObject('obstacle', 4, 5, scene, 10, 1, -6);
-  canvasObjects[2] = new GameObject('obstacle', 4, 5, scene, 2, 1, 2);
-  canvasObjects[3] = new GameObject('obstacle', 4, 5, scene, -6, 1, 10);
+  canvasObjects[1] = new GameObject('asteroid', 4, 5, scene, 10, 1, -6);
+  canvasObjects[1] = asteroidTexture(scene, canvasObjects[1]);
+  canvasObjects[2] = new GameObject('asteroid', 4, 5, scene, 2, 1, 2);
+  canvasObjects[2] = asteroidTexture(scene, canvasObjects[2]);
+  canvasObjects[3] = new GameObject('asteroid', 4, 5, scene, -6, 1, 10);
+  canvasObjects[3] = asteroidTexture(scene, canvasObjects[3]);
 
   generateParticleTrail(scene, ship.canvasObject);
 
