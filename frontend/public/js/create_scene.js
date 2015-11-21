@@ -11,6 +11,8 @@ var jupiterTexture = require('./jupiter_texture.js');
 var earthTexture = require('./earth_texture.js');
 var iceworldTexture = require('./iceworld_texture.js');
 var venusTexture = require('./venus_texture.js');
+var sunTexture = require('./sun_texture.js');
+
 
 module.exports = function createScene(engine, canvas){
   // This creates a basic Babylon Scene object (non-mesh)
@@ -31,7 +33,7 @@ module.exports = function createScene(engine, canvas){
 
   canvasObjects[0] = new GameObject('planet', 12, 30, scene, 25, 1, 25);
 
-  canvasObjects[0] = venusTexture(scene, canvasObjects[0])
+  canvasObjects[0] = sunTexture(scene, canvasObjects[0])
 
   generateParticleTrail(scene, ship.canvasObject);
 
