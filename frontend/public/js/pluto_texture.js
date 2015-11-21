@@ -28,7 +28,7 @@ module.exports = function(scene, planet){
 
   animatePlanet.setKeys(keys);
   planet.canvasObject.animations.push(animatePlanet);
-  scene.beginAnimation(planet.canvasObject, 0, 120, true);
+  scene.beginAnimation(planet.canvasObject, 0, 50, true);
 
   return planet
 }

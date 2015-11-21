@@ -8,7 +8,8 @@ var level3 = require('./level_3.js')
 var PubSub = require('pubsub-js');
 var $ = require("jquery");
 
-window.addEventListener('DOMContentLoaded', function(){
+window.addEventListener('DOMContentLoaded', function()
+{
   // get the canvas DOM element
   var canvas = document.getElementById('renderCanvas');
 
@@ -19,19 +20,33 @@ window.addEventListener('DOMContentLoaded', function(){
     {scene: level1, image: level1.image}, 
     {scene: level2, image: level2.image},
     {scene: level3, image: level3.image},
-    ];
+  ];
 
   var currentLevel = 0;
+
+  var scene = null;
+
+  engine.runRenderLoop(function()
+  {
+    if(scene !== null)
+    {
+      scene.render();
+      document.title = "FPS: " + engine.getFps().toFixed().toString();
+    }
+  });
+
+  // var serializedScene1 = BABYLON.SceneSerializer.Serialize(createScene(engine, canvas, scenes[0].scene));
+  // var serializedScene2 = BABYLON.SceneSerializer.Serialize(createScene(engine, canvas, scenes[1].scene));
+  // var serializedScene3 = BABYLON.SceneSerializer.Serialize(createScene(engine, canvas, scenes[2].scene));
+
 
   $('<button>Start Game</button>').appendTo('#next-level')
   $('#next-level img').attr('src', scenes[currentLevel].image)
 
-  $('#next-level').on('click', 'button', function(){
-    var scene = createScene(engine, canvas, scenes[currentLevel].scene);
+  $('#next-level').on('click', 'button', function() {
+    scene = createScene(engine, canvas, scenes[currentLevel].scene);
+
     $('#next-level').fadeOut();
-    engine.runRenderLoop(function(){
-      scene.render();
-    });
   });
 
   var collisionSubscriber = function(msg, data){
@@ -41,28 +56,22 @@ window.addEventListener('DOMContentLoaded', function(){
       $('#next-level img').attr('src', scenes[currentLevel].image)
       $('#next-level').fadeIn('slow');
       $('#next-level').on('click', 'button', function(){
-        var scene = createScene(engine, canvas, scenes[currentLevel].scene);
+        scene = createScene(engine, canvas, scenes[currentLevel].scene);
         $('#next-level').fadeOut('slow');
-        engine.runRenderLoop(function(){
-          scene.render();
-        });
       });
     }
     if (data == 'collided with other stuffs') {
       $('#game-over').slideDown(1500).delay(1000);
       $('#game-over').fadeOut('slow');
       setTimeout(function(){
-        var scene = createScene(engine, canvas, scenes[currentLevel].scene);
-        engine.runRenderLoop(function(){
-          scene.render();
-        });
+        scene = createScene(engine, canvas, scenes[currentLevel].scene);
       }, 2500);
     }
   }
 
-  var token = PubSub.subscribe( 'COLLISION EVENT', collisionSubscriber );
+  var token = PubSub.subscribe('COLLISION EVENT', collisionSubscriber);
   
-  collisionSubscriber
+  // collisionSubscriber
 
   // the canvas/window resize event handler
   window.addEventListener('resize', function(){

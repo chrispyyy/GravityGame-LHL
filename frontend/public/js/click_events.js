@@ -6,9 +6,13 @@ module.exports.clickEvent = function(scene, ship, canvasObjects, camera, canvas,
 
   var isMouseDown = false;
   var eventStarted = null;
-  var newBlackhole  = null;
+  var newBlackhole = null;
 
-  scene.onPointerDown = function (event, pickResult){
+  var running = true;
+
+  scene.onPointerDown = function (event, pickResult)
+  {
+    if(!running) { return; }
     isMouseDown = true;
     eventStarted = Date.now()
     camera.detachControl(canvas, true);
@@ -16,51 +20,57 @@ module.exports.clickEvent = function(scene, ship, canvasObjects, camera, canvas,
     if (pickResult.hit) {
       var xCoord = pickResult.pickedPoint.x;
       var zCoord = pickResult.pickedPoint.z;
-      newBlackhole = new GameObject('canvasObject', 1, 5, scene, xCoord, 1, zCoord);
-      newBlackhole = blackholeMaterial(scene, newBlackhole)
+      newBlackhole = blackholeMaterial(scene, new GameObject('canvasObject', 1, 5, scene, xCoord, 1, zCoord));
       canvasObjects.push(newBlackhole);
-      window.newBlackhole = newBlackhole;
+      // window.newBlackhole = newBlackhole;
     }
   };
 
   scene.onPointerUp = function(event)
   {
+    if(!running) { return; }
     isMouseDown = false;
     newBlackhole = null;
     camera.attachControl(canvas, true);
   }
 
   scene.registerBeforeRender(function()
-  {  
+  {
+    if(!running) { return; }
 
-    if (ship.canvasObject.intersectsPoint(canvasObjects[0].canvasObject.position, true)) {
-      engine.stopRenderLoop();
-      ship.material.emissiveColor = new BABYLON.Color3(0, 1, 0);
-      PubSub.publish('COLLISION EVENT', 'collided')
-      console.log('won'); 
-    }
+    //Collision Detection
 
-    for(var i = 1; i < canvasObjects.length; i ++){
-      if (ship.canvasObject.intersectsPoint(canvasObjects[i].canvasObject.position, true)) {
-        engine.stopRenderLoop();
-        ship.material.emissiveColor = new BABYLON.Color3(1, 0, 0);
-        PubSub.publish('COLLISION EVENT', 'collided with other stuffs')
-      }
-    }
-
-    var forces = new BABYLON.Vector3(0, 0, 0);
-    canvasObjects.forEach(function(canvasObject){
-      forces = forces.add(ship.calculateForce(canvasObject));
-    });
-    ship.position.addInPlace(forces);
-    if(isMouseDown)
+    canvasObjects.forEach(function(obj)
     {
-      if(newBlackhole)
+      ship.applyForce(obj);
+
+      if(ship.canvasObject.intersectsPoint(obj.canvasObject.position, true))
       {
-        var delta = Date.now() - eventStarted;
-        newBlackhole.canvasObject.scaling.addInPlace(new BABYLON.Vector3(.05,.05,.05));
-        newBlackhole.mass = newBlackhole.mass + (delta/10000);
+        running = false;
+        var payload = "";
+        var color;
+        if(obj.canvasObject.name === "planet")
+        {
+          // PubSub.publish("collision:planet", { target: obj });
+          payload = "collided";
+          color = new BABYLON.Color3(0,1,0);
+        }
+        else
+        {
+          // PubSub.publish("collision:asteroid", { target: obj });
+          payload = "collided with other stuffs";
+          color = new BABYLON.Color3(1,0,0);
+        }
+        ship.material.emissiveColor = color;
+        PubSub.publish('COLLISION EVENT', payload);
       }
+    });
+
+    if(isMouseDown && newBlackhole)
+    {
+      var delta = Date.now() - eventStarted;
+      newBlackhole.canvasObject.scaling.addInPlace(new BABYLON.Vector3(.05,.05,.05));
+      newBlackhole.mass = newBlackhole.mass + (delta/10000);
     }
   });
 }
