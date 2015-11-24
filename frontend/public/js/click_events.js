@@ -3,7 +3,7 @@ var blackholeMaterial = require('./blackhole_material.js');
 var PubSub = require('pubsub-js');
 var generateExplosion = require('./create_explosions.js');
 
-module.exports.clickEvent = function(scene, ship, canvasObjects, camera, canvas, engine){ 
+module.exports.clickEvent = function(scene, ship, canvasObjects, camera, followCamera, canvas, engine){ 
 
   var isMouseDown = false;
   var eventStarted = null;
@@ -37,23 +37,20 @@ module.exports.clickEvent = function(scene, ship, canvasObjects, camera, canvas,
 
   var spaceShip = new BABYLON.Sound("Music", "./public/sounds/shortinterstellar.mp3", scene, null, { loop: true, autoplay: true });
   
-  var cameraTracker = false
-  
   scene.registerBeforeRender(function()
   {
     if(!running) { return; }
 
     var cameraSubscriber = function(msg, data){
       if (data == 'tracker') {
-        cameraTracker = true;
+        scene.activeCamera = followCamera;
+      }
+      else if (data == 'static') {
+        scene.activeCamera = camera;
       }
     }
 
-    if(cameraTracker){
-      camera.setTarget(ship.canvasObject.position);
-    }
-
-    var token = PubSub.subscribe('CAMERA EVENT', cameraSubscriber);
+    var token = PubSub.subscribe('CAMERA BUTTON', cameraSubscriber);
 
     canvasObjects.forEach(function(obj)
     {
