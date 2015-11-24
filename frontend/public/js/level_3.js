@@ -3,7 +3,7 @@ var planetTexture = require('./planet_texture.js');
 var asteroidTexture = require('./asteroid_texture.js');
 
 module.exports.ship = function(scene){
-  var spaceship = new Ship('ship', 2, .5, scene, -20, 1, -20);
+  var spaceship = new Ship('ship', 2, 1, scene, -20, 1, -20);
   return spaceship;
 }
 
@@ -15,13 +15,13 @@ module.exports.canvasObjects = function(scene){
 
   canvasObjects[0] = planetTexture(scene, canvasObjects[0], "./public/images/iceworld.jpg", "./public/images/icebump.png");
 
-
-  canvasObjects[1] = new GameObject('asteroid', 4, 5, scene, 15, 1, -15);
-  canvasObjects[2] = new GameObject('asteroid', 4, 5, scene, -15, 1, 15)
+  canvasObjects[1] = new GameObject('asteroid', 4, 5, scene, 20, 1, -20);
+  canvasObjects[2] = new GameObject('asteroid', 4, 5, scene, -20, 1, 20)
   canvasObjects[3] = new GameObject('asteroid', 4, 5, scene, 4, 1, 4);
-  canvasObjects[1] = asteroidTexture(scene, canvasObjects[1]);
-  canvasObjects[2] = asteroidTexture(scene, canvasObjects[2]);
-  canvasObjects[3] = asteroidTexture(scene, canvasObjects[3]);
+
+  for (var i = 1; i < canvasObjects.length; i++) {
+    canvasObjects[i] = asteroidTexture(scene, canvasObjects[i]);
+  }
 
   return canvasObjects
 }

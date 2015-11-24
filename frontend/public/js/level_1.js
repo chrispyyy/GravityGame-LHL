@@ -2,7 +2,7 @@ var BABYLON = require('babylonjs');
 var planetTexture = require('./planet_texture.js');
 
 module.exports.ship = function(scene) {
-  var spaceship = new Ship('ship', 2, .5, scene, -20, 1, -20);
+  var spaceship = new Ship('ship', 2, 1, scene, -20, 1, -20);
   return spaceship;
 }
 
