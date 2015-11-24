@@ -2,12 +2,12 @@ var BABYLON = require('babylonjs');
 var plutoTexture = require('./pluto_texture.js');
 
 module.exports.ship = function(scene) {
-  return new Ship('ship', 2, .5, scene, -20, 1, -20);
+  return new Ship('ship', 2, .5, scene, -50, 1, -30);
 }
 
 module.exports.canvasObjects = function(scene) {
   return [
-    plutoTexture(scene, new GameObject('planet', 12, 30, scene, 25, 1, 25))
+    plutoTexture(scene, new GameObject('planet', 12, 30, scene, 40, 1, 25))
   ];
 }
 
