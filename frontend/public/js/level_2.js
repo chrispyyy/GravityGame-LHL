@@ -3,8 +3,7 @@ var plutoTexture = require('./pluto_texture.js');
 var asteroidTexture = require('./asteroid_texture.js');
 
 module.exports.ship = function(scene){
-  var ship = new GameObject('ship', 2, .5, scene, -20, 1, -20);
-  return ship
+  return new Ship('ship', 2, .5, scene, -20, 1, -20);
 }
 
 module.exports.canvasObjects = function(scene){

@@ -110,10 +110,7 @@
 	      });
 	    }
 	    if (data == 'collided with other stuffs') {
-	      setTimeout(function() {
-	        $('#game-over').slideDown(1500).delay(1000);
-	      }, 1000);
-	      
+	      $('#game-over').slideDown(1500).delay(1000);
 	      $('#game-over').fadeOut('slow');
 	      setTimeout(function(){
 	        scene = createScene(engine, canvas, scenes[currentLevel].scene);

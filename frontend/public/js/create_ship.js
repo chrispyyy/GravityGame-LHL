@@ -5,38 +5,38 @@ function Ship (name, size, mass, scene, x, y, z){
   var blankmesh = new BABYLON.Mesh("blank", scene);
 
   var positions = [
-    -6, -3, -3,    
-    -6, -3, 3, 
-    6, -3, -3, 
-    6, -3, 3,  
-    -6, 3, -3, 
-    6, 3, -3,  
-    6, 3, 3,   
-    -6, 3, 3,  
-    -3, 1.5, 3,
-    3, 1.5, 3,
-    -3, -1.5, 3,
-    3, -1.5, 3,
-    -3, 1.5, -3,
-    3, 1.5, -3,
-    -3, -1.5, -3,
-    3, -1.5, -3,
-    -7, -4, -3, 
-    -7, 4, -3,
-    -7, -3, -3,
-    -7, 3, -3,
-    -6, -4, -3,
-    -6, 4, -3,
-    7, 4, -3,
-    7, 3, -3,
-    6, 4, -3,
-    7, -4, -3,
-    7, -3, -3,
-    6, -4, -3,
-    -6, -3, 12,
-    -6, 3, 12,
-    6, -3, 12,
-    6, 3, 12
+    -2, -1, -1,    
+    -2, -1, 1, 
+    2, -1, -1, 
+    2, -1, 1,  
+    -2, 1, -1, 
+    2, 1, -1,  
+    2, 1, 1,   
+    -2, 1, 1,  
+    -1, 0.5, 1,
+    1, 0.5, 1,
+    -1, -0.5, 1,
+    1, -0.5, 1,
+    -1, 0.5, -1,
+    1, 0.5, -1,
+    -1, -0.5, -1,
+    1, -0.5, -1,
+    -2.33, -1.33, -1, 
+    -2.33, 1.33, -1,
+    -2.33, -1, -1,
+    -2.33, 1, -1,
+    -2, -1.33, -1,
+    -2, 1.33, -1,
+    2.33, 1.33, -1,
+    2.33, 1, -1,
+    2, 1.33, -1,
+    2.33, -1.33, -1,
+    2.33, -1, -1,
+    2, -1.33, -1,
+    -2, -1, 4,
+    -2, 1, 4,
+    2, -1, 4,
+    2, 1, 4,
   ];
 
   var indices = [];
@@ -114,7 +114,7 @@ function Ship (name, size, mass, scene, x, y, z){
     1, 1, 1,
     1, 1, 1,
     1, 1, 1,
-    1, 1, 1
+    1, 1, 1,
   ];
 
     // colors per vertex
@@ -235,25 +235,7 @@ function Ship (name, size, mass, scene, x, y, z){
   this.canvasObject.material.diffuseColor = new BABYLON.Color3(1, 0, 0);
   this.mass = mass; 
   this.size = size;
-  this.canvasObject.scaling = new BABYLON.Vector3(0.5, 0.5, 0.5);
   this.position = this.canvasObject.position = new BABYLON.Vector3(x, y, z);
-  // var animateShip = new BABYLON.Animation("animateShip", "rotation.z", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE);
-
-  // var keys = []
-
-  // keys.push({
-  //   frame: 0,
-  //   value: 0
-  // });  
-
-  // keys.push({
-  //   frame: 120,
-  //   value: 4
-  // });
-
-  // animateShip.setKeys(keys);
-  // this.canvasObject.animations.push(animateShip);
-  // scene.beginAnimation(this.canvasObject, 0, 50, true);
 }
 Ship.prototype.calculateForce = function calculateForce(magnetObject)
 {
