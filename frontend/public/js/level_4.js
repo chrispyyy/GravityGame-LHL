@@ -1,6 +1,6 @@
 var BABYLON = require('babylonjs');
-//var plutoTexture = require('./pluto_texture.js');
 var venusTexture = require('./venus_texture.js');
+var asteroidTexture = require('./asteroid_texture.js');
 
 module.exports.ship = function(scene){
   var spaceship = new Ship('ship', 2, .5, scene, -20, 1, -20);
