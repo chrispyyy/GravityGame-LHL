@@ -22,6 +22,7 @@ window.addEventListener('DOMContentLoaded', function()
     {scene: level3, image: level3.image},
   ];
 
+  
   var currentLevel = 0;
 
   var scene = null;
@@ -60,7 +61,7 @@ window.addEventListener('DOMContentLoaded', function()
       $('#game-over').fadeOut('slow');
       setTimeout(function(){
         scene = createScene(engine, canvas, scenes[currentLevel].scene);
-      }, 2500);
+      }, 1500);
     }
   }
 

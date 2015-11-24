@@ -14,9 +14,9 @@ module.exports.canvasObjects = function(scene){
 
   canvasObjects[0] = plutoTexture(scene, canvasObjects[0]);
 
-  canvasObjects[1] = new GameObject('obstacle', 4, 5, scene, 10, 1, -6);
-  canvasObjects[2] = new GameObject('obstacle', 4, 5, scene, 2, 1, 2);
-  canvasObjects[3] = new GameObject('obstacle', 4, 5, scene, -6, 1, 10)
+  canvasObjects[1] = new GameObject('asteroid', 4, 5, scene, 10, 1, -6);
+  canvasObjects[2] = new GameObject('asteroid', 4, 5, scene, 2, 1, 2);
+  canvasObjects[3] = new GameObject('asteroid', 4, 5, scene, -6, 1, 10)
 
   return canvasObjects
 }
