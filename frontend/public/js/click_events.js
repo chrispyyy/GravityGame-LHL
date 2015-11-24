@@ -21,7 +21,7 @@ module.exports.clickEvent = function(scene, ship, canvasObjects, camera, canvas,
     if (pickResult.hit) {
       var xCoord = pickResult.pickedPoint.x;
       var zCoord = pickResult.pickedPoint.z;
-      newBlackhole = blackholeMaterial(scene, new GameObject('canvasObject', 1, 5, scene, xCoord, 1, zCoord));
+      newBlackhole = blackholeMaterial(scene, new GameObject('blackhole', 1, 5, scene, xCoord, 1, zCoord));
       canvasObjects.push(newBlackhole);
       // window.newBlackhole = newBlackhole;
     }
@@ -63,7 +63,7 @@ module.exports.clickEvent = function(scene, ship, canvasObjects, camera, canvas,
         }
         else if (obj.canvasObject.name === "asteroid")
         {
-          PubSub.publish("collision:asteroid", { target: obj });
+          // PubSub.publish("collision:asteroid", { target: obj });
           spaceShip.stop();
           //backgroundmusic.stop();
           ship.magnitude = 0;
@@ -72,7 +72,7 @@ module.exports.clickEvent = function(scene, ship, canvasObjects, camera, canvas,
           payload = "collided with other stuffs";
           color = new BABYLON.Color3(1,0,0);
         }
-        else if (obj.canvasObject.name === "canvasObject")
+        else if (obj.canvasObject.name === "blackhole")
         {
           // PubSub.publish("collision:asteroid", { target: obj });
           spaceShip.stop();
