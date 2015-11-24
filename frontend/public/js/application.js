@@ -67,8 +67,9 @@ window.addEventListener('DOMContentLoaded', function()
 
   var token = PubSub.subscribe('COLLISION EVENT', collisionSubscriber);
   
-  // collisionSubscriber
-
+  $('#camera-button').on('click', function (){
+    PubSub.publish('CAMERA EVENT', 'tracker');
+  });
   // the canvas/window resize event handler
   window.addEventListener('resize', function(){
     engine.resize();

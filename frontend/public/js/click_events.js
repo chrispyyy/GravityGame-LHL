@@ -34,15 +34,27 @@ module.exports.clickEvent = function(scene, ship, canvasObjects, camera, canvas,
     newBlackhole = null;
     camera.attachControl(canvas, true);
   }
-  
+
   var spaceShip = new BABYLON.Sound("Music", "./public/sounds/shortinterstellar.mp3", scene, null, { loop: true, autoplay: true });
+  
+  var cameraTracker = false
   
   scene.registerBeforeRender(function()
   {
     if(!running) { return; }
 
-    //Collision Detection
-  
+    var cameraSubscriber = function(msg, data){
+      if (data == 'tracker') {
+        cameraTracker = true;
+      }
+    }
+
+    if(cameraTracker){
+      camera.setTarget(ship.canvasObject.position);
+    }
+
+    var token = PubSub.subscribe('CAMERA EVENT', cameraSubscriber);
+
     canvasObjects.forEach(function(obj)
     {
       ship.applyForce(obj);
@@ -63,7 +75,7 @@ module.exports.clickEvent = function(scene, ship, canvasObjects, camera, canvas,
         }
         else if (obj.canvasObject.name === "asteroid")
         {
-          PubSub.publish("collision:asteroid", { target: obj });
+          // PubSub.publish("collision:asteroid", { target: obj });
           spaceShip.stop();
           //backgroundmusic.stop();
           ship.magnitude = 0;
