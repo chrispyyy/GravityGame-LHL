@@ -10,7 +10,7 @@ module.exports.ship = function(scene){
 module.exports.canvasObjects = function(scene){
   var canvasObjects = [];
   canvasObjects[0] = new GameObject('planet', 12, 30, scene, 40, 1, 25);
-  canvasObjects[1] = new GameObject('asteroid', 4, 8, scene, 10, 1, 10);
+  canvasObjects[1] = new GameObject('asteroid', 4, 8, scene, 5, 1, 2.5);
   canvasObjects[1] = asteroidTexture(scene, canvasObjects[1]);
   canvasObjects[0] = planetTexture(scene, canvasObjects[0], "./public/images/plutomap2k.jpg", "./public/images/plutonormalmap.png");
   return canvasObjects
