@@ -22,6 +22,7 @@ window.addEventListener('DOMContentLoaded', function()
     {scene: level3, image: level3.image},
   ];
 
+  
   var currentLevel = 0;
 
   var scene = null;
@@ -61,11 +62,14 @@ window.addEventListener('DOMContentLoaded', function()
       });
     }
     if (data == 'collided with other stuffs') {
-      $('#game-over').slideDown(1500).delay(1000);
+      setTimeout(function() {
+        $('#game-over').slideDown(1500).delay(1000);
+      }, 1000);
+      
       $('#game-over').fadeOut('slow');
       setTimeout(function(){
         scene = createScene(engine, canvas, scenes[currentLevel].scene);
-      }, 2500);
+      }, 1500);
     }
   }
 

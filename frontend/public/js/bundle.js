@@ -55,13 +55,14 @@
 	(function(){console.log('sup');
 	var BABYLON = __webpack_require__(2);
 	var createScene = __webpack_require__(3);
-	var level1 = __webpack_require__(13)
-	var level2 = __webpack_require__(15)
-	var level3 = __webpack_require__(16)
+	var level1 = __webpack_require__(12)
+	var level2 = __webpack_require__(14)
+	var level3 = __webpack_require__(15)
 	var PubSub = __webpack_require__(7);
-	var $ = __webpack_require__(17);
+	var $ = __webpack_require__(16);
 
-	window.addEventListener('DOMContentLoaded', function(){
+	window.addEventListener('DOMContentLoaded', function()
+	{
 	  // get the canvas DOM element
 	  var canvas = document.getElementById('renderCanvas');
 
@@ -72,19 +73,33 @@
 	    {scene: level1, image: level1.image}, 
 	    {scene: level2, image: level2.image},
 	    {scene: level3, image: level3.image},
-	    ];
+	  ];
 
 	  var currentLevel = 0;
+
+	  var scene = null;
+
+	  engine.runRenderLoop(function()
+	  {
+	    if(scene !== null)
+	    {
+	      scene.render();
+	      document.title = "FPS: " + engine.getFps().toFixed().toString();
+	    }
+	  });
+
+	  // var serializedScene1 = BABYLON.SceneSerializer.Serialize(createScene(engine, canvas, scenes[0].scene));
+	  // var serializedScene2 = BABYLON.SceneSerializer.Serialize(createScene(engine, canvas, scenes[1].scene));
+	  // var serializedScene3 = BABYLON.SceneSerializer.Serialize(createScene(engine, canvas, scenes[2].scene));
+
 
 	  $('<button>Start Game</button>').appendTo('#next-level')
 	  $('#next-level img').attr('src', scenes[currentLevel].image)
 
-	  $('#next-level').on('click', 'button', function(){
-	    var scene = createScene(engine, canvas, scenes[currentLevel].scene);
+	  $('#next-level').on('click', 'button', function() {
+	    scene = createScene(engine, canvas, scenes[currentLevel].scene);
+
 	    $('#next-level').fadeOut();
-	    engine.runRenderLoop(function(){
-	      scene.render();
-	    });
 	  });
 
 	  var collisionSubscriber = function(msg, data){
@@ -94,28 +109,22 @@
 	      $('#next-level img').attr('src', scenes[currentLevel].image)
 	      $('#next-level').fadeIn('slow');
 	      $('#next-level').on('click', 'button', function(){
-	        var scene = createScene(engine, canvas, scenes[currentLevel].scene);
+	        scene = createScene(engine, canvas, scenes[currentLevel].scene);
 	        $('#next-level').fadeOut('slow');
-	        engine.runRenderLoop(function(){
-	          scene.render();
-	        });
 	      });
 	    }
 	    if (data == 'collided with other stuffs') {
 	      $('#game-over').slideDown(1500).delay(1000);
 	      $('#game-over').fadeOut('slow');
 	      setTimeout(function(){
-	        var scene = createScene(engine, canvas, scenes[currentLevel].scene);
-	        engine.runRenderLoop(function(){
-	          scene.render();
-	        });
+	        scene = createScene(engine, canvas, scenes[currentLevel].scene);
 	      }, 2500);
 	    }
 	  }
 
-	  var token = PubSub.subscribe( 'COLLISION EVENT', collisionSubscriber );
+	  var token = PubSub.subscribe('COLLISION EVENT', collisionSubscriber);
 	  
-	  collisionSubscriber
+	  // collisionSubscriber
 
 	  // the canvas/window resize event handler
 	  window.addEventListener('resize', function(){
@@ -173,13 +182,13 @@
 	var BABYLON = __webpack_require__(2);
 	GameObject = __webpack_require__(4);
 	var clickEvents = __webpack_require__(5);
-	var generateStars = __webpack_require__(8);
-	var generateGround = __webpack_require__(9);
-	var generateCamera = __webpack_require__(10);
-	var generateLight = __webpack_require__(11);
-	var generateParticleTrail = __webpack_require__(12);
+	var generateGround = __webpack_require__(8);
+	var generateCamera = __webpack_require__(9);
+	var generateLight = __webpack_require__(10);
+	var generateParticleTrail = __webpack_require__(11);
 
-	module.exports = function createScene(engine, canvas, levelObject){
+	module.exports = function createScene(engine, canvas, levelObject)
+	{
 	  // This creates a basic Babylon Scene object (non-mesh)
 	  var scene = new BABYLON.Scene(engine);
 	  scene.clearColor = BABYLON.Color3.Black();
@@ -198,15 +207,15 @@
 
 	  clickEvents.clickEvent(scene, ship, canvasObjects, camera, canvas, engine);
 
-	    var skybox = BABYLON.Mesh.CreateBox("skyBox", 300, scene);
-	    var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
-	    skyboxMaterial.backFaceCulling = false;
-	    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("./public/images/spacelvl0", scene);
-	    skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
-	    skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
-	    skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
-	    skyboxMaterial.disableLighting = true;
-	    skybox.material = skyboxMaterial;
+	  var skybox = BABYLON.Mesh.CreateBox("skyBox", 300, scene);
+	  var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
+	  skyboxMaterial.backFaceCulling = false;
+	  skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("./public/images/spacelvl0", scene);
+	  skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+	  skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+	  skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+	  skyboxMaterial.disableLighting = true;
+	  skybox.material = skyboxMaterial;
 
 	  return scene;
 	}
@@ -219,38 +228,42 @@
 
 	var BABYLON = __webpack_require__(2);
 
-	module.exports = function GameObject (name, size, mass, scene, x, y, z){
-
+	function GameObject (name, size, mass, scene, x, y, z)
+	{
 	  this.canvasObject = BABYLON.Mesh.CreateSphere(name, 24, size, scene);
-
 	  this.material = this.canvasObject.material = new BABYLON.StandardMaterial(name, scene);
-
-	  this.mass = mass; 
-
+	  this.mass = mass;
 	  this.size = size;
-
 	  this.position = this.canvasObject.position = new BABYLON.Vector3(x, y, z);
-
-	  this.calculateForce = function(magnetObject){
-
-	    var distanceVector = magnetObject.position.subtract(this.position);
-
-	    var magnitude = distanceVector.length();
-	    if (magnitude < 20) {
-	      magnitude = 20;
-	    } else if (magnitude > 100) {
-	      magnitude = 100;
-	    }
-
-	    var forceDirection = distanceVector.normalize();
-
-	    var strength = (10 * this.mass * magnetObject.mass)/(magnitude * magnitude);
-
-	    var gForce = forceDirection.scale(strength);
-	 
-	    return gForce;
-	  }
 	}
+
+	GameObject.prototype.calculateForce = function calculateForce(magnetObject)
+	{
+	  var distanceVector = magnetObject.position.subtract(this.position);
+
+	  var magnitude = distanceVector.length();
+	  if (magnitude < 20) {
+	    magnitude = 20;
+	  } else if (magnitude > 100) {
+	    magnitude = 100;
+	  }
+
+	  var forceDirection = distanceVector.normalize();
+
+	  var strength = (10 * this.mass * magnetObject.mass)/(magnitude * magnitude);
+
+	  var gForce = forceDirection.scale(strength);
+
+	  return gForce;
+	};
+
+	GameObject.prototype.applyForce = function(obj)
+	{
+	  var force = this.calculateForce(obj);
+	  this.canvasObject.position.addInPlace(force);
+	};
+
+	module.exports = GameObject;
 
 
 /***/ },
@@ -265,9 +278,13 @@
 
 	  var isMouseDown = false;
 	  var eventStarted = null;
-	  var newBlackhole  = null;
+	  var newBlackhole = null;
 
-	  scene.onPointerDown = function (event, pickResult){
+	  var running = true;
+
+	  scene.onPointerDown = function (event, pickResult)
+	  {
+	    if(!running) { return; }
 	    isMouseDown = true;
 	    eventStarted = Date.now()
 	    camera.detachControl(canvas, true);
@@ -275,51 +292,59 @@
 	    if (pickResult.hit) {
 	      var xCoord = pickResult.pickedPoint.x;
 	      var zCoord = pickResult.pickedPoint.z;
-	      newBlackhole = new GameObject('canvasObject', 1, 5, scene, xCoord, 1, zCoord);
-	      newBlackhole = blackholeMaterial(scene, newBlackhole)
+	      newBlackhole = blackholeMaterial(scene, new GameObject('canvasObject', 1, 5, scene, xCoord, 1, zCoord));
 	      canvasObjects.push(newBlackhole);
-	      window.newBlackhole = newBlackhole;
+	      // window.newBlackhole = newBlackhole;
 	    }
 	  };
 
 	  scene.onPointerUp = function(event)
 	  {
+	    if(!running) { return; }
 	    isMouseDown = false;
 	    newBlackhole = null;
 	    camera.attachControl(canvas, true);
 	  }
 
+	  var music = new BABYLON.Sound("Music", "./public/sounds/spaceship.mp3", scene, null, { loop: true, autoplay: true });
+
 	  scene.registerBeforeRender(function()
-	  {  
+	  {
+	    if(!running) { return; }
 
-	    if (ship.canvasObject.intersectsPoint(canvasObjects[0].canvasObject.position, true)) {
-	      engine.stopRenderLoop();
-	      ship.material.emissiveColor = new BABYLON.Color3(0, 1, 0);
-	      PubSub.publish('COLLISION EVENT', 'collided')
-	      console.log('won'); 
-	    }
+	    //Collision Detection
 
-	    for(var i = 1; i < canvasObjects.length; i ++){
-	      if (ship.canvasObject.intersectsPoint(canvasObjects[i].canvasObject.position, true)) {
-	        engine.stopRenderLoop();
-	        ship.material.emissiveColor = new BABYLON.Color3(1, 0, 0);
-	        PubSub.publish('COLLISION EVENT', 'collided with other stuffs')
-	      }
-	    }
-
-	    var forces = new BABYLON.Vector3(0, 0, 0);
-	    canvasObjects.forEach(function(canvasObject){
-	      forces = forces.add(ship.calculateForce(canvasObject));
-	    });
-	    ship.position.addInPlace(forces);
-	    if(isMouseDown)
+	    canvasObjects.forEach(function(obj)
 	    {
-	      if(newBlackhole)
+	      ship.applyForce(obj);
+
+	      if(ship.canvasObject.intersectsPoint(obj.canvasObject.position, true))
 	      {
-	        var delta = Date.now() - eventStarted;
-	        newBlackhole.canvasObject.scaling.addInPlace(new BABYLON.Vector3(.05,.05,.05));
-	        newBlackhole.mass = newBlackhole.mass + (delta/10000);
+	        running = false;
+	        var payload = "";
+	        var color;
+	        if(obj.canvasObject.name === "planet")
+	        {
+	          // PubSub.publish("collision:planet", { target: obj });
+	          payload = "collided";
+	          color = new BABYLON.Color3(0,1,0);
+	        }
+	        else
+	        {
+	          // PubSub.publish("collision:asteroid", { target: obj });
+	          payload = "collided with other stuffs";
+	          color = new BABYLON.Color3(1,0,0);
+	        }
+	        ship.material.emissiveColor = color;
+	        PubSub.publish('COLLISION EVENT', payload);
 	      }
+	    });
+
+	    if(isMouseDown && newBlackhole)
+	    {
+	      var delta = Date.now() - eventStarted;
+	      newBlackhole.canvasObject.scaling.addInPlace(new BABYLON.Vector3(.05,.05,.05));
+	      newBlackhole.mass = newBlackhole.mass + (delta/10000);
 	    }
 	  });
 	}
@@ -330,23 +355,44 @@
 
 	var BABYLON = __webpack_require__(2);
 
-	module.exports = function(scene, blackHole){
+	module.exports = function(scene, blackHole) {
 	    
-	    material = new BABYLON.StandardMaterial("black", scene);
-	    material.diffuseColor = new BABYLON.Color3(0, 0, 0);
-	    material.reflectionTexture = new BABYLON.CubeTexture("./public/images/TropicalSunnyDay", scene);
-	    material.reflectionTexture.level = 0.5;
-	    material.specularPower = 64;
-	    material.emissiveColor = new BABYLON.Color3(0.2, 0.2, 0.2);
-	    
-	    material.emissiveFresnelParameters = new BABYLON.FresnelParameters();
-	    material.emissiveFresnelParameters.bias = 0.4;
-	    material.emissiveFresnelParameters.power = 2;
-	    material.emissiveFresnelParameters.leftColor = BABYLON.Color3.Black();
-	    material.emissiveFresnelParameters.rightColor = BABYLON.Color3.White();
+	  material = new BABYLON.StandardMaterial("black", scene);
+	  material.diffuseColor = new BABYLON.Color3(0, 0, 0);
+	  material.reflectionTexture = new BABYLON.CubeTexture("./public/images/spacelvl0", scene);
+	  material.bumpTexture = new BABYLON.Texture("./public/images/blackhole_bump.jpg", scene);
+	  material.reflectionTexture.level = 1;
 
-	    blackHole.canvasObject.material = material
-	    return blackHole
+	  material.specularPower = 600;
+	  material.emissiveColor = new BABYLON.Color3(0.05, 0.05, 0.05);
+	  
+	  material.emissiveFresnelParameters = new BABYLON.FresnelParameters();
+	  material.emissiveFresnelParameters.bias = 0.4;
+	  material.emissiveFresnelParameters.power = 2;
+	  material.emissiveFresnelParameters.leftColor = BABYLON.Color3.Black();
+	  material.emissiveFresnelParameters.rightColor = BABYLON.Color3.Black();
+
+	  blackHole.canvasObject.material = material
+	  blackHole.canvasObject.rotation = new BABYLON.Vector3(2,0,0);
+	  var animateBlackHole = new BABYLON.Animation("animateBlackHole", "rotation.z", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE);
+
+	  var keys = []
+
+	  keys.push({
+	    frame: 0,
+	    value: 0
+	  });  
+
+	  keys.push({
+	    frame: 50,
+	    value: 4
+	  });
+
+	  animateBlackHole.setKeys(keys);
+	  blackHole.canvasObject.animations.push(animateBlackHole);
+	  scene.beginAnimation(blackHole.canvasObject, 0, 30, true);
+
+	  return blackHole
 	}
 
 /***/ },
@@ -606,24 +652,6 @@
 
 	var BABYLON = __webpack_require__(2);
 
-	module.exports = function generateStars(scene){
-
-	  var stars = []
-	  
-	  for (var i=0; i< 3000; i++) {
-	    stars.push(new GameObject('stars', 2 + Math.random() * 4, 30, scene, -1440 + Math.random() * 2880, -1000, -1440 + Math.random() * 2880));
-	  }
-
-
-	  return stars
-	}
-
-/***/ },
-/* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var BABYLON = __webpack_require__(2);
-
 	module.exports = function generateGround(scene){
 
 	  var ground = BABYLON.Mesh.CreateGround("ground", 1000, 1000, 0, scene, false);
@@ -638,7 +666,7 @@
 	}
 
 /***/ },
-/* 10 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var BABYLON = __webpack_require__(2);
@@ -656,7 +684,7 @@
 
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var BABYLON = __webpack_require__(2);
@@ -671,7 +699,7 @@
 	}
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var BABYLON = __webpack_require__(2);
@@ -699,28 +727,26 @@
 	}
 
 /***/ },
-/* 13 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var BABYLON = __webpack_require__(2);
-	var plutoTexture = __webpack_require__(14);
+	var plutoTexture = __webpack_require__(13);
 
-	module.exports.ship = function(scene){
-	  var ship = new GameObject('ship', 2, .5, scene, -20, 1, -20);
-	  return ship
+	module.exports.ship = function(scene) {
+	  return new GameObject('ship', 2, .5, scene, -20, 1, -20);
 	}
 
-	module.exports.canvasObjects = function(scene){
-	  var canvasObjects = [];
-	  canvasObjects[0] = new GameObject('planet', 12, 30, scene, 25, 1, 25);
-	  canvasObjects[0] = plutoTexture(scene, canvasObjects[0])
-	  return canvasObjects
+	module.exports.canvasObjects = function(scene) {
+	  return [
+	    plutoTexture(scene, new GameObject('planet', 12, 30, scene, 25, 1, 25))
+	  ];
 	}
 
 	module.exports.image = 'public/images/levels/level_1.png'
 
 /***/ },
-/* 14 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var BABYLON = __webpack_require__(2);
@@ -753,17 +779,17 @@
 
 	  animatePlanet.setKeys(keys);
 	  planet.canvasObject.animations.push(animatePlanet);
-	  scene.beginAnimation(planet.canvasObject, 0, 120, true);
+	  scene.beginAnimation(planet.canvasObject, 0, 50, true);
 
 	  return planet
 	}
 
 /***/ },
-/* 15 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var BABYLON = __webpack_require__(2);
-	var plutoTexture = __webpack_require__(14);
+	var plutoTexture = __webpack_require__(13);
 
 	module.exports.ship = function(scene){
 	  var ship = new GameObject('ship', 2, .5, scene, -20, 1, -20);
@@ -783,11 +809,11 @@
 	module.exports.image = 'public/images/levels/level_2.png'
 
 /***/ },
-/* 16 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var BABYLON = __webpack_require__(2);
-	var plutoTexture = __webpack_require__(14);
+	var plutoTexture = __webpack_require__(13);
 
 	module.exports.ship = function(scene){
 	  var ship = new GameObject('ship', 2, .5, scene, -20, 1, -20);
@@ -812,7 +838,7 @@
 	module.exports.image = 'public/images/levels/level_3.png'
 
 /***/ },
-/* 17 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
