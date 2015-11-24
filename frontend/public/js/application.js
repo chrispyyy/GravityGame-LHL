@@ -67,6 +67,7 @@ window.addEventListener('DOMContentLoaded', function()
         scene = createScene(engine, canvas, scenes[currentLevel].scene);
         $('#next-level').fadeOut('slow');
       });
+      toggleFollowCamera = false
     }
     if (data == 'collided with other stuffs') {
       $('#game-over').slideDown(1500).delay(1000);
@@ -74,13 +75,24 @@ window.addEventListener('DOMContentLoaded', function()
       setTimeout(function(){
         scene = createScene(engine, canvas, scenes[currentLevel].scene);
       }, 1500);
+      toggleFollowCamera = false
     }
   }
 
   var token = PubSub.subscribe('COLLISION EVENT', collisionSubscriber);
   
-  // collisionSubscriber
+  var toggleFollowCamera = false
 
+  $('#camera-button').on('click', function (){
+    if(toggleFollowCamera){
+      toggleFollowCamera = false
+      PubSub.publish('CAMERA BUTTON', 'static');
+    }
+    else{
+      toggleFollowCamera = true 
+      PubSub.publish('CAMERA BUTTON', 'tracker');
+    }
+  });
   // the canvas/window resize event handler
   window.addEventListener('resize', function(){
     engine.resize();
