@@ -1,13 +1,14 @@
 var BABYLON = require('babylonjs');
-var plutoTexture = require('./pluto_texture.js');
+var planetTexture = require('./planet_texture.js');
 
 module.exports.ship = function(scene) {
-  return new Ship('ship', 2, .5, scene, -50, 1, -30);
+  var spaceship = new Ship('ship', 2, .5, scene, -20, 1, -20);
+  return spaceship;
 }
 
 module.exports.canvasObjects = function(scene) {
   return [
-    plutoTexture(scene, new GameObject('planet', 12, 30, scene, 40, 1, 25))
+    planetTexture(scene, new GameObject('planet', 12, 30, scene, 40, 1, 25), "./public/images/plutomap2k.jpg", "./public/images/plutonormalmap.png")
   ];
 }
 

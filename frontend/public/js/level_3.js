@@ -1,5 +1,5 @@
 var BABYLON = require('babylonjs');
-var iceworldTexture = require('./iceworld_texture.js');
+var planetTexture = require('./planet_texture.js');
 var asteroidTexture = require('./asteroid_texture.js');
 
 module.exports.ship = function(scene){
@@ -13,7 +13,7 @@ module.exports.canvasObjects = function(scene){
   canvasObjects[0] = new GameObject('planet', 12, 30, scene, 25, 1, 25);
   
 
-  canvasObjects[0] = iceworldTexture(scene, canvasObjects[0]);
+  canvasObjects[0] = planetTexture(scene, canvasObjects[0], "./public/images/iceworld.jpg", "./public/images/icebump.png");
 
 
   canvasObjects[1] = new GameObject('asteroid', 4, 5, scene, 10, 1, -6);
