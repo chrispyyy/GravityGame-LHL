@@ -35,11 +35,6 @@ window.addEventListener('DOMContentLoaded', function()
     }
   });
 
-  // var serializedScene1 = BABYLON.SceneSerializer.Serialize(createScene(engine, canvas, scenes[0].scene));
-  // var serializedScene2 = BABYLON.SceneSerializer.Serialize(createScene(engine, canvas, scenes[1].scene));
-  // var serializedScene3 = BABYLON.SceneSerializer.Serialize(createScene(engine, canvas, scenes[2].scene));
-
-
   $('<button>Start Game</button>').appendTo('#next-level')
   $('#next-level img').attr('src', scenes[currentLevel].image)
 

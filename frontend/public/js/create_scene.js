@@ -27,7 +27,7 @@ module.exports = function createScene(engine, canvas, levelObject)
 
   clickEvents.clickEvent(scene, ship, canvasObjects, camera, canvas, engine);
 
-  var skybox = BABYLON.Mesh.CreateBox("skyBox", 300, scene);
+  var skybox = BABYLON.Mesh.CreateBox("skyBox", 1000, scene);
   var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
   skyboxMaterial.backFaceCulling = false;
   skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("./public/images/spacelvl0", scene);
