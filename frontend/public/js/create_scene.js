@@ -1,5 +1,6 @@
 var BABYLON = require('babylonjs');
 GameObject = require('./game_object.js');
+Ship = require('./create_ship.js');
 var clickEvents = require('./click_events.js');
 var generateGround = require('./ground.js');
 var generateCamera = require('./camera.js');
