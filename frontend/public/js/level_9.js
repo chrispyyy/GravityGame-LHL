@@ -13,7 +13,7 @@ module.exports.canvasObjects = function(scene){
   canvasObjects[0] = new GameObject('planet', 12, 30, scene, 80, 1, 0);
   
 
-  // canvasObjects[0] = plutoTexture(scene, canvasObjects[0]);
+  canvasObjects[0] = planetTexture(scene, canvasObjects[0], "./public/images/deathstar.jpg", "./public/images/deathstarbump.jpg");
 
   for (var i = 1; i < 21; i++) {
     canvasObjects[i] = new GameObject('asteroid', 4, 0.5, scene, -20 - Math.random() * 20, 1, 40 - Math.random() * 80 );
