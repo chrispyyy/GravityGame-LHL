@@ -26,6 +26,18 @@
     </div>
   </div> 
   <canvas id='renderCanvas'></canvas>
+  <html><body onload="playSound();">
+    <audio id="noise"></audio>
+    </body>
+    <script>
+    function playSound(){
+        snd=document.getElementById('noise');
+        canPlayMP3 = (typeof snd.canPlayType === "function" && snd.canPlayType("audio/mpeg") !== "");
+        snd.src=canPlayMP3?'./public/sounds/shortinterstellar.mp3':'shortinterstellar.ogg';
+        snd.load();
+        snd.play();
+    }
+</script></html>
   <div id= 'menu-button'><span>MENU</span></div>
   <div id='game-over'><img src='public/images/game_over.png'></div>
   <div id='next-level'><img/><button></button><div>

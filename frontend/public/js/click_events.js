@@ -35,7 +35,7 @@ module.exports.clickEvent = function(scene, ship, canvasObjects, camera, followC
     camera.attachControl(canvas, true);
   }
 
-  var spaceShip = new BABYLON.Sound("Music", "./public/sounds/shortinterstellar.mp3", scene, null, { loop: false, autoplay: true });
+  //var snd = new BABYLON.Sound("Music", "./public/sounds/shortinterstellar.mp3", scene, null, { loop: false, autoplay: true });
   
   scene.registerBeforeRender(function()
   {
@@ -64,7 +64,7 @@ module.exports.clickEvent = function(scene, ship, canvasObjects, camera, followC
         if(obj.canvasObject.name === "planet")
         {
           // PubSub.publish("collision:planet", { target: obj });
-          spaceShip.stop();
+          snd.pause();
           ship.magnitude = 0;
           var winGame = new BABYLON.Sound("Music", "./public/sounds/winning.mp3", scene, null, { loop: false, autoplay: true });
           payload = "collided";
@@ -73,7 +73,7 @@ module.exports.clickEvent = function(scene, ship, canvasObjects, camera, followC
         else if (obj.canvasObject.name === "asteroid")
         {
           // PubSub.publish("collision:asteroid", { target: obj });
-          spaceShip.stop();
+          snd.pause();
           //backgroundmusic.stop();
           ship.magnitude = 0;
           var explosion = new BABYLON.Sound("Music", "./public/sounds/explosion.mp3", scene, null, { loop: false, autoplay: true });
@@ -84,7 +84,7 @@ module.exports.clickEvent = function(scene, ship, canvasObjects, camera, followC
         else if (obj.canvasObject.name === "blackhole")
         {
           // PubSub.publish("collision:asteroid", { target: obj });
-          spaceShip.stop();
+          snd.pause();
           //backgroundmusic.stop();
           ship.magnitude = 0;
           var spiral = new BABYLON.Sound("Music", "./public/sounds/spiral.mp3", scene, null, { loop: false, autoplay: true });

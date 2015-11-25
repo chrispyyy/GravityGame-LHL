@@ -158,6 +158,7 @@ window.addEventListener('DOMContentLoaded', function()
       $('#next-level').fadeIn('slow');
       $('#next-level').on('click', 'button', function(){
         scene = createScene(engine, canvas, scenes[currentLevel].scene);
+        snd.play();
         $('#next-level').fadeOut('slow');
       });
       toggleFollowCamera = false
@@ -167,6 +168,7 @@ window.addEventListener('DOMContentLoaded', function()
       $('#game-over').fadeOut('slow');
       setTimeout(function(){
         scene = createScene(engine, canvas, scenes[currentLevel].scene);
+        snd.play();
       }, 3000);
       toggleFollowCamera = false
     }
