@@ -35,7 +35,7 @@ module.exports.clickEvent = function(scene, ship, canvasObjects, camera, followC
     camera.attachControl(canvas, true);
   }
 
-  var spaceShip = new BABYLON.Sound("Music", "./public/sounds/shortinterstellar.mp3", scene, null, { loop: true, autoplay: true });
+  var spaceShip = new BABYLON.Sound("Music", "./public/sounds/shortinterstellar.mp3", scene, null, { loop: false, autoplay: true });
   
   scene.registerBeforeRender(function()
   {
