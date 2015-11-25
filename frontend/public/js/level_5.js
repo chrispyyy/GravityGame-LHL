@@ -3,14 +3,14 @@ var planetTexture = require('./planet_texture.js');
 var asteroidTexture = require('./asteroid_texture.js');
 
 module.exports.ship = function(scene){
-  var spaceship = new Ship('ship', 2, .5, scene, 30, 1, 30);
+  var spaceship = new Ship('ship', 2, .5, scene, 30, 1, 30, new BABYLON.Vector3(0.008, 0, 0.008));
   return spaceship;
 }
 
 module.exports.canvasObjects = function(scene){
   var canvasObjects = [];
 
-  canvasObjects[0] = new GameObject('planet', 12, 150, scene, -30, 1, -30, new BABYLON.Vector3(0.008, 0, 0.008));
+  canvasObjects[0] = new GameObject('planet', 12, 150, scene, -30, 1, -30);
 
   canvasObjects[0] = planetTexture(scene, canvasObjects[0], "./public/images/jupitermap.jpg", "./public/images/icebump.png");
 
