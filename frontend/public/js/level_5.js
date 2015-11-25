@@ -11,8 +11,9 @@ module.exports.canvasObjects = function(scene){
   var canvasObjects = [];
 
   canvasObjects[0] = new GameObject('planet', 12, 125, scene, -30, 1, -30);
-  
-  canvasObjects[0] = planetTexture(scene, canvasObjects[0], "./public/images/jupitermap.jpg", null);
+
+  canvasObjects[0] = planetTexture(scene, canvasObjects[0], "./public/images/jupitermap.jpg", "./public/images/icebump.png");
+
 
   canvasObjects[1] = new GameObject('asteroid', 4, 1, scene, 30, 1, 55);
   canvasObjects[2] = new GameObject('asteroid', 4, 1, scene, 30, 1, 5)
