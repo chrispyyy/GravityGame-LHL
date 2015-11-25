@@ -261,6 +261,7 @@ Ship.prototype.calculateForce = function calculateForce(magnetObject)
 Ship.prototype.applyForce = function(obj)
 {
   var force = this.calculateForce(obj);
+  this.canvasObject.position.addInPlace(new BABYLON.Vector3(0.008, 0, 0.008));
   this.canvasObject.position.addInPlace(force);
 
 };

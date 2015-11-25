@@ -14,17 +14,17 @@ module.exports.canvasObjects = function(scene){
   
   canvasObjects[0] = planetTexture(scene, canvasObjects[0], "./public/images/venusmap.jpg", "./public/images/venusbump.png");
 
-  canvasObjects[1] = new GameObject('asteroid', 4, 2, scene, -30, 1, 36);
-  canvasObjects[2] = new GameObject('asteroid', 4, 2, scene, -30, 1, 12);
-  canvasObjects[3] = new GameObject('asteroid', 4, 2, scene, -30, 1, 24);
-  canvasObjects[4] = new GameObject('asteroid', 4, 2, scene, 0, 1, -36);
-  canvasObjects[5] = new GameObject('asteroid', 4, 2, scene, 0, 1, -24);
-  canvasObjects[6] = new GameObject('asteroid', 4, 2, scene, 30, 1, 36)
-  canvasObjects[7] = new GameObject('asteroid', 4, 2, scene, 30, 1, 24)
-  canvasObjects[8] = new GameObject('asteroid', 4, 2, scene, 30, 1, 12);
-  canvasObjects[9] = new GameObject('asteroid', 4, 2, scene, -30, 1, 48);
-  canvasObjects[10] = new GameObject('asteroid', 4, 2, scene, 0, 1, -48);
-  canvasObjects[11] = new GameObject('asteroid', 4, 2, scene, 30, 1, 48);
+  canvasObjects[1] = new GameObject('asteroid', 4, 3, scene, -30, 1, 36);
+  canvasObjects[2] = new GameObject('asteroid', 4, 3, scene, -30, 1, 12);
+  canvasObjects[3] = new GameObject('asteroid', 4, 3, scene, -30, 1, 24);
+  canvasObjects[4] = new GameObject('asteroid', 4, 3, scene, 0, 1, -36);
+  canvasObjects[5] = new GameObject('asteroid', 4, 3, scene, 0, 1, -24);
+  canvasObjects[6] = new GameObject('asteroid', 4, 3, scene, 30, 1, 36)
+  canvasObjects[7] = new GameObject('asteroid', 4, 3, scene, 30, 1, 24)
+  canvasObjects[8] = new GameObject('asteroid', 4, 3, scene, 30, 1, 12);
+  canvasObjects[9] = new GameObject('asteroid', 4, 3, scene, -30, 1, 48);
+  canvasObjects[10] = new GameObject('asteroid', 4, 3, scene, 0, 1, -48);
+  canvasObjects[11] = new GameObject('asteroid', 4, 3, scene, 30, 1, 48);
 
   for (var i = 1; i < canvasObjects.length; i++) {
     canvasObjects[i] = asteroidTexture(scene, canvasObjects[i]);
