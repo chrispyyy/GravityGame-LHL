@@ -55,26 +55,25 @@ window.addEventListener('DOMContentLoaded', function()
     scene = createScene(engine, canvas, scenes[currentLevel].scene);
     $('#next-level').fadeOut();
     if(currentLevel == 0){
-      var instruction1 = $('<div>');
-      instruction1.addClass('game-instruction');
-      var instruction1Text = $('<span>').appendTo(instruction1)
-      instruction1Text.text('Click anywhere on the screen to generate Black Holes. The longer you press down, the larger they get.');
-
-      var instruction2 = $('<div>');
-      instruction2.addClass('game-instruction');
-      var instruction2Text = $('<span>').appendTo(instruction2)
-      instruction2Text.text('The objective of the Game is to navigate to the Planet, watch out for obstacles on the way!!');
-      instruction1.appendTo('body');
-      instruction2.appendTo('body');
-
+      var instruction = $('<div>');
+      instruction.addClass('game-instruction');
+      var instructionText = $('<span>').appendTo(instruction)
+      instructionText.text('Click anywhere on the screen to generate Black Holes. The longer you press down, the larger they get.');
+      instruction.appendTo('body')
       setTimeout(function(){
-        instruction1.fadeIn('slow').delay(4000);
-        instruction1.fadeOut();
+        instruction.fadeIn('slow').delay(4000);
+        instruction.fadeOut();
       }, 500)
       setTimeout(function(){
-        instruction2.fadeIn('slow').delay(4000);
-        instruction2.fadeOut();
+        instructionText.text('The objective of the Game is to navigate to the Planet, watch out for obstacles on the way!!');
+        instruction.fadeIn('slow').delay(4000);
+        instruction.fadeOut();
       }, 6000)
+      setTimeout(function(){
+        instructionText.text('Hit the Space button to change the camera view!');
+        instruction.fadeIn('slow').delay(4000);
+        instruction.fadeOut();
+      }, 11000)
     }
   });
 
@@ -104,14 +103,16 @@ window.addEventListener('DOMContentLoaded', function()
   
   var toggleFollowCamera = false
 
-  $('#camera-button').on('click', function (){
-    if(toggleFollowCamera){
-      toggleFollowCamera = false
-      PubSub.publish('CAMERA BUTTON', 'static');
-    }
-    else{
-      toggleFollowCamera = true 
-      PubSub.publish('CAMERA BUTTON', 'tracker');
+  $(document).on('keydown', function (e){
+    if (e.keyCode == 32){
+      if(toggleFollowCamera){
+        toggleFollowCamera = false
+        PubSub.publish('CAMERA BUTTON', 'static');
+      }
+      else{
+        toggleFollowCamera = true 
+        PubSub.publish('CAMERA BUTTON', 'tracker');
+      }
     }
   });
   // the canvas/window resize event handler
