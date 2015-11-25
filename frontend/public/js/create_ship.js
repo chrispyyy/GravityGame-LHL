@@ -2,41 +2,43 @@ var BABYLON = require('babylonjs');
  
 function Ship (name, size, mass, scene, x, y, z, acc){
 
-  var blankmesh = new BABYLON.Mesh("blank", scene);
+  var blankmesh = new BABYLON.Mesh("ship", scene);
 
   var positions = [
-    -2, -1, -1,    
-    -2, -1, 1, 
-    2, -1, -1, 
-    2, -1, 1,  
-    -2, 1, -1, 
-    2, 1, -1,  
-    2, 1, 1,   
-    -2, 1, 1,  
-    -1, 0.5, 1,
-    1, 0.5, 1,
-    -1, -0.5, 1,
-    1, -0.5, 1,
-    -1, 0.5, -1,
-    1, 0.5, -1,
-    -1, -0.5, -1,
-    1, -0.5, -1,
-    -2.33, -1.33, -1, 
-    -2.33, 1.33, -1,
-    -2.33, -1, -1,
-    -2.33, 1, -1,
-    -2, -1.33, -1,
-    -2, 1.33, -1,
-    2.33, 1.33, -1,
-    2.33, 1, -1,
-    2, 1.33, -1,
-    2.33, -1.33, -1,
-    2.33, -1, -1,
-    2, -1.33, -1,
-    -2, -1, 4,
-    -2, 1, 4,
-    2, -1, 4,
-    2, 1, 4,
+    -4, -2,   -2,     
+    -4, -2,   2,  
+    4,  -2,   -2,  
+    4,  -2,   2,   
+    -4,  2,   -2,  
+    4,   2,   -2,   
+    4,   2,   2,    
+    -4,  2,   2,   
+    -2, -1,   2, 
+    2,  -1,   2, 
+    -2,  1,   2, 
+    2,   1,   2, 
+    -2, -1,   -2, 
+    2,  -1,   -2, 
+    -2,  1,   -2, 
+    2,   1,   -2, 
+    -4.66, -2.66,   -2, 
+    -4.66,  2.66,   -2, 
+    -4.66,  -2,     -2, 
+    -4.66,  2,      -2, 
+    -4,  -2.66,     -2, 
+    -4,  2.66,      -2, 
+    4.66,   2.66,   -2, 
+    4.66,   2,      -2, 
+    4,   2.66, -2, 
+    4.66,   -2.66,  -2, 
+    4.66,   -2,     -2, 
+    4,   -2.66, -2, 
+    -4,  -2,    8, 
+    -4,  2,     8, 
+    4,  -2,     8, 
+    4,   2,     8,   
+    4,   2.66,  2,    
+    -4,  2.66,  2, 
   ];
 
   var indices = [];
@@ -71,16 +73,25 @@ function Ship (name, size, mass, scene, x, y, z, acc){
   indices.push(21, 29, 17);
   indices.push(5, 24, 31);
   indices.push(23, 31, 5);
-  indices.push(23, 5, 22);
+  indices.push(23, 31, 22);
   indices.push(24, 22, 31); 
   indices.push(20, 28, 16);
-  indices.push(0, 28, 20);
+  indices.push(20, 28, 0);
   indices.push(0, 28, 18);
   indices.push(16, 18, 28);
   indices.push(25, 30, 26);
   indices.push(26, 30, 2);
   indices.push(27, 2, 30);
   indices.push(25, 30, 27);
+  indices.push(3, 33, 2);
+  indices.push(21, 2, 33);
+  indices.push(0, 24, 32);
+  indices.push(0, 32, 1);
+  indices.push(2, 21, 4);
+  indices.push(24, 0, 5);
+  indices.push(6, 1, 32);
+  indices.push(33, 3, 7);
+  
    
   var normals = [
     1, 1, 1,  
@@ -115,26 +126,6 @@ function Ship (name, size, mass, scene, x, y, z, acc){
     1, 1, 1,
     1, 1, 1,
     1, 1, 1,
-  ];
-
-    // colors per vertex
-  var colors = [
-    1, 1, 1,     
-    1, 1, 1,     
-    1, 1, 1,     
-    1, 1, 1,     
-    1, 1, 1,     
-    1, 1, 1,     
-    1, 1, 1,     
-    1, 1, 1,     
-    1, 1, 1, 
-    1, 1, 1, 
-    1, 1, 1, 
-    1, 1, 1, 
-    1, 1, 1, 
-    1, 1, 1, 
-    1, 1, 1, 
-    1, 1, 1, 
     1, 1, 1,
     1, 1, 1,
     1, 1, 1,
@@ -151,76 +142,6 @@ function Ship (name, size, mass, scene, x, y, z, acc){
     1, 1, 1,
     1, 1, 1,
     1, 1, 1,
-  ];
-
-  var uvs = [
-    1.0, 0.0,       
-    1.0, 0.0,       
-    1.0, 0.0,       
-    1.0, 0.0,       
-    1.0, 0.0,       
-    1.0, 0.0,       
-    1.0, 0.0,       
-    1.0, 0.0,       
-    1.0, 0.0, 
-    1.0, 0.0, 
-    1.0, 0.0, 
-    1.0, 0.0, 
-    1.0, 0.0, 
-    1.0, 0.0, 
-    1.0, 0.0, 
-    1.0, 0.0,
-    1.0, 0.0, 
-    1.0, 0.0, 
-    1.0, 0.0, 
-    1.0, 0.0,
-    1.0, 0.0, 
-    1.0, 0.0, 
-    1.0, 0.0, 
-    1.0, 0.0,
-    1.0, 0.0, 
-    1.0, 0.0, 
-    1.0, 0.0, 
-    1.0, 0.0,
-    1.0, 0.0, 
-    1.0, 0.0, 
-    1.0, 0.0, 
-    1.0, 0.0,
-  ];
-
-  var uv2s = [
-    1.0, 0.0,       
-    1.0, 0.0,       
-    1.0, 0.0,       
-    1.0, 0.0,       
-    1.0, 0.0,       
-    1.0, 0.0,       
-    1.0, 0.0,       
-    1.0, 0.0,       
-    1.0, 0.0, 
-    1.0, 0.0, 
-    1.0, 0.0, 
-    1.0, 0.0, 
-    1.0, 0.0,
-    1.0, 0.0,
-    1.0, 0.0,
-    1.0, 0.0,
-    1.0, 0.0, 
-    1.0, 0.0, 
-    1.0, 0.0, 
-    1.0, 0.0,
-    1.0, 0.0, 
-    1.0, 0.0, 
-    1.0, 0.0, 
-    1.0, 0.0,
-    1.0, 0.0, 
-    1.0, 0.0, 
-    1.0, 0.0, 
-    1.0, 0.0,
-    1.0, 0.0, 
-    1.0, 0.0, 
-    1.0, 0.0, 
-    1.0, 0.0,
   ];
 
   var vertexData = new BABYLON.VertexData();
@@ -232,13 +153,14 @@ function Ship (name, size, mass, scene, x, y, z, acc){
   vertexData.applyToMesh(blankmesh, 1);
   this.canvasObject = blankmesh;
   this.material = this.canvasObject.material = new BABYLON.StandardMaterial(name, scene);
-  this.canvasObject.material.diffuseColor = new BABYLON.Color3(1, 0, 0);
+  this.material.diffuseColor = new BABYLON.Color3(0, 0.6, 0.6);
+  // this.canvasObject.material.bumpTexture = new BABYLON.Texture("./public/images/icebump.png");
   this.mass = mass; 
   this.size = size;
   this.position = this.canvasObject.position = new BABYLON.Vector3(x, y, z);
   this.acceleration = acc;
 }
-Ship.prototype.calculateForce = function calculateForce(magnetObject)
+Ship.prototype.calculateForce = function calculateForce(magnetObject) 
 {
   var distanceVector = magnetObject.position.subtract(this.position);
 
@@ -250,22 +172,26 @@ Ship.prototype.calculateForce = function calculateForce(magnetObject)
   }
 
   var forceDirection = distanceVector.normalize();
-  this.canvasObject.rotation = forceDirection;
-
   var strength = (10 * this.mass * magnetObject.mass)/(magnitude * magnitude);
-
   var gForce = forceDirection.scale(strength);
 
   return gForce;
 };
 
-Ship.prototype.applyForce = function(obj)
+Ship.prototype.applyForce = function(obj) 
 {
   var force = this.calculateForce(obj);
   this.canvasObject.position.addInPlace(this.acceleration);
   this.canvasObject.position.addInPlace(force);
 
 };
+
+Ship.prototype.orientTowards = function orientTowards(obj)
+{
+  var angle = Math.atan2(obj.position.z - this.position.z, obj.position.x - this.position.x);  
+  var distanceV = new BABYLON.Vector3( 0, Math.PI / 4 + angle, 0 );                        
+  this.canvasObject.rotation = distanceV;
+}
 
 module.exports = Ship;
 

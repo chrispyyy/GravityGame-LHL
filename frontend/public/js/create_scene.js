@@ -12,7 +12,7 @@ module.exports = function createScene(engine, canvas, levelObject)
 {
   // This creates a basic Babylon Scene object (non-mesh)
   var scene = new BABYLON.Scene(engine);
-
+  
   scene.clearColor = BABYLON.Color3.Black();
 
   var camera = generateCamera(scene, canvas);
@@ -20,12 +20,18 @@ module.exports = function createScene(engine, canvas, levelObject)
   var light = generateLight(scene);
 
   var ground = generateGround(scene);
+  var canvasObjects = levelObject.canvasObjects(scene);
 
   var ship = levelObject.ship(scene);
+  var planet = canvasObjects[0];
+
+  scene.registerBeforeRender(function()
+  {
+    ship.orientTowards(planet);
+  })
 
   var followCamera = generateFollowCamera(scene, canvas, ship);
 
-  var canvasObjects = levelObject.canvasObjects(scene);
 
   generateParticleTrail(scene, ship.canvasObject);
 
@@ -59,6 +65,16 @@ module.exports = function createScene(engine, canvas, levelObject)
   animateSkyBox.setKeys(keys);
   skybox.animations.push(animateSkyBox);
   scene.beginAnimation(skybox, 0, 30, true);
+
+
+  // scene.debugLayer.show(false);
+  // scene.debugLayer.axisRatio = 0.1;
+  // scene.debugLayer.shouldDisplayAxis = function(mesh)
+  // {
+  //   // console.log(mesh);
+  //   return mesh.name === "ship";
+  // }
+
 
   return scene;
 }

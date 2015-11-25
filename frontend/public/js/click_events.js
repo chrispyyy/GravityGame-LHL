@@ -23,7 +23,6 @@ module.exports.clickEvent = function(scene, ship, canvasObjects, camera, followC
       var zCoord = pickResult.pickedPoint.z;
       newBlackhole = blackholeMaterial(scene, new GameObject('blackhole', 1, 5, scene, xCoord, 1, zCoord));
       canvasObjects.push(newBlackhole);
-      // window.newBlackhole = newBlackhole;
     }
   };
 
