@@ -5,6 +5,12 @@ var createScene = require('./create_scene.js');
 var level1 = require('./level_1.js')
 var level2 = require('./level_2.js')
 var level3 = require('./level_3.js')
+var level4 = require('./level_4.js')
+var level5 = require('./level_5.js')
+var level6 = require('./level_6.js')
+var level7 = require('./level_7.js')
+var level8 = require('./level_8.js')
+var level9 = require('./level_9.js')
 var PubSub = require('pubsub-js');
 var $ = require("jquery");
 
@@ -20,6 +26,12 @@ window.addEventListener('DOMContentLoaded', function()
     {scene: level1, image: level1.image}, 
     {scene: level2, image: level2.image},
     {scene: level3, image: level3.image},
+    {scene: level4, image: level4.image},
+    {scene: level5, image: level5.image},
+    {scene: level6, image: level6.image},
+    {scene: level7, image: level7.image},
+    {scene: level8, image: level8.image},
+    {scene: level9, image: level9.image},
   ];
 
   
