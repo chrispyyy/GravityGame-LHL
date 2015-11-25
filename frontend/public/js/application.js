@@ -95,7 +95,7 @@ window.addEventListener('DOMContentLoaded', function()
       $('#game-over').fadeOut('slow');
       setTimeout(function(){
         scene = createScene(engine, canvas, scenes[currentLevel].scene);
-      }, 2600);
+      }, 3000);
       toggleFollowCamera = false
     }
   }
