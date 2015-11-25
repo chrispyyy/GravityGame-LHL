@@ -2,15 +2,15 @@ var BABYLON = require('babylonjs');
 
 module.exports = function(scene, planet){
 
-  plutoMaterial = new BABYLON.StandardMaterial("pluto_texture", scene);
+  iceworldMaterial = new BABYLON.StandardMaterial("iceworld_texture", scene);
 
-  plutoMaterial.diffuseTexture = new BABYLON.Texture("./public/images/plutomap2k.jpg", scene);
+  iceworldMaterial.diffuseTexture = new BABYLON.Texture("./public/images/iceworld.jpg", scene);
 
-  plutoMaterial.bumpTexture = new BABYLON.Texture("./public/images/plutonormalmap.png", scene);
+  iceworldMaterial.bumpTexture = new BABYLON.Texture("./public/images/icebump.png", scene);
 
-  plutoMaterial.specularColor = new BABYLON.Color3(0,0,0);
+  iceworldMaterial.specularColor = new BABYLON.Color3(0,0,0);
 
-  planet.canvasObject.material = plutoMaterial;
+  planet.canvasObject.material = iceworldMaterial;
   planet.canvasObject.rotation = new BABYLON.Vector3(2,2,0);
   var animatePlanet = new BABYLON.Animation("animatePlanet", "rotation.z", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE);
 
@@ -28,7 +28,7 @@ module.exports = function(scene, planet){
 
   animatePlanet.setKeys(keys);
   planet.canvasObject.animations.push(animatePlanet);
-  scene.beginAnimation(planet.canvasObject, 0, 50, true);
+  scene.beginAnimation(planet.canvasObject, 0, 120, true);
 
   return planet
 }
