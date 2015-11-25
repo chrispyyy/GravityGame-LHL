@@ -8,7 +8,7 @@ module.exports.ship = function(scene) {
 
 module.exports.canvasObjects = function(scene) {
   return [
-    planetTexture(scene, new GameObject('planet', 12, 30, scene, 40, 1, 25), "./public/images/plutomap2k.jpg", "./public/images/plutonormalmap.png")
+    planetTexture(scene, new GameObject('planet', 12, 30, scene, 25, 1, 25), "./public/images/plutomap2k.jpg", "./public/images/plutonormalmap.png")
   ];
 }
 
