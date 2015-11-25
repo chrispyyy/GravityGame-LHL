@@ -87,7 +87,7 @@ module.exports.clickEvent = function(scene, ship, canvasObjects, camera, followC
           spaceShip.stop();
           //backgroundmusic.stop();
           ship.magnitude = 0;
-          var spiral = new BABYLON.Sound("Music", "./public/sounds/spiral.wav", scene, null, { loop: false, autoplay: true });
+          var spiral = new BABYLON.Sound("Music", "./public/sounds/spiral.mp3", scene, null, { loop: false, autoplay: true });
           generateExplosion(scene, ship.canvasObject);
           payload = "collided with other stuffs";
           color = new BABYLON.Color3(1,0,0);
