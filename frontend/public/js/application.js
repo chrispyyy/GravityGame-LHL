@@ -45,12 +45,13 @@ window.addEventListener('DOMContentLoaded', function()
     if(currentLevel == 0){
       var instruction1 = $('<div>');
       instruction1.addClass('game-instruction');
-      instruction1.text('Click anywhere on the screen to generate Black Holes. The longer you press down, the larger they get.');
+      var instruction1Text = $('<span>').appendTo(instruction1)
+      instruction1Text.text('Click anywhere on the screen to generate Black Holes. The longer you press down, the larger they get.');
 
       var instruction2 = $('<div>');
       instruction2.addClass('game-instruction');
-      instruction2.text('The objective of the Game is to navigate to the Planet, watch out for obstacles on the way!!');
-
+      var instruction2Text = $('<span>').appendTo(instruction2)
+      instruction2Text.text('The objective of the Game is to navigate to the Planet, watch out for obstacles on the way!!');
       instruction1.appendTo('body');
       instruction2.appendTo('body');
 

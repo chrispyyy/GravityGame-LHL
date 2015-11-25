@@ -84,7 +84,7 @@ html, body {
   bottom: 1%;
   right: 1%;
   padding: 20px;
-  overflow: hidden;
+  overflow: auto;
   border: none;
   border-radius: 2%;
   font: normal 30px/1 "Courier New", Courier, monospace;
@@ -103,10 +103,10 @@ html, body {
   display: none;
 }
 
-.game-instruction text{
-  display: block;
-  top: 5px;
-  right: 0;
-  bottom: 0;
+.game-instruction span{
+  position: absolute;
   left: 0;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
 }
