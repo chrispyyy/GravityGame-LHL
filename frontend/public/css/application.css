@@ -98,3 +98,78 @@ html, body {
   top: 50%;
   transform: translateY(-50%);
 }
+
+/* Game Menu CSS */
+ 
+  .container {
+    background-image: url(./public/images/menu.jpg);
+    height: 500px;
+    width: 620px;
+    border-radius: 3%;
+  }
+
+  .menu-box {
+    width: 80%;
+    height: 90%;
+    margin: auto;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    position: relative;
+    border-radius: 3%;
+  }
+
+  .box {
+    
+    width: 80%;
+    height: 60%;
+    margin: auto;
+    margin-top: 45px;
+    position: relative;
+  }
+
+  .title {
+    margin-top: 50px;
+    margin-right: 50px;
+  }
+
+  .new-game, .load-level, .end-game {
+    width: 280px;
+    height: 70px;
+    margin: 0 auto;
+    margin-top: 35px;
+    margin-left: 20%;
+    cursor: pointer;
+    border-radius: 4%;
+  }
+
+  .box div:hover {
+    border: 1px solid black;
+    background-color: black;
+  }
+
+  .main-menu, .nine {
+    margin-top: 15%;
+    margin-left: 15%;
+    cursor: pointer;
+    width: 280px;
+    height: 70px;
+    margin-left: 25%;
+
+  }
+
+  .level {
+    display: inline;
+    cursor: pointer;
+    width: 280px;
+    height: auto;
+    margin-left: 20px;
+  }
+  .one, .two, .three, .four,.five, .six, .seven, .eight {
+    display: inline;
+    width: 280px;
+    height: auto;
+  }
+  .main-menu:hover {
+    border: 1px solid black;
+    background-color: black;
+  }
