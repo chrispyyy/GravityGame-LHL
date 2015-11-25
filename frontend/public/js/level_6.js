@@ -33,4 +33,4 @@ module.exports.canvasObjects = function(scene){
   return canvasObjects
 }
 
-module.exports.image = 'public/images/levels/level_4.png'
+module.exports.image = 'public/images/levels/level_6.png'
