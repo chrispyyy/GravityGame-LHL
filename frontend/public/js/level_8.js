@@ -13,7 +13,7 @@ module.exports.canvasObjects = function(scene){
   canvasObjects[0] = new GameObject('planet', 12, 30, scene, 25, 1, 25);
   
 
-  // canvasObjects[0] = plutoTexture(scene, canvasObjects[0]);
+  canvasObjects[0] = planetTexture(scene, canvasObjects[0], "./public/images/goldmap.jpg", "./public/images/goldbump.jpg");
 
   canvasObjects[1] = new GameObject('asteroid', 4, 5, scene, 10, 1, -6);
   canvasObjects[2] = new GameObject('asteroid', 4, 5, scene, -6, 1, 10)
