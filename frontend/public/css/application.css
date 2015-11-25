@@ -43,6 +43,7 @@ html, body {
   height: 50%;
   background-color: black;
   opacity: 0.75;
+  display: none;
 }
 
 #next-level img{
@@ -98,3 +99,114 @@ html, body {
   top: 50%;
   transform: translateY(-50%);
 }
+
+#menu-button{
+  position: absolute;
+  margin: auto;
+  top: 1%;
+  left: 1%;
+  padding: 20px;
+  border: none;
+  border-radius: 2%;
+  font: normal 30px/1 "Courier New", Courier, monospace;
+  color: rgba(255,255,255,1);
+  text-align: center;
+  background: url('../images/game-info.jpeg');
+  background-position: 50% 50%;
+  background-origin: padding-box;
+  background-clip: border-box;
+  background-size: auto auto;
+  box-shadow: 3px 3px 2px 0 rgba(0,0,0,0.3) ;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.2) ;
+  width: 5%;
+  height: 3%;
+  opacity: 1;
+  cursor: pointer;
+  display: none;
+}
+
+#menu-button span{
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+/* Game Menu CSS */
+ 
+  .container {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: url('../images/menu.jpg');
+    height: 80%;
+    width: 40%;
+    border-radius: 3%;
+    text-align: center;
+    opacity: 1;
+  }
+
+  .menu-box {
+    width: 80%;
+    height: 90%;
+    margin: auto;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    position: relative;
+    border-radius: 3%;
+  }
+
+  .box {
+    
+    width: 80%;
+    height: 60%;
+    margin: auto;
+    margin-top: 45px;
+    position: relative;
+  }
+
+  .title {
+    width: 100%;
+    margin-top: 50px;
+    opacity: 0.75;
+  }
+
+  .new-game, .load-level, .end-game {
+    width: 100%;
+    height: 70px;
+    margin-top: 35px;
+    cursor: pointer;
+    border-radius: 4%;
+  }
+
+  .box div:hover {
+    border: 1px solid black;
+    background-color: black;
+  }
+
+  .main-menu, .nine {
+    margin-top: 15%;
+    cursor: pointer;
+    width: 100%;
+    height: 70px;
+  }
+
+  .level {
+    display: inline;
+    cursor: pointer;
+    width: 280px;
+    height: auto;
+    margin-left: 20px;
+  }
+  .one, .two, .three, .four,.five, .six, .seven, .eight {
+    display: inline;
+    width: 280px;
+    height: auto;
+  }
+  .main-menu:hover {
+    border: 1px solid black;
+    background-color: black;
+  }
