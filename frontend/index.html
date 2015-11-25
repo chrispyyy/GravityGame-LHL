@@ -7,11 +7,28 @@
     <script src="public/js/bundle.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/randomcolor/0.4.1/randomColor.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-   <script src="public/js/game-menu.js"></script>
+    <script src="public/js/game-menu.js"></script>
 </head>
 <body>
+  <div class="container">
+    <div class="menu-box"> 
+      <img class="title" src="./public/images/blackhole_title.png">
+      <div class="box">
+        <div class="new-game">
+          <img src="./public/images/new-game.png">
+        </div>
+        <div class="load-level">
+          <img src="./public/images/load-level.png">
+        </div>
+        <div class="end-game">
+          <img src="./public/images/end-game.png">
+        </div>
+      </div>
+    </div>
+  </div> 
   <canvas id='renderCanvas'></canvas>
+  <div id= 'menu-button'><span>MENU</span></div>
   <div id='game-over'><img src='public/images/game_over.png'></div>
-  <div id='next-level'><img/><div>
-  </body>
-  </html>
+  <div id='next-level'><img/><button></button><div>
+</body>
+</html>
