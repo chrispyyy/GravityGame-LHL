@@ -12,7 +12,6 @@ module.exports.canvasObjects = function(scene){
 
   canvasObjects[0] = new GameObject('planet', 12, 30, scene, 60, 1, 30);
   
-
   canvasObjects[0] = planetTexture(scene, canvasObjects[0], "./public/images/purple.jpeg", "./public/images/purple.jpeg");
 
   canvasObjects[1] = new GameObject('asteroid', 4, 5, scene, -50, 1, 0);
