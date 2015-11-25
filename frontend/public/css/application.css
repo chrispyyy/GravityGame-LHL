@@ -147,6 +147,7 @@ html, body {
     border-radius: 3%;
     text-align: center;
     opacity: 1;
+    z-index: 1;
   }
 
   .menu-box {
