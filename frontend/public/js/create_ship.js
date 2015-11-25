@@ -1,6 +1,6 @@
 var BABYLON = require('babylonjs');
  
-function Ship (name, size, mass, scene, x, y, z){
+function Ship (name, size, mass, scene, x, y, z, acc){
 
   var blankmesh = new BABYLON.Mesh("blank", scene);
 
@@ -236,6 +236,7 @@ function Ship (name, size, mass, scene, x, y, z){
   this.mass = mass; 
   this.size = size;
   this.position = this.canvasObject.position = new BABYLON.Vector3(x, y, z);
+  this.acceleration = acc;
 }
 Ship.prototype.calculateForce = function calculateForce(magnetObject)
 {
@@ -261,7 +262,7 @@ Ship.prototype.calculateForce = function calculateForce(magnetObject)
 Ship.prototype.applyForce = function(obj)
 {
   var force = this.calculateForce(obj);
-  this.canvasObject.position.addInPlace(new BABYLON.Vector3(0.008, 0, 0.008));
+  this.canvasObject.position.addInPlace(this.acceleration);
   this.canvasObject.position.addInPlace(force);
 
 };

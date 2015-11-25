@@ -10,7 +10,7 @@ module.exports.ship = function(scene){
 module.exports.canvasObjects = function(scene){
   var canvasObjects = [];
 
-  canvasObjects[0] = new GameObject('planet', 12, 150, scene, -30, 1, -30);
+  canvasObjects[0] = new GameObject('planet', 12, 150, scene, -30, 1, -30, new BABYLON.Vector3(0.008, 0, 0.008));
 
   canvasObjects[0] = planetTexture(scene, canvasObjects[0], "./public/images/jupitermap.jpg", "./public/images/icebump.png");
 

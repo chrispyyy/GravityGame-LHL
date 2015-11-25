@@ -69,9 +69,6 @@ map.forEach(function(array) {
         positions[i+2] += rz;
     }
 });
- //asteroid.canvasObject.convertToFlatShadedMesh();
-
-//===========
   
   asteroid.canvasObject.material = asteroidMaterial;
   asteroid.canvasObject.rotation = new BABYLON.Vector3(Math.random() * 10,Math.random() * 10,Math.random() * 10);
@@ -85,7 +82,7 @@ map.forEach(function(array) {
   });  
 
   keys.push({
-    frame: (50 + Math.random() * 100) - 50,
+    frame: (50 + Math.random() * 75) - 50,
     value: 2
   });
 

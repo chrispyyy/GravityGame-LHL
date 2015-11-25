@@ -70,7 +70,7 @@ window.addEventListener('DOMContentLoaded', function()
         instruction.fadeOut();
       }, 6000)
       setTimeout(function(){
-        instructionText.text('Hit the Space button to change between the fixed and following camera view! On the fixed view, use the arrow keys to zoom in and out, as well as to move from side to side!');
+        instructionText.text('Hit Space to change between camera views! Use the arrow keys to zoom in and out, and move from side to side!');
         instruction.fadeIn('slow').delay(4000);
         instruction.fadeOut();
       }, 11000)
