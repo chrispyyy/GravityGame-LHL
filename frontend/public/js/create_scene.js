@@ -67,13 +67,13 @@ module.exports = function createScene(engine, canvas, levelObject)
   scene.beginAnimation(skybox, 0, 30, true);
 
 
-  scene.debugLayer.show(false);
-  scene.debugLayer.axisRatio = 0.1;
-  scene.debugLayer.shouldDisplayAxis = function(mesh)
-  {
-    // console.log(mesh);
-    return mesh.name === "ship";
-  }
+  // scene.debugLayer.show(false);
+  // scene.debugLayer.axisRatio = 0.1;
+  // scene.debugLayer.shouldDisplayAxis = function(mesh)
+  // {
+  //   // console.log(mesh);
+  //   return mesh.name === "ship";
+  // }
 
 
   return scene;
