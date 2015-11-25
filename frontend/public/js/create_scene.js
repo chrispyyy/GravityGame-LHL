@@ -41,6 +41,25 @@ module.exports = function createScene(engine, canvas, levelObject)
   skyboxMaterial.disableLighting = true;
   skybox.material = skyboxMaterial;
 
+  skybox.rotation = new BABYLON.Vector3(2,0,0);
+  var animateSkyBox = new BABYLON.Animation("animateSkyBox", "rotation.z", 10, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE);
+
+  var keys = []
+
+  keys.push({
+    frame: 0,
+    value: 0
+  });  
+
+  keys.push({
+    frame: 1000,
+    value: 4
+  });
+
+  animateSkyBox.setKeys(keys);
+  skybox.animations.push(animateSkyBox);
+  scene.beginAnimation(skybox, 0, 30, true);
+
   return scene;
 }
 
