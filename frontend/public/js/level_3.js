@@ -3,7 +3,7 @@ var planetTexture = require('./planet_texture.js');
 var asteroidTexture = require('./asteroid_texture.js');
 
 module.exports.ship = function(scene){
-  var spaceship = new Ship('ship', 2, 0.5, scene, -30, 1, -30, new BABYLON.Vector3(0.008, 0, 0.008));
+  var spaceship = new Ship('ship', 1, 0.5, scene, -30, 1, -30, new BABYLON.Vector3(0.008, 0, 0.008));
   return spaceship;
 }
 

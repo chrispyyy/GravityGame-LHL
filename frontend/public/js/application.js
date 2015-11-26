@@ -138,7 +138,7 @@ window.addEventListener('DOMContentLoaded', function()
         instruction.fadeOut();
       }, 500)
       setTimeout(function(){
-        instructionText.text('The objective of the Game is to navigate to the Planet, watch out for obstacles on the way!!');
+        instructionText.text('The objective of the Game is to navigate to the Planet, watch out for obstacles on the way!! Hit R to Reset ;)');
         instruction.fadeIn('slow').delay(4000);
         instruction.fadeOut();
       }, 6000)
@@ -149,6 +149,8 @@ window.addEventListener('DOMContentLoaded', function()
       }, 11000)
     }
   });
+  
+  var gameOver = false
 
   var collisionSubscriber = function(msg, data){
     if (data == 'collided') {
@@ -164,11 +166,13 @@ window.addEventListener('DOMContentLoaded', function()
       toggleFollowCamera = false
     }
     if (data == 'collided with other stuffs') {
-      $('#game-over').slideDown(1500).delay(1000);
+      $('#game-over').slideDown(1500);
       $('#game-over').fadeOut('slow');
+      gameOver = true
       setTimeout(function(){
         scene = createScene(engine, canvas, scenes[currentLevel].scene);
         snd.play();
+        gameOver = false
       }, 3000);
       toggleFollowCamera = false
     }
@@ -188,6 +192,12 @@ window.addEventListener('DOMContentLoaded', function()
         toggleFollowCamera = true 
         PubSub.publish('CAMERA BUTTON', 'tracker');
       }
+    }
+
+    if (e.keyCode == 82 && gameOver == false){
+      scene = createScene(engine, canvas, scenes[currentLevel].scene);
+      snd.play();
+      toggleFollowCamera = false
     }
   });
   // the canvas/window resize event handler
