@@ -34,7 +34,10 @@ window.addEventListener('DOMContentLoaded', function()
     {scene: level9, image: level9.image},
   ];
 
-  
+  if(currentLevel == 9){
+
+  }  
+
   var currentLevel = 0;
 
   var scene = null;
@@ -152,35 +155,44 @@ window.addEventListener('DOMContentLoaded', function()
   
   var gameOver = false
 
-  var collisionSubscriber = function(msg, data){
-    if (data == 'collided') {
-      currentLevel++;
-      $('#next-level button').text('Level ' + (currentLevel + 1));
-      $('#next-level img').attr('src', scenes[currentLevel].image)
-      $('#next-level').fadeIn('slow');
-      $('#next-level').on('click', 'button', function(){
-        scene = createScene(engine, canvas, scenes[currentLevel].scene);
-        snd.play();
-        $('#next-level').fadeOut('slow');
-      });
-      toggleFollowCamera = false
+    var collisionSubscriber = function(msg, data){
+      if (data == 'collided') {
+        currentLevel++;
+        if(currentLevel > scenes.length - 1){
+          $('#end-credits').fadeIn();
+          var myVideo = document.querySelector('#myVideo');
+          myVideo.play();
+          $('#end-credits video').attr({'autoplay' : 'true'});
+        } else{
+          $('#next-level button').text('Level ' + (currentLevel + 1));
+          $('#next-level img').attr('src', scenes[currentLevel].image)
+          $('#next-level').fadeIn('slow');
+          $('#next-level').on('click', 'button', function(){
+            scene = createScene(engine, canvas, scenes[currentLevel].scene);
+            snd.play();
+            $('#next-level').fadeOut('slow');
+          });
+          toggleFollowCamera = false
+        }
+      }
+      if (data == 'collided with other stuffs') {
+        $('#game-over').slideDown(1500);
+        $('#game-over').fadeOut('slow');
+        gameOver = true
+        setTimeout(function(){
+          scene = createScene(engine, canvas, scenes[currentLevel].scene);
+          snd.play();
+          gameOver = false
+        }, 3000);
+        toggleFollowCamera = false
+      }
     }
-    if (data == 'collided with other stuffs') {
-      $('#game-over').slideDown(1500);
-      $('#game-over').fadeOut('slow');
-      gameOver = true
-      setTimeout(function(){
-        scene = createScene(engine, canvas, scenes[currentLevel].scene);
-        snd.play();
-        gameOver = false
-      }, 3000);
-      toggleFollowCamera = false
-    }
-  }
+    var token = PubSub.subscribe('COLLISION EVENT', collisionSubscriber);
+    
+    
 
-  var token = PubSub.subscribe('COLLISION EVENT', collisionSubscriber);
-  
   var toggleFollowCamera = false
+
 
   $(document).on('keydown', function (e){
     if (e.keyCode == 32){
