@@ -159,10 +159,11 @@ window.addEventListener('DOMContentLoaded', function()
       if (data == 'collided') {
         currentLevel++;
         if(currentLevel > scenes.length - 1){
-          $('#end-credits').fadeIn();
-          var myVideo = document.querySelector('#myVideo');
-          myVideo.play();
-          $('#end-credits video').attr({'autoplay' : 'true'});
+          setTimeout(function(){
+            $('#end-credits').fadeIn();
+            var myVideo = document.querySelector('#myVideo');
+            myVideo.play();
+          }, 1500);
         } else{
           $('#next-level button').text('Level ' + (currentLevel + 1));
           $('#next-level img').attr('src', scenes[currentLevel].image)
