@@ -188,8 +188,8 @@ Ship.prototype.applyForce = function(obj)
 
 Ship.prototype.orientTowards = function orientTowards(obj)
 {
-  var angle = Math.atan2(obj.position.z - this.position.z, obj.position.x - this.position.x);  
-  var distanceV = new BABYLON.Vector3( 0, Math.PI / 4 + angle, 0 );                        
+  var yAngle = Math.atan2(obj.position.x - this.position.x, obj.position.z - this.position.z );  
+  var distanceV = new BABYLON.Vector3( 0, yAngle, 0 );                        
   this.canvasObject.rotation = distanceV;
 }
 
