@@ -149,6 +149,8 @@ window.addEventListener('DOMContentLoaded', function()
       }, 11000)
     }
   });
+  
+  var gameOver = false
 
   var collisionSubscriber = function(msg, data){
     if (data == 'collided') {
@@ -166,9 +168,11 @@ window.addEventListener('DOMContentLoaded', function()
     if (data == 'collided with other stuffs') {
       $('#game-over').slideDown(1500);
       $('#game-over').fadeOut('slow');
+      gameOver = true
       setTimeout(function(){
         scene = createScene(engine, canvas, scenes[currentLevel].scene);
         snd.play();
+        gameOver = false
       }, 3000);
       toggleFollowCamera = false
     }
@@ -190,7 +194,7 @@ window.addEventListener('DOMContentLoaded', function()
       }
     }
 
-    if (e.keyCode == 82){
+    if (e.keyCode == 82 && gameOver == false){
       scene = createScene(engine, canvas, scenes[currentLevel].scene);
       snd.play();
       toggleFollowCamera = false
