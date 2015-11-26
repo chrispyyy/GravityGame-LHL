@@ -17,7 +17,7 @@ module.exports.canvasObjects = function(scene){
 
   canvasObjects[1] = new GameObject('asteroid', 4, 5, scene, 20, 1, -20);
   canvasObjects[2] = new GameObject('asteroid', 4, 5, scene, -20, 1, 20)
-  canvasObjects[3] = new GameObject('asteroid', 4, 5, scene, 4, 1, 4);
+  canvasObjects[3] = new GameObject('asteroid', 4, 5, scene, 6, 1, 6);
 
   for (var i = 1; i < canvasObjects.length; i++) {
     canvasObjects[i] = asteroidTexture(scene, canvasObjects[i]);
