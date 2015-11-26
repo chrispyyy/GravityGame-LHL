@@ -87,7 +87,10 @@
 	    {scene: level9, image: level9.image},
 	  ];
 
-	  
+	  if(currentLevel == 9){
+
+	  }  
+
 	  var currentLevel = 0;
 
 	  var scene = null;
@@ -101,9 +104,82 @@
 	    }
 	  });
 
-	  $('<button>Start Game</button>').appendTo('#next-level')
-	  $('#next-level img').attr('src', scenes[currentLevel].image)
+	  $('.container').on('click', '.main-menu', function() {
+	    var main = "<img class='title' src='./public/images/blackhole_title.png'>" +
+	                "<div class='box'>" +
+	                "<div class='new-game'>" +
+	                  "<img src='./public/images/new-game.png'>" +
+	                "</div>" +
+	                "<div class='load-level'>" +
+	                  "<img src='./public/images/load-level.png'>" +
+	                "</div>" +
+	                "<div class='end-game'>" +
+	                  "<img src='./public/images/end-game.png'>" +
+	                "</div>";
+	    $('.menu-box').html(main);
+	  });
 
+	  $('.container').on('click', '.load-level', function() {
+	    var levels = "<img class='main-menu' src='./public/images/main-menu.png'>" +
+	                 "<div class='level one'>" +
+	                    "<img src='./public/images/level-1.png'>" +
+	                  "</div>" +
+	                  "<div class='level two'>" +
+	                    "<img src='./public/images/level-2.png'>" +
+	                  "</div>" +
+	                  "<div class='level three'>" +
+	                    "<img src='./public/images/level-3.png'>" +
+	                  "</div>" +
+	                  "<div class='level four'>" +
+	                    "<img src='./public/images/level-4.png'>" +
+	                  "</div>" + 
+	                  "<div class='level five'>" +
+	                    "<img src='./public/images/level-5.png'>" +
+	                  "</div>" +
+	                  "<div class='level six'>" +
+	                    "<img src='./public/images/level-6.png'>" +
+	                  "</div>" +
+	                  "<div class='level seven'>" +
+	                    "<img src='./public/images/level-7.png'>" +
+	                  "</div>" + 
+	                  "<div class='level eight'>" +
+	                    "<img src='./public/images/level-8.png'>" +
+	                  "</div>" +
+	                  "<div class='level nine'>" +
+	                    "<img src='./public/images/level-9.png'>" +
+	                  "</div>";
+	    $('.menu-box').html(levels);
+	  }); 
+	    
+	  $('.container').on('click', '.end-game', function(){
+	    scene = null
+	  }); 
+
+	  function addContainer(cssClass, level){
+	    $('.container').on('click', cssClass, function(){
+	      currentLevel = level;
+	      $('.container').hide();
+	      $('#next-level button').text('Start Game');
+	      $('#next-level img').attr('src', scenes[currentLevel].image);
+	      $('#next-level').fadeIn();
+	      $('#menu-button').fadeIn();
+	    });
+	  }
+
+	  $('#menu-button').on('click', function(){
+	    $('.container').slideDown();
+	    $('#menu-button').hide();
+	  });
+
+
+	  addContainer('.new-game', 0);
+
+	  var cssClassArr = ['.one', '.two', '.three', '.four', '.five', '.six', '.seven', '.eight', '.nine'];
+
+	  for(var i=0; i < scenes.length; i++){
+	    addContainer(cssClassArr[i], i);
+	  }
+	 
 	  $('#next-level').on('click', 'button', function() {
 	    scene = createScene(engine, canvas, scenes[currentLevel].scene);
 	    $('#next-level').fadeOut();
@@ -118,7 +194,7 @@
 	        instruction.fadeOut();
 	      }, 500)
 	      setTimeout(function(){
-	        instructionText.text('The objective of the Game is to navigate to the Planet, watch out for obstacles on the way!!');
+	        instructionText.text('The objective of the Game is to navigate to the Planet, watch out for obstacles on the way!! Hit R to Reset ;)');
 	        instruction.fadeIn('slow').delay(4000);
 	        instruction.fadeOut();
 	      }, 6000)
@@ -129,32 +205,47 @@
 	      }, 11000)
 	    }
 	  });
-
-	  var collisionSubscriber = function(msg, data){
-	    if (data == 'collided') {
-	      currentLevel++;
-	      $('#next-level button').text('Level ' + (currentLevel + 1));
-	      $('#next-level img').attr('src', scenes[currentLevel].image)
-	      $('#next-level').fadeIn('slow');
-	      $('#next-level').on('click', 'button', function(){
-	        scene = createScene(engine, canvas, scenes[currentLevel].scene);
-	        $('#next-level').fadeOut('slow');
-	      });
-	      toggleFollowCamera = false
-	    }
-	    if (data == 'collided with other stuffs') {
-	      $('#game-over').slideDown(1500).delay(1000);
-	      $('#game-over').fadeOut('slow');
-	      setTimeout(function(){
-	        scene = createScene(engine, canvas, scenes[currentLevel].scene);
-	      }, 3000);
-	      toggleFollowCamera = false
-	    }
-	  }
-
-	  var token = PubSub.subscribe('COLLISION EVENT', collisionSubscriber);
 	  
+	  var gameOver = false
+
+	    var collisionSubscriber = function(msg, data){
+	      if (data == 'collided') {
+	        currentLevel++;
+	        if(currentLevel > scenes.length - 1){
+	          $('#end-credits').fadeIn();
+	          var myVideo = document.querySelector('#myVideo');
+	          myVideo.play();
+	          $('#end-credits video').attr({'autoplay' : 'true'});
+	        } else{
+	          $('#next-level button').text('Level ' + (currentLevel + 1));
+	          $('#next-level img').attr('src', scenes[currentLevel].image)
+	          $('#next-level').fadeIn('slow');
+	          $('#next-level').on('click', 'button', function(){
+	            scene = createScene(engine, canvas, scenes[currentLevel].scene);
+	            snd.play();
+	            $('#next-level').fadeOut('slow');
+	          });
+	          toggleFollowCamera = false
+	        }
+	      }
+	      if (data == 'collided with other stuffs') {
+	        $('#game-over').slideDown(1500);
+	        $('#game-over').fadeOut('slow');
+	        gameOver = true
+	        setTimeout(function(){
+	          scene = createScene(engine, canvas, scenes[currentLevel].scene);
+	          snd.play();
+	          gameOver = false
+	        }, 3000);
+	        toggleFollowCamera = false
+	      }
+	    }
+	    var token = PubSub.subscribe('COLLISION EVENT', collisionSubscriber);
+	    
+	    
+
 	  var toggleFollowCamera = false
+
 
 	  $(document).on('keydown', function (e){
 	    if (e.keyCode == 32){
@@ -166,6 +257,12 @@
 	        toggleFollowCamera = true 
 	        PubSub.publish('CAMERA BUTTON', 'tracker');
 	      }
+	    }
+
+	    if (e.keyCode == 82 && gameOver == false){
+	      scene = createScene(engine, canvas, scenes[currentLevel].scene);
+	      snd.play();
+	      toggleFollowCamera = false
 	    }
 	  });
 	  // the canvas/window resize event handler
@@ -235,7 +332,7 @@
 	{
 	  // This creates a basic Babylon Scene object (non-mesh)
 	  var scene = new BABYLON.Scene(engine);
-
+	  
 	  scene.clearColor = BABYLON.Color3.Black();
 
 	  var camera = generateCamera(scene, canvas);
@@ -243,12 +340,18 @@
 	  var light = generateLight(scene);
 
 	  var ground = generateGround(scene);
+	  var canvasObjects = levelObject.canvasObjects(scene);
 
 	  var ship = levelObject.ship(scene);
+	  var planet = canvasObjects[0];
+
+	  scene.registerBeforeRender(function()
+	  {
+	    ship.orientTowards(planet);
+	  })
 
 	  var followCamera = generateFollowCamera(scene, canvas, ship);
 
-	  var canvasObjects = levelObject.canvasObjects(scene);
 
 	  generateParticleTrail(scene, ship.canvasObject);
 
@@ -283,6 +386,16 @@
 	  skybox.animations.push(animateSkyBox);
 	  scene.beginAnimation(skybox, 0, 30, true);
 
+
+	  // scene.debugLayer.show(false);
+	  // scene.debugLayer.axisRatio = 0.1;
+	  // scene.debugLayer.shouldDisplayAxis = function(mesh)
+	  // {
+	  //   // console.log(mesh);
+	  //   return mesh.name === "ship";
+	  // }
+
+
 	  return scene;
 	}
 
@@ -303,32 +416,6 @@
 	  this.position = this.canvasObject.position = new BABYLON.Vector3(x, y, z);
 	}
 
-	GameObject.prototype.calculateForce = function calculateForce(magnetObject)
-	{
-	  var distanceVector = magnetObject.position.subtract(this.position);
-
-	  var magnitude = distanceVector.length();
-	  if (magnitude < 20) {
-	    magnitude = 20;
-	  } else if (magnitude > 100) {
-	    magnitude = 100;
-	  }
-
-	  var forceDirection = distanceVector.normalize();
-
-	  var strength = (10 * this.mass * magnetObject.mass)/(magnitude * magnitude);
-
-	  var gForce = forceDirection.scale(strength);
-
-	  return gForce;
-	};
-
-	GameObject.prototype.applyForce = function(obj)
-	{
-	  var force = this.calculateForce(obj);
-	  this.canvasObject.position.addInPlace(force);
-	};
-
 	module.exports = GameObject;
 
 
@@ -340,41 +427,43 @@
 	 
 	function Ship (name, size, mass, scene, x, y, z, acc){
 
-	  var blankmesh = new BABYLON.Mesh("blank", scene);
+	  var blankmesh = new BABYLON.Mesh("ship", scene);
 
 	  var positions = [
-	    -2, -1, -1,    
-	    -2, -1, 1, 
-	    2, -1, -1, 
-	    2, -1, 1,  
-	    -2, 1, -1, 
-	    2, 1, -1,  
-	    2, 1, 1,   
-	    -2, 1, 1,  
-	    -1, 0.5, 1,
-	    1, 0.5, 1,
-	    -1, -0.5, 1,
-	    1, -0.5, 1,
-	    -1, 0.5, -1,
-	    1, 0.5, -1,
-	    -1, -0.5, -1,
-	    1, -0.5, -1,
-	    -2.33, -1.33, -1, 
-	    -2.33, 1.33, -1,
-	    -2.33, -1, -1,
-	    -2.33, 1, -1,
-	    -2, -1.33, -1,
-	    -2, 1.33, -1,
-	    2.33, 1.33, -1,
-	    2.33, 1, -1,
-	    2, 1.33, -1,
-	    2.33, -1.33, -1,
-	    2.33, -1, -1,
-	    2, -1.33, -1,
-	    -2, -1, 4,
-	    -2, 1, 4,
-	    2, -1, 4,
-	    2, 1, 4,
+	    -2, -1,   -1,     
+	    -2, -1,   1,  
+	    2,  -1,   -1,  
+	    2,  -1,   1,   
+	    -2,  1,   -1,  
+	    2,   1,   -1,   
+	    2,   1,   1,    
+	    -2,  1,   1,   
+	    -1, -0.5,   1, 
+	    1,  -0.5,   1, 
+	    -1,  0.5,   1, 
+	    1,   0.5,   1, 
+	    -1, -0.5,   -1, 
+	    1,  -0.5,   -1, 
+	    -1,  0.5,   -1, 
+	    1,   0.5,   -1, 
+	    -2.33, -1.33,   -1, 
+	    -2.33,  1.33,   -1, 
+	    -2.33,  -1,     -1, 
+	    -2.33,  1,      -1, 
+	    -2,  -1.33,     -1, 
+	    -2,  1.33,      -1, 
+	    2.33,   1.33,   -1, 
+	    2.33,   1,      -1, 
+	    2,   1.33, -1, 
+	    2.33,   -1.33,  -1, 
+	    2.33,   -1,     -1, 
+	    2,   -1.33, -1, 
+	    -2,  -1,    4, 
+	    -2,  1,     4, 
+	    2,  -1,     4, 
+	    2,   1,     4,   
+	    2,   1.33,  1,    
+	    -2,  1.33,  1, 
 	  ];
 
 	  var indices = [];
@@ -409,174 +498,44 @@
 	  indices.push(21, 29, 17);
 	  indices.push(5, 24, 31);
 	  indices.push(23, 31, 5);
-	  indices.push(23, 5, 22);
+	  indices.push(23, 31, 22);
 	  indices.push(24, 22, 31); 
 	  indices.push(20, 28, 16);
-	  indices.push(0, 28, 20);
+	  indices.push(20, 28, 0);
 	  indices.push(0, 28, 18);
 	  indices.push(16, 18, 28);
 	  indices.push(25, 30, 26);
 	  indices.push(26, 30, 2);
 	  indices.push(27, 2, 30);
 	  indices.push(25, 30, 27);
-	   
-	  var normals = [
-	    1, 1, 1,  
-	    1, 1, 1,  
-	    1, 1, 1,  
-	    1, 1, 1,  
-	    1, 1, 1,  
-	    1, 1, 1,  
-	    1, 1, 1,  
-	    1, 1, 1,  
-	    1, 1, 1,
-	    1, 1, 1, 
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	  ];
-
-	    // colors per vertex
-	  var colors = [
-	    1, 1, 1,     
-	    1, 1, 1,     
-	    1, 1, 1,     
-	    1, 1, 1,     
-	    1, 1, 1,     
-	    1, 1, 1,     
-	    1, 1, 1,     
-	    1, 1, 1,     
-	    1, 1, 1, 
-	    1, 1, 1, 
-	    1, 1, 1, 
-	    1, 1, 1, 
-	    1, 1, 1, 
-	    1, 1, 1, 
-	    1, 1, 1, 
-	    1, 1, 1, 
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	    1, 1, 1,
-	  ];
-
-	  var uvs = [
-	    1.0, 0.0,       
-	    1.0, 0.0,       
-	    1.0, 0.0,       
-	    1.0, 0.0,       
-	    1.0, 0.0,       
-	    1.0, 0.0,       
-	    1.0, 0.0,       
-	    1.0, 0.0,       
-	    1.0, 0.0, 
-	    1.0, 0.0, 
-	    1.0, 0.0, 
-	    1.0, 0.0, 
-	    1.0, 0.0, 
-	    1.0, 0.0, 
-	    1.0, 0.0, 
-	    1.0, 0.0,
-	    1.0, 0.0, 
-	    1.0, 0.0, 
-	    1.0, 0.0, 
-	    1.0, 0.0,
-	    1.0, 0.0, 
-	    1.0, 0.0, 
-	    1.0, 0.0, 
-	    1.0, 0.0,
-	    1.0, 0.0, 
-	    1.0, 0.0, 
-	    1.0, 0.0, 
-	    1.0, 0.0,
-	    1.0, 0.0, 
-	    1.0, 0.0, 
-	    1.0, 0.0, 
-	    1.0, 0.0,
-	  ];
-
-	  var uv2s = [
-	    1.0, 0.0,       
-	    1.0, 0.0,       
-	    1.0, 0.0,       
-	    1.0, 0.0,       
-	    1.0, 0.0,       
-	    1.0, 0.0,       
-	    1.0, 0.0,       
-	    1.0, 0.0,       
-	    1.0, 0.0, 
-	    1.0, 0.0, 
-	    1.0, 0.0, 
-	    1.0, 0.0, 
-	    1.0, 0.0,
-	    1.0, 0.0,
-	    1.0, 0.0,
-	    1.0, 0.0,
-	    1.0, 0.0, 
-	    1.0, 0.0, 
-	    1.0, 0.0, 
-	    1.0, 0.0,
-	    1.0, 0.0, 
-	    1.0, 0.0, 
-	    1.0, 0.0, 
-	    1.0, 0.0,
-	    1.0, 0.0, 
-	    1.0, 0.0, 
-	    1.0, 0.0, 
-	    1.0, 0.0,
-	    1.0, 0.0, 
-	    1.0, 0.0, 
-	    1.0, 0.0, 
-	    1.0, 0.0,
-	  ];
-
+	  indices.push(3, 33, 2);
+	  indices.push(21, 2, 33);
+	  indices.push(0, 24, 32);
+	  indices.push(0, 32, 1);
+	  indices.push(2, 21, 4);
+	  indices.push(24, 0, 5);
+	  indices.push(6, 1, 32);
+	  indices.push(33, 3, 7);
+	  
 	  var vertexData = new BABYLON.VertexData();
 
 	  vertexData.positions = positions;
 	  vertexData.indices = indices;
-	  vertexData.normals = normals;
 
 	  vertexData.applyToMesh(blankmesh, 1);
 	  this.canvasObject = blankmesh;
-	  this.material = this.canvasObject.material = new BABYLON.StandardMaterial(name, scene);
-	  this.canvasObject.material.diffuseColor = new BABYLON.Color3(1, 0, 0);
+
+	  var shipMaterial = new BABYLON.StandardMaterial("ship", scene);
+	  shipMaterial.emissiveTexture = new BABYLON.Texture("./public/images/deathstar.jpg", scene);
+	  shipMaterial.bumpTexture = new BABYLON.Texture("./public/images/deathstarbump.png", scene);
+	  this.material = this.canvasObject.material = shipMaterial;
+
 	  this.mass = mass; 
 	  this.size = size;
 	  this.position = this.canvasObject.position = new BABYLON.Vector3(x, y, z);
 	  this.acceleration = acc;
 	}
-	Ship.prototype.calculateForce = function calculateForce(magnetObject)
+	Ship.prototype.calculateForce = function calculateForce(magnetObject) 
 	{
 	  var distanceVector = magnetObject.position.subtract(this.position);
 
@@ -588,22 +547,26 @@
 	  }
 
 	  var forceDirection = distanceVector.normalize();
-	  this.canvasObject.rotation = forceDirection;
-
 	  var strength = (10 * this.mass * magnetObject.mass)/(magnitude * magnitude);
-
 	  var gForce = forceDirection.scale(strength);
 
 	  return gForce;
 	};
 
-	Ship.prototype.applyForce = function(obj)
+	Ship.prototype.applyForce = function(obj) 
 	{
 	  var force = this.calculateForce(obj);
 	  this.canvasObject.position.addInPlace(this.acceleration);
 	  this.canvasObject.position.addInPlace(force);
 
 	};
+
+	Ship.prototype.orientTowards = function orientTowards(obj)
+	{
+	  var yAngle = Math.atan2(obj.position.x - this.position.x, obj.position.z - this.position.z );  
+	  var distanceV = new BABYLON.Vector3( 0, yAngle, 0 );                        
+	  this.canvasObject.rotation = distanceV;
+	}
 
 	module.exports = Ship;
 
@@ -639,7 +602,6 @@
 	      var zCoord = pickResult.pickedPoint.z;
 	      newBlackhole = blackholeMaterial(scene, new GameObject('blackhole', 1, 5, scene, xCoord, 1, zCoord));
 	      canvasObjects.push(newBlackhole);
-	      // window.newBlackhole = newBlackhole;
 	    }
 	  };
 
@@ -651,7 +613,7 @@
 	    camera.attachControl(canvas, true);
 	  }
 
-	  var spaceShip = new BABYLON.Sound("Music", "./public/sounds/shortinterstellar.mp3", scene, null, { loop: true, autoplay: true });
+	  //var snd = new BABYLON.Sound("Music", "./public/sounds/shortinterstellar.mp3", scene, null, { loop: false, autoplay: true });
 	  
 	  scene.registerBeforeRender(function()
 	  {
@@ -680,7 +642,7 @@
 	        if(obj.canvasObject.name === "planet")
 	        {
 	          // PubSub.publish("collision:planet", { target: obj });
-	          spaceShip.stop();
+	          snd.pause();
 	          ship.magnitude = 0;
 	          var winGame = new BABYLON.Sound("Music", "./public/sounds/winning.mp3", scene, null, { loop: false, autoplay: true });
 	          payload = "collided";
@@ -689,7 +651,7 @@
 	        else if (obj.canvasObject.name === "asteroid")
 	        {
 	          // PubSub.publish("collision:asteroid", { target: obj });
-	          spaceShip.stop();
+	          snd.pause();
 	          //backgroundmusic.stop();
 	          ship.magnitude = 0;
 	          var explosion = new BABYLON.Sound("Music", "./public/sounds/explosion.mp3", scene, null, { loop: false, autoplay: true });
@@ -700,7 +662,7 @@
 	        else if (obj.canvasObject.name === "blackhole")
 	        {
 	          // PubSub.publish("collision:asteroid", { target: obj });
-	          spaceShip.stop();
+	          snd.pause();
 	          //backgroundmusic.stop();
 	          ship.magnitude = 0;
 	          var spiral = new BABYLON.Sound("Music", "./public/sounds/spiral.mp3", scene, null, { loop: false, autoplay: true });
@@ -1078,7 +1040,7 @@
 
 	module.exports = function generateCamera(scene, canvas){
 	  
-	  var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 150, -0.0000000000000001), scene);
+	  var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 150, -.00001), scene);
 	  // This targets the camera to scene origin
 	  camera.setTarget(BABYLON.Vector3.Zero());
 	  // This attaches the camera to the canvas
@@ -1100,7 +1062,7 @@
 	  followCamera.target = ship.canvasObject; // target any mesh or object with a "position" Vector3
 
 	  followCamera.radius = 30; // how far from the object to follow
-	  followCamera.heightOffset = 8; // how high above the object to place the camera
+	  followCamera.heightOffset = 15; // how high above the object to place the camera
 	  followCamera.rotationOffset = 180; // the viewing angle
 	  followCamera.cameraAcceleration = 0.05 // how fast to move
 	  followCamera.maxCameraSpeed = 20 // speed limit
@@ -1116,7 +1078,7 @@
 
 	module.exports = function generateLight(scene){
 
-	  var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(100, 25 , 100), scene);
+	  var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(100, 25 , -100), scene);
 	  // Default intensity is 1. Let's dim the light a small amount
 	  light.intensity = 0.7;
 	  
@@ -1132,6 +1094,24 @@
 	module.exports = function createParticleTrail(scene, mesh) {
 	  var particleTrail = new BABYLON.ParticleSystem("particles", 200, scene);
 	  particleTrail.emitter = mesh;
+
+	  var fireTexture = new BABYLON.FireProceduralTexture("fire", 1024, scene);
+	  fireTexture.speed = new BABYLON.Vector2(0.00001, 0.00001);
+	  //console.log(fireTexture.fireColors);
+	  //console.log(fireTexture.alphaThreshold);
+	  
+	  // Thanks to Iiceman: http://www.html5gamedevs.com/topic/6557-babylon-projects/?p=90834
+	  fireTexture.fireColors = [
+	  new BABYLON.Color3(1,0.3,0),
+	  new BABYLON.Color3(1,0.9,0),
+	  new BABYLON.Color3(1,0.8,0),
+	  new BABYLON.Color3(1,0.9,0.0),
+	  new BABYLON.Color3(1,0.9,0),
+	  new BABYLON.Color3(1,0.7,0)
+	  ];
+
+
+	  
 	  particleTrail.particleTexture = new BABYLON.FireProceduralTexture("texture", 1024, scene);
 	  particleTrail.minEmitBox = new BABYLON.Vector3(-0.5, 0, -3);
 	  particleTrail.maxEmitBox = new BABYLON.Vector3(0.5, 0, 0);
@@ -1342,7 +1322,7 @@
 	var asteroidTexture = __webpack_require__(18);
 
 	module.exports.ship = function(scene){
-	  var spaceship = new Ship('ship', 2, 0.5, scene, -30, 1, -30, new BABYLON.Vector3(0.008, 0, 0.008));
+	  var spaceship = new Ship('ship', 1, 0.5, scene, -30, 1, -30, new BABYLON.Vector3(0.008, 0, 0.008));
 	  return spaceship;
 	}
 
@@ -1356,7 +1336,7 @@
 
 	  canvasObjects[1] = new GameObject('asteroid', 4, 5, scene, 20, 1, -20);
 	  canvasObjects[2] = new GameObject('asteroid', 4, 5, scene, -20, 1, 20)
-	  canvasObjects[3] = new GameObject('asteroid', 4, 5, scene, 4, 1, 4);
+	  canvasObjects[3] = new GameObject('asteroid', 4, 5, scene, 6, 1, 6);
 
 	  for (var i = 1; i < canvasObjects.length; i++) {
 	    canvasObjects[i] = asteroidTexture(scene, canvasObjects[i]);
@@ -1506,8 +1486,7 @@
 
 	  canvasObjects[0] = new GameObject('planet', 12, 30, scene, 60, 1, 30);
 	  
-
-	  // canvasObjects[0] = planetTexture(scene, canvasObjects[0]);
+	  canvasObjects[0] = planetTexture(scene, canvasObjects[0], "./public/images/purple.jpeg", "./public/images/purple.jpeg");
 
 	  canvasObjects[1] = new GameObject('asteroid', 4, 5, scene, -50, 1, 0);
 	  canvasObjects[2] = new GameObject('asteroid', 4, 5, scene, 40, 1, -10)
@@ -1728,7 +1707,7 @@
 	var asteroidTexture = __webpack_require__(18);
 
 	module.exports.ship = function(scene){
-	  var spaceship = new Ship('ship', 2, .5, scene, -80, 1, 0, new BABYLON.Vector3(0.0005, 0, 0));
+	  var spaceship = new Ship('ship', 2, .5, scene, -80, 1, 0, new BABYLON.Vector3(0.001, 0, 0));
 	  return spaceship;
 	}
 
@@ -1738,15 +1717,15 @@
 	  canvasObjects[0] = new GameObject('planet', 12, 30, scene, 80, 1, 0);
 	  
 
-	  // canvasObjects[0] = plutoTexture(scene, canvasObjects[0]);
+	  canvasObjects[0] = planetTexture(scene, canvasObjects[0], "./public/images/deathstar.jpg", "./public/images/deathstarbump.jpg");
 
-	  for (var i = 1; i < 21; i++) {
-	    canvasObjects[i] = new GameObject('asteroid', 4, 0.5, scene, -20 - Math.random() * 20, 1, 40 - Math.random() * 80 );
+	  for (var i = 1; i < 25; i++) {
+	    canvasObjects[i] = new GameObject('asteroid', 4, 0.05, scene, -20 - Math.random() * 20, 1, 50 - Math.random() * 100 );
 	    canvasObjects[i] = asteroidTexture(scene, canvasObjects[i]);
 	  }
 
-	  for (var i = 21; i < 40; i++) {
-	    canvasObjects[i] = new GameObject('asteroid', 4, 1, scene, Math.random() * 20 + 20, 1, 40 - Math.random() * 80 );
+	  for (var i = 25; i < 50; i++) {
+	    canvasObjects[i] = new GameObject('asteroid', 4, 0.05, scene, Math.random() * 20 + 20, 1, 50 - Math.random() * 100 );
 	    canvasObjects[i] = asteroidTexture(scene, canvasObjects[i]);
 	  }
 

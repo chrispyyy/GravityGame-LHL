@@ -164,33 +164,42 @@ html, body {
     width: 80%;
     height: 90%;
     margin: auto;
-    margin-top: 25px;
-    margin-bottom: 25px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     position: relative;
     border-radius: 3%;
   }
 
   .box {
     
-    width: 80%;
-    height: 60%;
+    width: 100%;
+    height: 90%;
     margin: auto;
-    margin-top: 45px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     position: relative;
   }
 
   .title {
     width: 100%;
-    margin-top: 50px;
-    opacity: 0.75;
+    height: 15%; 
+    margin-top: 10%;
   }
 
   .new-game, .load-level, .end-game {
     width: 100%;
-    height: 70px;
-    margin-top: 35px;
+    height: 20%;
+    margin-top: 10%;
     cursor: pointer;
     border-radius: 4%;
+  }
+
+  .new-game img, .load-level img, .end-game img{
+    width: 75%;
   }
 
   .box div:hover {
@@ -198,25 +207,35 @@ html, body {
     background-color: black;
   }
 
-  .main-menu, .nine {
-    margin-top: 15%;
-    cursor: pointer;
+  .main-menu {
     width: 100%;
-    height: 70px;
+    height: 15%; 
+    margin-top: 10%;
   }
 
   .level {
     display: inline;
     cursor: pointer;
-    width: 280px;
-    height: auto;
-    margin-left: 20px;
+    width: 100%;
   }
   .one, .two, .three, .four,.five, .six, .seven, .eight {
     display: inline;
-    width: 280px;
-    height: auto;
+    width: 100%;
+    margin-top: 10%;
   }
+
+  .one img, .two img, .three img, .four img,.five img, .six img, .seven img, .eight img, .nine img{
+    display: inline;
+    width: 50%;
+    margin-top: 5%;
+  }
+
+  .seven img{
+    display: inline;
+    width: 47%;
+    margin-left: 2.5%;
+  }
+
   .main-menu:hover {
     border: 1px solid black;
     background-color: black;
