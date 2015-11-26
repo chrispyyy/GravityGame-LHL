@@ -3,6 +3,24 @@ var BABYLON = require('babylonjs');
 module.exports = function createParticleTrail(scene, mesh) {
   var particleTrail = new BABYLON.ParticleSystem("particles", 200, scene);
   particleTrail.emitter = mesh;
+
+  var fireTexture = new BABYLON.FireProceduralTexture("fire", 1024, scene);
+  fireTexture.speed = new BABYLON.Vector2(0.00001, 0.00001);
+  //console.log(fireTexture.fireColors);
+  //console.log(fireTexture.alphaThreshold);
+  
+  // Thanks to Iiceman: http://www.html5gamedevs.com/topic/6557-babylon-projects/?p=90834
+  fireTexture.fireColors = [
+  new BABYLON.Color3(1,0.3,0),
+  new BABYLON.Color3(1,0.9,0),
+  new BABYLON.Color3(1,0.8,0),
+  new BABYLON.Color3(1,0.9,0.0),
+  new BABYLON.Color3(1,0.9,0),
+  new BABYLON.Color3(1,0.7,0)
+  ];
+
+
+  
   particleTrail.particleTexture = new BABYLON.FireProceduralTexture("texture", 1024, scene);
   particleTrail.minEmitBox = new BABYLON.Vector3(-0.5, 0, -3);
   particleTrail.maxEmitBox = new BABYLON.Vector3(0.5, 0, 0);

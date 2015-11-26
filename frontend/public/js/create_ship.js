@@ -92,69 +92,19 @@ function Ship (name, size, mass, scene, x, y, z, acc){
   indices.push(6, 1, 32);
   indices.push(33, 3, 7);
   
-   
-  var normals = [
-    1, 1, 1,  
-    1, 1, 1,  
-    1, 1, 1,  
-    1, 1, 1,  
-    1, 1, 1,  
-    1, 1, 1,  
-    1, 1, 1,  
-    1, 1, 1,  
-    1, 1, 1,
-    1, 1, 1, 
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-    1, 1, 1,
-  ];
-
   var vertexData = new BABYLON.VertexData();
 
   vertexData.positions = positions;
   vertexData.indices = indices;
-  vertexData.normals = normals;
 
   vertexData.applyToMesh(blankmesh, 1);
   this.canvasObject = blankmesh;
-  this.material = this.canvasObject.material = new BABYLON.StandardMaterial(name, scene);
-  this.material.diffuseColor = new BABYLON.Color3(0, 0.6, 0.6);
-  // this.canvasObject.material.bumpTexture = new BABYLON.Texture("./public/images/icebump.png");
+
+  var shipMaterial = new BABYLON.StandardMaterial("ship", scene);
+  shipMaterial.emissiveTexture = new BABYLON.Texture("./public/images/deathstar.jpg", scene);
+  shipMaterial.bumpTexture = new BABYLON.Texture("./public/images/deathstarbump.png", scene);
+  this.material = this.canvasObject.material = shipMaterial;
+
   this.mass = mass; 
   this.size = size;
   this.position = this.canvasObject.position = new BABYLON.Vector3(x, y, z);
