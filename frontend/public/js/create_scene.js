@@ -32,21 +32,11 @@ module.exports = function createScene(engine, canvas, levelObject)
 
   var followCamera = generateFollowCamera(scene, canvas, ship);
 
-
   generateParticleTrail(scene, ship.canvasObject);
 
   clickEvents.clickEvent(scene, ship, canvasObjects, camera, followCamera, canvas, engine);
 
-  var skybox = BABYLON.Mesh.CreateBox("skyBox", 1000, scene);
-  var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
-  skyboxMaterial.backFaceCulling = false;
-  skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("./public/images/spacelvl0", scene);
-  skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
-  skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
-  skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
-  skyboxMaterial.disableLighting = true;
-  skybox.material = skyboxMaterial;
-
+  var skybox = levelObject.skybox(scene);
   skybox.rotation = new BABYLON.Vector3(2,0,0);
   var animateSkyBox = new BABYLON.Animation("animateSkyBox", "rotation.z", 10, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE);
 

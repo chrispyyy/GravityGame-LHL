@@ -99,7 +99,7 @@ window.addEventListener('DOMContentLoaded', function()
   }); 
     
   $('.container').on('click', '.end-game', function(){
-    scene = null
+    scene = null;
   }); 
 
   function addContainer(cssClass, level){
@@ -127,8 +127,23 @@ window.addEventListener('DOMContentLoaded', function()
     addContainer(cssClassArr[i], i);
   }
  
+
+  var beachboys = false;
+
   $('#next-level').on('click', 'button', function() {
     scene = createScene(engine, canvas, scenes[currentLevel].scene);
+            if (currentLevel === 8) {
+              snd.src = './public/sounds/beachboys.mp3';
+              snd.load();
+              snd.play();
+              beachboys = true;
+            } else if (beachboys === true) {
+              snd.src='./public/sounds/shortinterstellar.mp3';
+              snd.load();
+              snd.play();
+              beachboys = false;
+            }           
+
     $('#next-level').fadeOut();
     if(currentLevel == 0){
       var instruction = $('<div>');
@@ -155,6 +170,19 @@ window.addEventListener('DOMContentLoaded', function()
   
   var gameOver = false
 
+  function playSound(){
+    snd=document.getElementById('noise');
+    beach = document.getElementById('noise');
+    canPlayMP3 = (typeof snd.canPlayType === "function" && snd.canPlayType("audio/mpeg") !== "");
+    snd.src='./public/sounds/shortinterstellar.mp3'
+    snd.load();
+    snd.play();
+  }
+
+  window.onload = function() {
+    playSound();
+  }
+
     var collisionSubscriber = function(msg, data){
       if (data == 'collided') {
         currentLevel++;
@@ -170,7 +198,16 @@ window.addEventListener('DOMContentLoaded', function()
           $('#next-level').fadeIn('slow');
           $('#next-level').on('click', 'button', function(){
             scene = createScene(engine, canvas, scenes[currentLevel].scene);
-            snd.play();
+            if (currentLevel === 8) {
+              snd.src = './public/sounds/beachboys.mp3';
+              snd.load();
+              snd.play();
+            } else {
+              snd.src='./public/sounds/shortinterstellar.mp3'
+              snd.load();
+              snd.play();
+            }
+
             $('#next-level').fadeOut('slow');
           });
           toggleFollowCamera = false
