@@ -110,12 +110,17 @@ window.addEventListener('DOMContentLoaded', function()
       $('#next-level img').attr('src', scenes[currentLevel].image);
       $('#next-level').fadeIn();
       $('#menu-button').fadeIn();
+      $('#cheat-button').fadeIn();
     });
   }
 
   $('#menu-button').on('click', function(){
     $('.container').slideDown();
     $('#menu-button').hide();
+  });
+
+  $('#cheat-button').on('click', function(){
+    PubSub.publish('COLLISION EVENT', 'collided');
   });
 
 

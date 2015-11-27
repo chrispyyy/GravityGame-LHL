@@ -152,7 +152,7 @@
 	  }); 
 	    
 	  $('.container').on('click', '.end-game', function(){
-	    scene = null
+	    scene = null;
 	  }); 
 
 	  function addContainer(cssClass, level){
@@ -180,8 +180,23 @@
 	    addContainer(cssClassArr[i], i);
 	  }
 	 
+
+	  var beachboys = false;
+
 	  $('#next-level').on('click', 'button', function() {
 	    scene = createScene(engine, canvas, scenes[currentLevel].scene);
+	            if (currentLevel === 8) {
+	              snd.src = './public/sounds/beachboys.mp3';
+	              snd.load();
+	              snd.play();
+	              beachboys = true;
+	            } else if (beachboys === true) {
+	              snd.src='./public/sounds/shortinterstellar.mp3';
+	              snd.load();
+	              snd.play();
+	              beachboys = false;
+	            }           
+
 	    $('#next-level').fadeOut();
 	    if(currentLevel == 0){
 	      var instruction = $('<div>');
@@ -208,21 +223,44 @@
 	  
 	  var gameOver = false
 
+	  function playSound(){
+	    snd=document.getElementById('noise');
+	    beach = document.getElementById('noise');
+	    canPlayMP3 = (typeof snd.canPlayType === "function" && snd.canPlayType("audio/mpeg") !== "");
+	    snd.src='./public/sounds/shortinterstellar.mp3'
+	    snd.load();
+	    snd.play();
+	  }
+
+	  window.onload = function() {
+	    playSound();
+	  }
+
 	    var collisionSubscriber = function(msg, data){
 	      if (data == 'collided') {
 	        currentLevel++;
 	        if(currentLevel > scenes.length - 1){
-	          $('#end-credits').fadeIn();
-	          var myVideo = document.querySelector('#myVideo');
-	          myVideo.play();
-	          $('#end-credits video').attr({'autoplay' : 'true'});
+	          setTimeout(function(){
+	            $('#end-credits').fadeIn();
+	            var myVideo = document.querySelector('#myVideo');
+	            myVideo.play();
+	          }, 1500);
 	        } else{
 	          $('#next-level button').text('Level ' + (currentLevel + 1));
 	          $('#next-level img').attr('src', scenes[currentLevel].image)
 	          $('#next-level').fadeIn('slow');
 	          $('#next-level').on('click', 'button', function(){
 	            scene = createScene(engine, canvas, scenes[currentLevel].scene);
-	            snd.play();
+	            if (currentLevel === 8) {
+	              snd.src = './public/sounds/beachboys.mp3';
+	              snd.load();
+	              snd.play();
+	            } else {
+	              snd.src='./public/sounds/shortinterstellar.mp3'
+	              snd.load();
+	              snd.play();
+	            }
+
 	            $('#next-level').fadeOut('slow');
 	          });
 	          toggleFollowCamera = false
@@ -352,21 +390,11 @@
 
 	  var followCamera = generateFollowCamera(scene, canvas, ship);
 
-
 	  generateParticleTrail(scene, ship.canvasObject);
 
 	  clickEvents.clickEvent(scene, ship, canvasObjects, camera, followCamera, canvas, engine);
 
-	  var skybox = BABYLON.Mesh.CreateBox("skyBox", 1000, scene);
-	  var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
-	  skyboxMaterial.backFaceCulling = false;
-	  skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("./public/images/spacelvl0", scene);
-	  skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
-	  skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
-	  skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
-	  skyboxMaterial.disableLighting = true;
-	  skybox.material = skyboxMaterial;
-
+	  var skybox = levelObject.skybox(scene);
 	  skybox.rotation = new BABYLON.Vector3(2,0,0);
 	  var animateSkyBox = new BABYLON.Animation("animateSkyBox", "rotation.z", 10, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE);
 
@@ -1151,6 +1179,18 @@
 
 	module.exports.image = 'public/images/levels/level_1.png'
 
+	module.exports.skybox = function(scene) {
+	  var skybox = BABYLON.Mesh.CreateBox("skyBox", 1000, scene);
+	  var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
+	  skyboxMaterial.backFaceCulling = false;
+	  skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("./public/images/spacelvl0", scene);
+	  skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+	  skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+	  skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+	  skyboxMaterial.disableLighting = true;
+	  skybox.material = skyboxMaterial;
+	  return skybox;
+	}
 
 /***/ },
 /* 16 */
@@ -1210,6 +1250,19 @@
 	    canvasObjects[i] = asteroidTexture(scene, canvasObjects[i]);
 	  }
 	  return canvasObjects
+	}
+
+	module.exports.skybox = function(scene) {
+	  var skybox = BABYLON.Mesh.CreateBox("skyBox", 1000, scene);
+	  var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
+	  skyboxMaterial.backFaceCulling = false;
+	  skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("./public/images/spacelvl0", scene);
+	  skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+	  skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+	  skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+	  skyboxMaterial.disableLighting = true;
+	  skybox.material = skyboxMaterial;
+	  return skybox;
 	}
 
 	module.exports.image = 'public/images/levels/level_2.png'
@@ -1345,6 +1398,19 @@
 	  return canvasObjects
 	}
 
+	module.exports.skybox = function(scene) {
+	  var skybox = BABYLON.Mesh.CreateBox("skyBox", 1000, scene);
+	  var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
+	  skyboxMaterial.backFaceCulling = false;
+	  skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("./public/images/spacelvl0", scene);
+	  skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+	  skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+	  skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+	  skyboxMaterial.disableLighting = true;
+	  skybox.material = skyboxMaterial;
+	  return skybox;
+	}
+
 	module.exports.image = 'public/images/levels/level_3.png'
 
 /***/ },
@@ -1378,6 +1444,19 @@
 	  }
 
 	  return canvasObjects
+	}
+
+	module.exports.skybox = function(scene) {
+	  var skybox = BABYLON.Mesh.CreateBox("skyBox", 1000, scene);
+	  var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
+	  skyboxMaterial.backFaceCulling = false;
+	  skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("./public/images/spacelvl0", scene);
+	  skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+	  skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+	  skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+	  skyboxMaterial.disableLighting = true;
+	  skybox.material = skyboxMaterial;
+	  return skybox;
 	}
 
 	module.exports.image = 'public/images/levels/level_4.png'
@@ -1425,6 +1504,19 @@
 	  return canvasObjects
 	}
 
+	module.exports.skybox = function(scene) {
+	  var skybox = BABYLON.Mesh.CreateBox("skyBox", 1000, scene);
+	  var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
+	  skyboxMaterial.backFaceCulling = false;
+	  skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("./public/images/spacelvl0", scene);
+	  skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+	  skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+	  skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+	  skyboxMaterial.disableLighting = true;
+	  skybox.material = skyboxMaterial;
+	  return skybox;
+	}
+
 	module.exports.image = 'public/images/levels/level_5.png'
 
 /***/ },
@@ -1466,6 +1558,18 @@
 	  return canvasObjects
 	}
 
+	module.exports.skybox = function(scene) {
+	  var skybox = BABYLON.Mesh.CreateBox("skyBox", 1000, scene);
+	  var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
+	  skyboxMaterial.backFaceCulling = false;
+	  skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("./public/images/spacelvl0", scene);
+	  skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+	  skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+	  skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+	  skyboxMaterial.disableLighting = true;
+	  skybox.material = skyboxMaterial;
+	  return skybox;
+	}
 	module.exports.image = 'public/images/levels/level_6.png'
 
 /***/ },
@@ -1540,6 +1644,18 @@
 	  return canvasObjects
 	}
 
+	module.exports.skybox = function(scene) {
+	  var skybox = BABYLON.Mesh.CreateBox("skyBox", 1000, scene);
+	  var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
+	  skyboxMaterial.backFaceCulling = false;
+	  skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("./public/images/spacelvl0", scene);
+	  skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+	  skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+	  skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+	  skyboxMaterial.disableLighting = true;
+	  skybox.material = skyboxMaterial;
+	  return skybox;
+	}
 	module.exports.image = 'public/images/levels/level_7.png'
 
 /***/ },
@@ -1696,6 +1812,19 @@
 	  return canvasObjects
 	}
 
+	module.exports.skybox = function(scene) {
+	  var skybox = BABYLON.Mesh.CreateBox("skyBox", 1000, scene);
+	  var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
+	  skyboxMaterial.backFaceCulling = false;
+	  skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("./public/images/spacelvl0", scene);
+	  skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+	  skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+	  skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+	  skyboxMaterial.disableLighting = true;
+	  skybox.material = skyboxMaterial;
+	  return skybox;
+	}
+
 	module.exports.image = 'public/images/levels/level_8.png'
 
 /***/ },
@@ -1717,7 +1846,7 @@
 	  canvasObjects[0] = new GameObject('planet', 12, 30, scene, 80, 1, 0);
 	  
 
-	  canvasObjects[0] = planetTexture(scene, canvasObjects[0], "./public/images/deathstar.jpg", "./public/images/deathstarbump.jpg");
+	  canvasObjects[0] = planetTexture(scene, canvasObjects[0], "./public/images/beachball.jpg", null);
 
 	  for (var i = 1; i < 25; i++) {
 	    canvasObjects[i] = new GameObject('asteroid', 4, 0.05, scene, -20 - Math.random() * 20, 1, 50 - Math.random() * 100 );
@@ -1730,6 +1859,19 @@
 	  }
 
 	  return canvasObjects
+	}
+
+	module.exports.skybox = function(scene) {
+	  var skybox = BABYLON.Mesh.CreateBox("skyBox", 1000, scene);
+	  var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
+	  skyboxMaterial.backFaceCulling = false;
+	  skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("./public/images/TropicalSunnyDay", scene);
+	  skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+	  skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+	  skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+	  skyboxMaterial.disableLighting = true;
+	  skybox.material = skyboxMaterial;
+	  return skybox;
 	}
 
 	module.exports.image = 'public/images/levels/level_9.png'

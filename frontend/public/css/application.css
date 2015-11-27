@@ -125,6 +125,39 @@ html, body {
   display: none;
 }
 
+#cheat-button{
+  position: absolute;
+  margin: auto;
+  top: 1%;
+  right: 1%;
+  padding: 20px;
+  border: none;
+  border-radius: 2%;
+  font: normal 30px/1 "Courier New", Courier, monospace;
+  color: rgba(255,255,255,1);
+  text-align: center;
+  background: url('../images/game-info.jpeg');
+  background-position: 50% 50%;
+  background-origin: padding-box;
+  background-clip: border-box;
+  background-size: auto auto;
+  box-shadow: 3px 3px 2px 0 rgba(0,0,0,0.3) ;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.2) ;
+  width: 5%;
+  height: 3%;
+  opacity: 1;
+  cursor: pointer;
+  display: none;
+}
+
+#cheat-button span{
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 #menu-button span{
   position: absolute;
   left: 0;
